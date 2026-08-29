@@ -191,4 +191,3 @@ npm run dev          # http://localhost:3000
 **Done (Phases 1–4, as specified):** schema + RLS + RPCs, 272-player seed, pairwise voting with Elo + smart matchmaking, full rankings pages with Top 25/50/All and ADP-delta, player profiles with head-to-head breakdowns, trade submission/voting/feed/detail with shareable URLs, Supabase Auth (email + Google) with profile/favorites, GA4 event wiring, SEO (metadata, sitemap, robots, JSON-LD), rate limiting + duplicate-matchup protection.
 
 **Deliberately left for you to wire up:** real headshot URLs and official bye weeks (see §6), an admin/moderation surface for trades, IP-level abuse detection (needs an edge/hosting-level integration, not just app code), and a "Save Favorite" button on the player profile page (the `favourites` table and RLS policy exist; the UI affordance doesn't yet).
-
