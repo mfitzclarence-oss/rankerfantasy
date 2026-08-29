@@ -6,7 +6,7 @@ import { CATEGORIES, CATEGORY_LABEL } from '@/lib/format';
 
 export function CategoryTabs({ active, basePath }: { active: string; basePath: string }) {
   return (
-    <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0">
+    <div className="no-scrollbar flex w-full gap-2 overflow-x-auto px-0 sm:flex-wrap">
       {CATEGORIES.map((cat) => {
         const href = cat === 'overall' ? basePath : `${basePath}/${cat}`;
         const isActive = active === cat;

@@ -34,6 +34,15 @@ export function Nav() {
               {l.label}
             </Link>
           ))}
+          <span className="mx-2 h-4 w-px bg-ink-600" />
+          <a
+            href="https://www.orderupfantasy.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-ink-600 bg-ink-850 px-4 py-2 text-sm font-semibold text-white transition-colors hover:border-accent hover:text-accent-bright"
+          >
+            Order Up Fantasy ↗
+          </a>
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
@@ -43,9 +52,10 @@ export function Nav() {
           </Link>
         </div>
 
-        <Link href="/vote" className="btn-primary !px-4 !py-2 text-sm md:hidden">
-          Vote
-        </Link>
+        <div className="flex items-center gap-2 md:hidden">
+          <a href="https://www.orderupfantasy.com/" target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-blue">Order Up ↗</a>
+          <Link href="/vote" className="btn-primary !px-4 !py-2 text-sm">Vote</Link>
+        </div>
       </div>
     </header>
   );
