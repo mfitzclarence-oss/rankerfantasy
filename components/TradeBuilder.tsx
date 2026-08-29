@@ -10,7 +10,7 @@ import type { PlayerRow, LeagueSize, TradeFormat, TradeScoring } from '@/lib/dat
 
 export function TradeBuilder() {
   const router = useRouter();
-  const supabase = createClient();
+  const [supabase] = useState(createClient);
 
   const [sideA, setSideA] = useState<PlayerRow[]>([]);
   const [sideB, setSideB] = useState<PlayerRow[]>([]);
@@ -48,6 +48,7 @@ export function TradeBuilder() {
 
     track('trade_created', { trade_id: data as unknown as string, format, scoring });
     router.push(`/trades/${data}` as any);
+    router.refresh();
   }
 
   return (

@@ -28,12 +28,8 @@ const config: Config = {
         gold: '#d4af37',
       },
       fontFamily: {
-        // Body copy stays a clean system stack for readability.
-        sans: ['var(--font-inter)', '-apple-system', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],
-        // Headlines/scores use a bold condensed display face (loaded via a
-        // runtime <link> in app/layout.tsx, not next/font — see that file's
-        // comment for why) for a scoreboard/sports-ticket feel.
-        display: ['var(--font-display)', 'Impact', '-apple-system', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-imprima)', 'Arial', 'sans-serif'],
+        display: ['var(--font-imprima)', 'Arial', 'sans-serif'],
       },
       boxShadow: {
         card: '0 1px 0 0 rgba(255,255,255,0.04) inset, 0 8px 24px -8px rgba(0,0,0,0.6)',

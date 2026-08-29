@@ -14,7 +14,7 @@ export function PlayerSearch({
   excludeIds?: string[];
   placeholder?: string;
 }) {
-  const supabase = createClient();
+  const [supabase] = useState(createClient);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<PlayerRow[]>([]);
   const [open, setOpen] = useState(false);
@@ -33,6 +33,7 @@ export function PlayerSearch({
       setResults([]);
       return;
     }
+    let cancelled = false;
     const handle = setTimeout(async () => {
       const { data } = await supabase
         .from('players')
@@ -40,12 +41,16 @@ export function PlayerSearch({
         .ilike('full_name', `%${query.trim()}%`)
         .eq('active', true)
         .limit(8);
-      setResults((data ?? []).filter((p) => !excludeIds.includes(p.id)));
-      setOpen(true);
+      if (!cancelled) {
+        setResults((data ?? []).filter((p) => !excludeIds.includes(p.id)));
+        setOpen(true);
+      }
     }, 180);
-    return () => clearTimeout(handle);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query]);
+    return () => {
+      cancelled = true;
+      clearTimeout(handle);
+    };
+  }, [excludeIds, query, supabase]);
 
   return (
     <div ref={containerRef} className="relative">

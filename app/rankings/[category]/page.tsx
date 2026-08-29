@@ -31,7 +31,7 @@ export default async function RankingsCategoryPage({
   searchParams: { limit?: string };
 }) {
   if (!CATEGORIES.includes(params.category as Category) || params.category === 'overall') notFound();
-  const limit = searchParams.limit === 'all' ? 300 : Number(searchParams.limit ?? 50);
+  const limit = searchParams.limit === 'all' ? 300 : searchParams.limit === '25' ? 25 : 50;
   const rows = await fetchRankings(params.category as Category, limit);
 
   return (

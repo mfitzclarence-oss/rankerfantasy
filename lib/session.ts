@@ -12,12 +12,24 @@ const KEY = 'rf_session_id';
 
 export function getSessionId(): string {
   if (typeof window === 'undefined') return '';
-  let id = window.localStorage.getItem(KEY);
-  if (!id) {
-    id = crypto.randomUUID();
-    window.localStorage.setItem(KEY, id);
+  try {
+    let id = window.localStorage.getItem(KEY);
+    if (!id || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) {
+      id = crypto.randomUUID();
+      window.localStorage.setItem(KEY, id);
+    }
+    return id;
+  } catch {
+    // Storage can be unavailable in hardened/private browser contexts. Keep a
+    // stable ID for this page lifetime so RPC UUID validation still succeeds.
+    return getMemorySessionId();
   }
-  return id;
+}
+
+let memorySessionId: string | undefined;
+function getMemorySessionId() {
+  memorySessionId ??= crypto.randomUUID();
+  return memorySessionId;
 }
 
 const SEEN_KEY_PREFIX = 'rf_seen_';
@@ -27,15 +39,24 @@ export function recordSeenPair(category: string, playerAId: string, playerBId: s
   if (typeof window === 'undefined') return;
   const key = `${SEEN_KEY_PREFIX}${category}`;
   const pairKey = [playerAId, playerBId].sort().join(':');
-  const raw = window.sessionStorage.getItem(key);
-  const seen: string[] = raw ? JSON.parse(raw) : [];
-  seen.push(pairKey);
-  // Keep only the most recent 40 pairs per category to bound storage.
-  window.sessionStorage.setItem(key, JSON.stringify(seen.slice(-40)));
+  try {
+    const raw = window.sessionStorage.getItem(key);
+    const parsed = raw ? JSON.parse(raw) : [];
+    const seen: string[] = Array.isArray(parsed) ? parsed : [];
+    seen.push(pairKey);
+    window.sessionStorage.setItem(key, JSON.stringify(seen.slice(-40)));
+  } catch {
+    // Matchmaking remains authoritative server-side if sessionStorage fails.
+  }
 }
 
 export function getSeenPairs(category: string): Set<string> {
   if (typeof window === 'undefined') return new Set();
-  const raw = window.sessionStorage.getItem(`${SEEN_KEY_PREFIX}${category}`);
-  return new Set(raw ? JSON.parse(raw) : []);
+  try {
+    const raw = window.sessionStorage.getItem(`${SEEN_KEY_PREFIX}${category}`);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(parsed) ? parsed : []);
+  } catch {
+    return new Set();
+  }
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { createClient } from '@/lib/supabase/client';
 import { getSessionId } from '@/lib/session';
@@ -26,14 +26,36 @@ const SCORING_LABEL: Record<string, string> = { standard: 'Standard', half_ppr: 
 const FORMAT_LABEL: Record<string, string> = { redraft: 'Redraft', dynasty: 'Dynasty', keeper: 'Keeper' };
 
 export function TradeCard({ trade, linkToDetail = true }: { trade: TradeCardData; linkToDetail?: boolean }) {
-  const supabase = createClient();
+  const [supabase] = useState(createClient);
   const [votes, setVotes] = useState(trade.votes);
   const [myVote, setMyVote] = useState<TradeVoteChoice | null | undefined>(trade.userVote);
+  const [voting, setVoting] = useState(false);
+  const [voteError, setVoteError] = useState<string | null>(null);
   const total = votes.team_a + votes.fair + votes.team_b;
   const pct = (n: number) => (total === 0 ? 0 : Math.round((n / total) * 100));
 
+  useEffect(() => {
+    let cancelled = false;
+    supabase
+      .from('trade_votes')
+      .select('vote')
+      .eq('trade_id', trade.id)
+      .eq('session_id', getSessionId())
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!cancelled) setMyVote((data?.vote as TradeVoteChoice | undefined) ?? null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [supabase, trade.id]);
+
   async function vote(choice: TradeVoteChoice) {
+    if (voting || myVote === choice) return;
     const previous = myVote;
+    const previousVotes = votes;
+    setVoting(true);
+    setVoteError(null);
     setMyVote(choice);
     setVotes((v) => {
       const next = { ...v };
@@ -47,7 +69,12 @@ export function TradeCard({ trade, linkToDetail = true }: { trade: TradeCardData
       p_session_id: getSessionId(),
       p_vote: choice,
     });
-    if (error) console.error('cast_trade_vote failed', error);
+    setVoting(false);
+    if (error) {
+      setMyVote(previous);
+      setVotes(previousVotes);
+      setVoteError(error.message || 'Your vote could not be saved.');
+    }
   }
 
   async function share() {
@@ -94,10 +121,11 @@ export function TradeCard({ trade, linkToDetail = true }: { trade: TradeCardData
       </div>
 
       <div className="mt-4 grid grid-cols-3 gap-2">
-        <VoteButton label="Team A Wins" active={myVote === 'team_a'} onClick={() => vote('team_a')} />
-        <VoteButton label="Fair Trade" active={myVote === 'fair'} onClick={() => vote('fair')} />
-        <VoteButton label="Team B Wins" active={myVote === 'team_b'} onClick={() => vote('team_b')} />
+        <VoteButton label="Team A Wins" active={myVote === 'team_a'} disabled={voting} onClick={() => vote('team_a')} />
+        <VoteButton label="Fair Trade" active={myVote === 'fair'} disabled={voting} onClick={() => vote('fair')} />
+        <VoteButton label="Team B Wins" active={myVote === 'team_b'} disabled={voting} onClick={() => vote('team_b')} />
       </div>
+      {voteError && <p className="mt-2 text-xs text-negative">{voteError}</p>}
 
       <div className="mt-3 flex items-center justify-between">
         {linkToDetail ? (
@@ -130,12 +158,13 @@ function TradeSide({ label, players }: { label: string; players: { full_name: st
   );
 }
 
-function VoteButton({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+function VoteButton({ label, active, disabled, onClick }: { label: string; active: boolean; disabled: boolean; onClick: () => void }) {
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       className={clsx(
-        'rounded-lg border px-2 py-2 text-xs font-semibold transition-colors',
+        'rounded-lg border px-2 py-2 text-xs font-semibold transition-colors disabled:cursor-wait disabled:opacity-60',
         active ? 'border-accent bg-accent text-white' : 'border-ink-600 bg-ink-800 text-white/60 hover:text-white'
       )}
     >
