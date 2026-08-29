@@ -1,0 +1,80 @@
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import './globals.css';
+import { Nav } from '@/components/Nav';
+import { BottomNav } from '@/components/BottomNav';
+import { Analytics } from '@/components/Analytics';
+
+// Display font (Bebas Neue — bold/condensed, scoreboard feel) is loaded via
+// a plain <link> tag below rather than next/font/google. next/font fetches
+// and embeds the font FILE at build time, which needs network access during
+// `next build` (that's what broke the build in a sandboxed test earlier).
+// A runtime <link> instead fetches in the visitor's browser, same as any
+// normal website — it can never fail your build. Body text stays a system
+// font stack (see tailwind.config.ts) for fast, dependency-free readability.
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankerfantasy.com';
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'RankerFantasy — Vote. Rank. Settle the debate.',
+    template: '%s | RankerFantasy',
+  },
+  description:
+    'Who would you rather draft? Vote head-to-head on NFL fantasy football players and build live, crowd-sourced rankings for the 2026 season.',
+  openGraph: {
+    title: 'RankerFantasy — Vote. Rank. Settle the debate.',
+    description:
+      'Thousands of head-to-head votes create rankings built by fantasy players, not experts.',
+    url: SITE_URL,
+    siteName: 'RankerFantasy',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'RankerFantasy — Vote. Rank. Settle the debate.',
+    description: 'Who would you rather draft? Vote head-to-head and build the community rankings.',
+  },
+  robots: { index: true, follow: true },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+        <style>{`:root { --font-display: 'Bebas Neue'; }`}</style>
+      </head>
+      <body className="flex min-h-dvh flex-col bg-ink-950 font-sans antialiased">
+        <Nav />
+        <main className="flex-1 pb-20 md:pb-0">{children}</main>
+        <Footer />
+        <BottomNav />
+        <Analytics />
+      </body>
+    </html>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="hidden border-t border-ink-800 py-10 md:block">
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 text-sm text-white/40 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <Image src="/logo-wordmark.png" alt="RankerFantasy" width={900} height={300} className="h-5 w-auto opacity-70" />
+          <p>&copy; {new Date().getFullYear()} RankerFantasy. Rankings built by fantasy players, not experts.</p>
+        </div>
+        <div className="flex gap-6">
+          <a href="/rankings" className="hover:text-white/70">Rankings</a>
+          <a href="/trades" className="hover:text-white/70">Trade Vote</a>
+          <a href="/how-it-works" className="hover:text-white/70">How It Works</a>
+          <a href="https://www.orderupfantasy.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white/70">
+            OrderUp Fantasy ↗
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
+}
