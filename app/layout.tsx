@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Poppins } from 'next/font/google';
+import { Inter, Poppins, Archivo_Black } from 'next/font/google';
 import './globals.css';
 import { Nav } from '@/components/Nav';
 import { BottomNav } from '@/components/BottomNav';
@@ -18,6 +18,13 @@ const poppins = Poppins({
   weight: ['700', '800', '900'],
   display: 'swap',
   variable: '--font-poppins',
+});
+
+const archivoBlack = Archivo_Black({
+  subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
+  variable: '--font-archivo-black',
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankerfantasy.com';
@@ -48,7 +55,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
+    <html lang="en" className={`${inter.variable} ${poppins.variable} ${archivoBlack.variable}`}>
       <body className="flex min-h-dvh flex-col bg-ink-950 font-sans antialiased">
         <Nav />
         <main className="flex-1 pb-20 md:pb-0">{children}</main>
