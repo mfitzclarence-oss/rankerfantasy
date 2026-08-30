@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import type { PlayerRow, PlayerRatingRow } from '@/lib/database.types';
 import { byeLabel } from '@/lib/format';
 import { teamColor } from '@/lib/teamColors';
-import { JerseyAvatar } from '@/components/JerseyAvatar';
 
 interface Props {
   player: PlayerRow;
@@ -33,15 +32,8 @@ export function PlayerCard({ player, rating, rank, onClick, disabled, exiting, s
         exiting === 'right' && 'animate-slide-out-right'
       )}
     >
-      <JerseyAvatar
-        teamAbbreviation={player.team_abbreviation}
-        jerseyNumber={player.jersey_number}
-        fullName={player.full_name}
-        size={size === 'lg' ? 'lg' : 'sm'}
-      />
-
       <div className="min-w-0">
-        <p className={clsx('truncate font-display font-bold tracking-tight text-white', size === 'lg' ? 'text-2xl sm:text-3xl' : 'text-base')}>
+        <p className={clsx('truncate font-display font-black tracking-tight text-white', size === 'lg' ? 'text-4xl sm:text-5xl' : 'text-xl')}>
           {player.full_name}
         </p>
         <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5 text-xs text-white/50">
