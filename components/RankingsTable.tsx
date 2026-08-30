@@ -48,7 +48,7 @@ export function RankingsTable({ rows, showSeedComparison = true }: { rows: Ranki
                 size="xs"
               />
               <div className="min-w-0">
-                <p className="truncate font-semibold text-white">{row.full_name}</p>
+                <p className="truncate font-display text-base font-extrabold uppercase text-white sm:text-lg">{row.full_name}</p>
                 <p className="text-xs text-white/40">
                   {row.position} &middot; {row.team_abbreviation} &middot; {byeLabel(row.bye_week)}
                 </p>

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function HowItWorksPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-14 sm:px-6">
-      <h1 className="font-display text-4xl font-black tracking-tight text-white sm:text-5xl">How It Works</h1>
+      <h1 className="page-title">How It Works</h1>
       <p className="mt-3 text-white/60">
         RankerFantasy ranks players by what fantasy managers would actually rather have — not by who scored the
         most points last year. Every ranking on this site is built entirely from real head-to-head votes.
