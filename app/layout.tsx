@@ -67,9 +67,13 @@ function Footer() {
         <div>
           <LogoWordmark className="h-7 w-auto opacity-90" />
           <p className="mt-3 max-w-sm">Community rankings built by fantasy players, not experts.</p>
-          <p className="mt-4 text-xs font-bold uppercase tracking-[0.12em] text-white/30">
-            A StylishFantasy company
-          </p>
+          <Image
+            src="/stylishfantasy-logo.svg"
+            alt="Stylish Fantasy Applications"
+            width={920}
+            height={250}
+            className="mt-5 h-auto w-56 opacity-90"
+          />
         </div>
         <div>
           <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.12em] text-white/70">Explore</p>
@@ -90,7 +94,7 @@ function Footer() {
         </div>
       </div>
       <p className="mx-auto mt-8 max-w-6xl border-t border-ink-800 px-5 pt-5 text-xs text-white/25 sm:px-6">
-        &copy; {new Date().getFullYear()} StylishFantasy. RankerFantasy and Order Up Fantasy are StylishFantasy products.
+        &copy; {new Date().getFullYear()} Stylish Fantasy Applications. RankerFantasy and Order Up Fantasy are Stylish Fantasy Applications products.
       </p>
     </footer>
   );

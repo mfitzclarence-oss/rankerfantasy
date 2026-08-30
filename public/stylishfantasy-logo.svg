@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 250" role="img" aria-labelledby="title desc">
+  <title id="title">Stylish Fantasy Applications</title>
+  <desc id="desc">Stylish in white, Fantasy and Applications in electric blue, with a blue underline and sparkle.</desc>
+  <g font-family="Arial Black, Arial, sans-serif" font-weight="900">
+    <text x="30" y="118" fill="#ffffff" font-size="88" letter-spacing="-4">STYLISH</text>
+    <text x="426" y="118" fill="#2f7df4" font-size="88" letter-spacing="-4">FANTASY</text>
+  </g>
+  <path d="M430 136H887" stroke="#2f7df4" stroke-width="4" stroke-linecap="round"/>
+  <g fill="#73a4ff">
+    <path d="M889 15c2 15 8 21 23 23-15 2-21 8-23 23-2-15-8-21-23-23 15-2 21-8 23-23Z"/>
+    <path d="M32 191h70v4H32zM818 191h70v4h-70z"/>
+  </g>
+  <text x="460" y="207" fill="#73a4ff" font-family="Arial, sans-serif" font-size="42" font-weight="500" letter-spacing="19" text-anchor="middle">APPLICATIONS</text>
+</svg>
