@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import clsx from 'clsx';
 import type { PlayerRow, PlayerRatingRow } from '@/lib/database.types';
-import { initials, byeLabel } from '@/lib/format';
+import { byeLabel } from '@/lib/format';
 import { teamColor } from '@/lib/teamColors';
+import { PlayerJersey } from '@/components/PlayerJersey';
 
 interface Props {
   player: PlayerRow;
@@ -33,27 +33,12 @@ export function PlayerCard({ player, rating, rank, onClick, disabled, exiting, s
         exiting === 'right' && 'animate-slide-out-right'
       )}
     >
-      <div
-        style={{
-          boxShadow: `0 0 0 3px ${primary}, 0 0 0 5px ${secondary}`,
-          backgroundImage: `linear-gradient(135deg, ${primary}33, ${secondary}33)`,
-        }}
-        className={clsx(
-          'relative flex items-center justify-center overflow-hidden rounded-full bg-ink-700',
-          size === 'lg' ? 'h-28 w-28 sm:h-36 sm:w-36' : 'h-12 w-12'
-        )}
-      >
-        {player.headshot_url ? (
-          <Image src={player.headshot_url} alt={player.full_name} fill sizes="150px" className="object-cover" />
-        ) : (
-          <span className={clsx('font-display font-bold text-white/70', size === 'lg' ? 'text-3xl' : 'text-sm')}>
-            {initials(player.full_name)}
-          </span>
-        )}
+      <div className={clsx('flex items-center justify-center', size === 'lg' ? 'h-40 w-44 sm:h-48 sm:w-52' : 'h-14 w-16')}>
+        <PlayerJersey name={player.full_name} primary={primary} secondary={secondary} compact={size !== 'lg'} className="h-full w-full" />
       </div>
 
       <div className="min-w-0">
-        <p className={clsx('truncate font-display font-bold text-white', size === 'lg' ? 'text-xl sm:text-2xl' : 'text-sm')}>
+        <p className={clsx('text-balance font-display font-black uppercase leading-none text-white', size === 'lg' ? 'text-3xl sm:text-4xl' : 'text-base')}>
           {player.full_name}
         </p>
         <div className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-xs text-white/50">

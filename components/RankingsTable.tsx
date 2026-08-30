@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { initials, byeLabel } from '@/lib/format';
+import { byeLabel } from '@/lib/format';
+import { PlayerJersey } from '@/components/PlayerJersey';
 import { teamColor } from '@/lib/teamColors';
 
 export interface RankingRow {
@@ -42,17 +43,9 @@ export function RankingsTable({ rows, showSeedComparison = true }: { rows: Ranki
             <span className="font-display text-base font-bold text-white/50 sm:text-lg">{row.rank}</span>
 
             <div className="flex min-w-0 items-center gap-3">
-              <div
-                style={{
-                  boxShadow: `0 0 0 2px ${primary}`,
-                  backgroundImage: `linear-gradient(135deg, ${primary}33, ${secondary}33)`,
-                }}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink-700 text-[11px] font-bold text-white/70"
-              >
-                {initials(row.full_name)}
-              </div>
+              <PlayerJersey name={row.full_name} primary={primary} secondary={secondary} compact className="h-12 w-12 shrink-0" />
               <div className="min-w-0">
-                <p className="truncate font-semibold text-white">{row.full_name}</p>
+                <p className="truncate font-display text-base font-extrabold uppercase text-white sm:text-lg">{row.full_name}</p>
                 <p className="text-xs text-white/40">
                   {row.position} &middot; {row.team_abbreviation} &middot; {byeLabel(row.bye_week)}
                 </p>

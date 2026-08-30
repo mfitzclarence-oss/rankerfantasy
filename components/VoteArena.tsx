@@ -105,7 +105,7 @@ export function VoteArena({ category }: { category: Category }) {
       <CategoryTabs active={category} basePath="/vote" />
 
       <div className="text-center">
-        <h1 className="font-display text-2xl font-bold text-white sm:text-3xl">Who would you rather have?</h1>
+        <h1 className="section-title">Who would you rather have?</h1>
         <p className="mt-1 text-sm text-white/50">
           {voteCount > 0 ? `${voteCount} votes this session — keep going.` : 'Tap a player to vote. Instant, no account needed.'}
         </p>

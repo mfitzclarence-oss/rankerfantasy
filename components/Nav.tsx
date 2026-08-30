@@ -17,10 +17,10 @@ export function Nav() {
           <Image
             src="/logo-wordmark.png"
             alt="RankerFantasy"
-            width={900}
-            height={300}
+            width={354}
+            height={86}
             priority
-            className="h-8 w-auto sm:h-9"
+            className="h-7 w-auto sm:h-8"
           />
         </Link>
 

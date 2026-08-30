@@ -32,7 +32,7 @@ export default async function RankingsPage({ searchParams }: { searchParams: { l
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <h1 className="font-display text-3xl font-bold text-white">Community Rankings</h1>
+      <h1 className="page-title">Community Rankings</h1>
       <p className="mt-1 text-white/50">Built from real pairwise votes — updated live.</p>
 
       <TokenGate>
