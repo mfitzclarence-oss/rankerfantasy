@@ -26,6 +26,8 @@ export interface PlayerRow {
   slug: string;
   /** Free-text status from the automated sync (Questionable/Out/IR/etc), null = healthy. See app/api/sync-players/route.ts. */
   injury_status: string | null;
+  /** NFL jersey number, kept in sync from Sleeper. Null until the first sync after a player is seeded. */
+  jersey_number: number | null;
   seed_rank_overall: number | null;
   seed_rank_position: number | null;
   created_at: string;
@@ -112,6 +114,10 @@ export interface Database {
       next_matchup: {
         Args: { p_category: Category; p_session_id: string };
         Returns: { player_a: string; player_b: string };
+      };
+      get_matchup_consensus: {
+        Args: { p_category: Category; p_player_a_id: string; p_player_b_id: string };
+        Returns: { player_id: string; vote_count: number }[];
       };
     };
   };
