@@ -9,7 +9,7 @@ export function OrderUpPromo() {
       href="https://www.orderupfantasy.com/"
       target="_blank"
       rel="noopener noreferrer"
-      className="card group flex flex-col items-center gap-4 bg-[radial-gradient(ellipse_at_top_left,rgba(255,122,53,0.12),transparent_60%),radial-gradient(ellipse_at_bottom_right,rgba(92,147,255,0.10),transparent_60%)] p-6 text-center transition-all hover:-translate-y-0.5 hover:border-accent/60 sm:flex-row sm:justify-between sm:p-8 sm:text-left"
+      className="card group flex flex-col items-center gap-4 bg-[radial-gradient(ellipse_at_top_left,rgba(47,125,244,0.16),transparent_60%),radial-gradient(ellipse_at_bottom_right,rgba(92,147,255,0.08),transparent_60%)] p-6 text-center transition-all hover:-translate-y-0.5 hover:border-accent/60 sm:flex-row sm:justify-between sm:p-8 sm:text-left"
     >
       <div>
         <span className="pill mb-3">Partner</span>
