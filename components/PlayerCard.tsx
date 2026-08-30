@@ -27,7 +27,7 @@ export function PlayerCard({ player, rating, rank, onClick, disabled, exiting, s
       style={{ borderTopColor: primary }}
       className={clsx(
         'card group relative flex w-full flex-col items-center overflow-hidden border-t-[3px] text-center transition-transform',
-        size === 'lg' ? 'gap-4 p-6 sm:p-8' : 'gap-2 p-3',
+        size === 'lg' ? 'gap-2 p-3 sm:gap-4 sm:p-8' : 'gap-2 p-3',
         !disabled && 'hover:-translate-y-0.5 hover:border-t-[3px] active:scale-[0.97]',
         exiting === 'left' && 'animate-slide-out-left',
         exiting === 'right' && 'animate-slide-out-right'
@@ -41,7 +41,7 @@ export function PlayerCard({ player, rating, rank, onClick, disabled, exiting, s
       />
 
       <div className="min-w-0">
-        <p className={clsx('truncate font-display font-bold tracking-tight text-white', size === 'lg' ? 'text-2xl sm:text-3xl' : 'text-base')}>
+        <p className={clsx('text-balance font-display font-black uppercase leading-none text-white', size === 'lg' ? 'text-2xl sm:text-4xl' : 'text-base')}>
           {player.full_name}
         </p>
         <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5 text-xs text-white/50">

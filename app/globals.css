@@ -49,7 +49,7 @@ h1, h2, h3, h4 {
     @apply inline-flex items-center rounded-full bg-ink-800 border border-ink-600 px-2.5 py-0.5 text-xs font-medium text-white/70;
   }
   .page-title {
-    @apply relative inline-block text-balance font-display text-4xl font-black uppercase leading-[0.95] tracking-[-0.035em] text-white sm:text-5xl;
+    @apply relative inline-block text-balance font-display text-3xl font-black uppercase leading-[0.95] tracking-[-0.035em] text-white sm:text-5xl;
   }
   .page-title::after {
     content: '';
@@ -61,6 +61,11 @@ h1, h2, h3, h4 {
     background: linear-gradient(90deg, #ffffff 0 28%, #5c93ff 28% 100%);
   }
   .section-title {
-    @apply font-display text-2xl font-black uppercase leading-tight tracking-[-0.025em] text-white sm:text-3xl;
+    @apply font-display text-[1.65rem] font-black uppercase leading-[1.05] tracking-[-0.035em] text-white sm:text-3xl;
   }
+}
+
+@media (max-width: 767px) {
+  button, a { -webkit-tap-highlight-color: transparent; }
+  .card { border-radius: 0.9rem; }
 }

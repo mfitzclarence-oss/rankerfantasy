@@ -46,8 +46,8 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
-          <a href="https://www.orderupfantasy.com/" target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-blue">Order Up ↗</a>
-          <Link href="/vote" className="btn-primary !px-4 !py-2 text-sm">Vote</Link>
+          <a href="https://www.orderupfantasy.com/" target="_blank" rel="noopener noreferrer" className="hidden text-xs font-semibold text-blue min-[390px]:block">Order Up ↗</a>
+          <TokenBadge />
         </div>
       </div>
     </header>
