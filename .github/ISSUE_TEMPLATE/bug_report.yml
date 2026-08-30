@@ -1,0 +1,38 @@
+name: Bug report
+description: Tell StylishFantasy about something that is not working on RankerFantasy.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping us improve RankerFantasy.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Tell us what you expected and what happened instead.
+      placeholder: I was trying to vote when...
+    validations:
+      required: true
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device
+      options:
+        - iPhone
+        - Android phone
+        - iPad or tablet
+        - Desktop or laptop
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      placeholder: Safari, Chrome, Edge...
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot or extra details
+      description: Drag a screenshot here if it helps explain the issue.
