@@ -31,13 +31,14 @@ const FALLBACK_TEXT_CLASSES: Record<NonNullable<Props['size']>, string> = {
 };
 
 /**
- * Renders a generic (non-trademarked) jersey silhouette tinted with the
- * player's real team colors, with their jersey number on the chest. This is
- * a stylized icon, not a reproduction of any team's actual uniform template
- * or logo — real NFL jersey artwork is licensed/trademarked, so we draw our
- * own shape instead of sourcing team imagery. Falls back to the player's
- * initials when no jersey number is on file yet (populated by the daily
- * sync job — see app/api/sync-players/route.ts).
+ * Renders a generic (non-trademarked) jersey icon — V-neck collar, short
+ * sleeves with cuff trim, dark outline — tinted with the player's real team
+ * colors, with their jersey number on the chest. This is a stylized icon,
+ * not a reproduction of any team's actual uniform template or logo — real
+ * NFL jersey artwork is licensed/trademarked, so we draw our own shape
+ * instead of sourcing team imagery. Falls back to the player's initials
+ * when no jersey number is on file yet (populated by the daily sync job —
+ * see app/api/sync-players/route.ts).
  */
 export function JerseyAvatar({ teamAbbreviation, jerseyNumber, fullName, size = 'lg' }: Props) {
   const { primary, secondary } = teamColor(teamAbbreviation);
@@ -45,22 +46,21 @@ export function JerseyAvatar({ teamAbbreviation, jerseyNumber, fullName, size = 
   return (
     <div
       style={{
-        boxShadow: `0 0 0 3px ${primary}, 0 0 0 5px ${secondary}`,
         backgroundImage: `linear-gradient(135deg, ${primary}33, ${secondary}33)`,
       }}
       className={clsx('relative flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-ink-700', SIZE_CLASSES[size])}
     >
       <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden="true">
         <path
-          d="M50 6 L61 6 L68 15 L83 11 L97 32 L83 45 L76 39 L76 94 L24 94 L24 39 L17 45 L3 32 L17 11 L32 15 Z"
+          d="M50 21 L40 9 C34 9 28 12 25 17 L14 14 C6 17 2 25 3 33 C4 39 8 43 13 42 L23 37 C25 35 27 35 29 37 L29 91 C29 95 32 98 36 98 L64 98 C68 98 71 95 71 91 L71 37 C73 35 75 35 77 37 L87 42 C92 43 96 39 97 33 C98 25 94 17 86 14 L75 17 C72 12 66 9 60 9 Z"
           fill={primary}
+          stroke="#14161a"
+          strokeWidth="3"
+          strokeLinejoin="round"
         />
-        <path
-          d="M50 6 L61 6 L68 15 L61 22 L50 17 L39 22 L32 15 Z"
-          fill={secondary}
-          opacity="0.9"
-        />
-        <rect x="24" y="39" width="52" height="6" fill={secondary} opacity="0.55" />
+        <path d="M40 9 L50 21 L60 9 L57 13 L50 25 L43 13 Z" fill={secondary} />
+        <path d="M13 42 L23 37" stroke={secondary} strokeWidth="4.5" strokeLinecap="round" />
+        <path d="M87 42 L77 37" stroke={secondary} strokeWidth="4.5" strokeLinecap="round" />
       </svg>
 
       {jerseyNumber ? (
