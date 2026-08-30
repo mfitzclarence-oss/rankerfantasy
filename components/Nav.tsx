@@ -14,7 +14,7 @@ export function Nav() {
     <header className="sticky top-0 z-40 px-2 pt-2 sm:px-5 sm:pt-3">
       <div className="mx-auto flex max-w-7xl items-center justify-between rounded-[1.35rem] border border-ink-700/90 bg-ink-950/90 px-3 py-2.5 shadow-card backdrop-blur-xl sm:px-6 sm:py-3">
         <Link href="/" className="flex items-center py-1">
-          <LogoWordmark className="h-14 w-auto sm:h-16 lg:h-[72px]" />
+          <LogoWordmark className="h-auto w-[210px] sm:w-[330px] lg:w-[400px]" />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
