@@ -11,10 +11,10 @@ const LINKS = [
 
 export function Nav() {
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-700/80 bg-ink-950/85 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center py-2">
-          <LogoWordmark className="h-16 w-auto sm:h-[72px]" />
+    <header className="sticky top-0 z-40 px-2 pt-2 sm:px-5 sm:pt-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between rounded-[1.35rem] border border-ink-700/90 bg-ink-950/90 px-3 py-2.5 shadow-card backdrop-blur-xl sm:px-6 sm:py-3">
+        <Link href="/" className="flex items-center py-1">
+          <LogoWordmark className="h-14 w-auto sm:h-16 lg:h-[72px]" />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
@@ -22,7 +22,7 @@ export function Nav() {
             <Link
               key={l.href}
               href={l.href as any}
-              className="rounded-full px-4 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-ink-800 hover:text-white"
+              className="rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white/60 transition-colors hover:bg-ink-800 hover:text-white"
             >
               {l.label}
             </Link>
@@ -32,7 +32,7 @@ export function Nav() {
             href="https://www.orderupfantasy.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full border border-ink-600 bg-ink-850 px-4 py-2 text-sm font-semibold text-white transition-colors hover:border-accent hover:text-accent-bright"
+            className="rounded-xl border border-ink-600 bg-ink-850 px-4 py-2 text-sm font-bold text-white transition-colors hover:border-accent hover:text-accent-bright"
           >
             Order Up Fantasy ↗
           </a>

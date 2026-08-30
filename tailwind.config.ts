@@ -5,25 +5,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Exact background match to orderupfantasy.com's dark theme (#07090D).
         ink: {
-          950: '#14161a',
-          900: '#17191e',
-          850: '#1f2228',
-          800: '#262a32',
-          700: '#2c303a',
-          600: '#3a4050',
-          500: '#6b7280',
+          950: '#070b12',
+          900: '#0b111c',
+          850: '#0e1624',
+          800: '#121c2b',
+          700: '#1d2a3d',
+          600: '#2a3850',
+          500: '#71809a',
         },
-        // Bold "order up" orange in place of the old blue — punchy against
-        // the near-black background, fits a playful/competitive sports brand.
         accent: {
-          DEFAULT: '#ff7a35',
-          bright: '#ff8c52',
-          dim: '#e0590f',
-          50: '#fff2e9',
+          DEFAULT: '#2f7df4',
+          bright: '#73a4ff',
+          dim: '#1f5fc5',
+          50: '#eef5ff',
         },
-        blue: '#5c93ff',
+        blue: '#5f94ff',
         positive: '#3ecf8e',
         negative: '#f2585c',
         gold: '#d4af37',
@@ -33,8 +30,8 @@ const config: Config = {
         display: ['var(--font-poppins)', 'Arial', 'sans-serif'],
       },
       boxShadow: {
-        card: '0 1px 2px rgba(0,0,0,0.18), 0 12px 30px -18px rgba(0,0,0,0.7)',
-        glow: '0 0 0 1px rgba(255,122,53,0.45), 0 0 28px -7px rgba(255,122,53,0.35)',
+        card: '0 20px 50px -32px rgba(0,0,0,0.95)',
+        glow: '0 0 0 1px rgba(47,125,244,0.45), 0 0 32px -9px rgba(47,125,244,0.55)',
       },
       keyframes: {
         'pop-win': {

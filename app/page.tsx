@@ -24,23 +24,26 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden border-b border-ink-700">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_800px_400px_at_20%_0%,rgba(255,122,53,0.12),transparent_65%),radial-gradient(ellipse_700px_400px_at_90%_100%,rgba(92,147,255,0.10),transparent_65%)]" />
-        <div className="relative mx-auto max-w-6xl px-4 pb-6 pt-14 text-center sm:px-6 sm:pt-20">
-          <span className="pill mb-5">2026 Season &middot; Community Powered</span>
-          <h1 className="mx-auto max-w-4xl font-display text-5xl font-black uppercase leading-[1.02] tracking-tight text-white sm:text-7xl">
-            Who would you <span className="text-accent-bright">rather</span> draft?
-          </h1>
-          <p className="mx-auto mt-6 max-w-xl text-balance text-white/60 sm:text-xl">
-            Vote. Rank. Settle the debate. Thousands of head-to-head votes create rankings built by fantasy players, not experts.
+      <section className="relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_700px_560px_at_82%_28%,rgba(47,125,244,0.13),transparent_68%)]" />
+        <div className="relative mx-auto max-w-7xl px-4 pb-8 pt-16 sm:px-6 sm:pt-24">
+          <div className="max-w-4xl text-left">
+            <p className="mb-5 flex items-center gap-3 text-xs font-extrabold uppercase tracking-[0.12em] text-blue before:h-0.5 before:w-7 before:bg-accent">Community-powered fantasy rankings</p>
+            <h1 className="max-w-4xl font-display text-[2.8rem] font-black leading-[0.98] tracking-[-0.055em] text-white sm:text-7xl">
+              The rankings start <span className="block text-blue">with your vote.</span>
+            </h1>
+            <p className="mt-6 max-w-2xl text-balance text-base leading-relaxed text-white/65 sm:text-xl">
+              <strong className="text-white">Pick who you would rather draft.</strong> Every head-to-head choice builds live rankings shaped by fantasy players—not experts.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
             <Link href="/vote" className="btn-primary">Start Voting</Link>
             <Link href="/rankings" className="btn-secondary">View Rankings</Link>
           </div>
+          <p className="mt-5 text-xs font-semibold text-white/45">No account needed <span className="mx-2 text-blue">•</span> One tap per vote <span className="mx-2 text-blue">•</span> Rankings update live</p>
+          </div>
         </div>
 
-        <div className="relative mx-auto max-w-6xl pb-14">
+        <div className="relative mx-auto max-w-6xl pb-16 pt-4">
           <VoteArena category="overall" />
         </div>
       </section>
@@ -89,7 +92,7 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      <section className="border-t border-ink-800 bg-ink-900/40 py-16">
+      <section className="mx-3 rounded-[1.75rem] border border-ink-700 bg-ink-900/55 py-16 sm:mx-5">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <h2 className="mb-6 font-display text-3xl font-black tracking-tight text-white sm:text-4xl">Vote by Position</h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">

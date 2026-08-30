@@ -7,7 +7,7 @@
 }
 
 html, body {
-  background: linear-gradient(180deg, #1b1e26 0%, #14161a 45%, #0e0f13 100%);
+  background: radial-gradient(circle at 8% 0%, rgba(35, 104, 210, 0.13), transparent 28rem), linear-gradient(180deg, #080d16 0%, #070b12 100%);
   background-attachment: fixed;
   color: #f2f3f5;
   font-family: var(--font-inter), Arial, sans-serif;
@@ -24,7 +24,7 @@ h1, h2, h3, h4 {
 }
 
 ::selection {
-  background-color: rgba(255, 122, 53, 0.3);
+  background-color: rgba(47, 125, 244, 0.38);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -37,13 +37,13 @@ h1, h2, h3, h4 {
 
 @layer components {
   .card {
-    @apply rounded-2xl border border-ink-700 bg-ink-850 shadow-card;
+    @apply rounded-2xl border border-ink-700 bg-ink-900/80 shadow-card backdrop-blur-sm;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-[9px] bg-accent px-6 py-3 font-semibold text-[#171000] transition-all hover:bg-accent-bright active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 font-bold text-white shadow-[0_12px_30px_-16px_rgba(47,125,244,0.95)] transition-all hover:bg-accent-bright active:scale-[0.98];
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-[9px] border border-blue px-6 py-3 font-semibold text-blue transition-all hover:bg-blue/10 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-600 bg-white/[0.02] px-6 py-3 font-bold text-white transition-all hover:border-blue hover:bg-blue/10 active:scale-[0.98];
   }
   .pill {
     @apply inline-flex items-center rounded-full bg-ink-800 border border-ink-600 px-2.5 py-0.5 text-xs font-medium text-white/70;
@@ -58,7 +58,7 @@ h1, h2, h3, h4 {
     height: 0.3rem;
     margin-top: 0.75rem;
     border-radius: 999px;
-    background: linear-gradient(90deg, #ffffff 0 28%, #5c93ff 28% 100%);
+    background: #2f7df4;
   }
   .section-title {
     @apply font-display text-[1.65rem] font-black uppercase leading-[1.05] tracking-[-0.035em] text-white sm:text-3xl;
