@@ -15,7 +15,7 @@ interface Matchup {
 }
 
 export function VoteArena({ category }: { category: Category }) {
-  const supabase = createClient();
+  const [supabase] = useState(createClient);
   const [matchup, setMatchup] = useState<Matchup | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,6 +24,7 @@ export function VoteArena({ category }: { category: Category }) {
   const [sessionId, setSessionId] = useState('');
 
   const loadMatchup = useCallback(async () => {
+    setLoading(true);
     setError(null);
     const sid = sessionId || getSessionId();
     if (!sessionId) setSessionId(sid);
@@ -66,7 +67,7 @@ export function VoteArena({ category }: { category: Category }) {
   }, [category]);
 
   async function handlePick(winnerSide: 'a' | 'b') {
-    if (!matchup) return;
+    if (!matchup || exiting) return;
     const winner = winnerSide === 'a' ? matchup.a : matchup.b;
     const loser = winnerSide === 'a' ? matchup.b : matchup.a;
     setExiting(winnerSide === 'a' ? 'right' : 'left');
@@ -75,22 +76,26 @@ export function VoteArena({ category }: { category: Category }) {
     recordSeenPair(category, matchup.a.id, matchup.b.id);
     track('player_vote', { category, player_a: matchup.a.id, player_b: matchup.b.id, winner: winner.id });
 
-    supabase
-      .rpc('cast_vote', {
+    const { error: voteError } = await supabase.rpc('cast_vote', {
         p_session_id: sid,
         p_category: category,
         p_player_a_id: matchup.a.id,
         p_player_b_id: matchup.b.id,
         p_winner_id: winner.id,
-      })
-      .then(({ error: voteError }) => {
-        if (voteError) console.error('cast_vote failed', voteError);
-        else notifyTokensChanged(); // this vote just earned a token — refresh any visible balance/gate
       });
+
+    if (voteError) {
+      setExiting(null);
+      setError(voteError.message || 'Your vote could not be saved. Please try again.');
+      return;
+    }
+
+    notifyTokensChanged();
 
     setVoteCount((n) => n + 1);
     setTimeout(() => {
       setExiting(null);
+      setLoading(true);
       loadMatchup();
     }, 260);
   }
@@ -138,7 +143,7 @@ export function VoteArena({ category }: { category: Category }) {
       <button
         className="text-sm font-medium text-white/40 hover:text-white/70"
         onClick={loadMatchup}
-        disabled={loading}
+        disabled={loading || !!exiting}
       >
         Skip this matchup →
       </button>

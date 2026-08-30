@@ -23,11 +23,11 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden border-b border-ink-800">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(47,124,246,0.16),transparent_60%)]" />
+      <section className="relative overflow-hidden border-b border-ink-700">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_800px_400px_at_20%_0%,rgba(255,122,53,0.12),transparent_65%),radial-gradient(ellipse_700px_400px_at_90%_100%,rgba(92,147,255,0.10),transparent_65%)]" />
         <div className="relative mx-auto max-w-6xl px-4 pb-6 pt-14 text-center sm:px-6 sm:pt-20">
           <span className="pill mb-5">2026 Season &middot; Community Powered</span>
-          <h1 className="mx-auto max-w-3xl font-display text-4xl font-black leading-[1.05] tracking-tight text-white sm:text-6xl">
+          <h1 className="mx-auto max-w-3xl font-display text-4xl font-black uppercase leading-[1.05] tracking-tight text-white sm:text-6xl">
             Who would you <span className="text-accent-bright">rather</span> draft?
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-balance text-white/60 sm:text-lg">

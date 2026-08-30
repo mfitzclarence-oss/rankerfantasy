@@ -7,16 +7,24 @@
 }
 
 html, body {
-  background-color: #07090d;
-  color: #f4f5f7;
+  background: linear-gradient(180deg, #1b1e26 0%, #14161a 45%, #0e0f13 100%);
+  background-attachment: fixed;
+  color: #f2f3f5;
+  font-family: var(--font-inter), Arial, sans-serif;
+  letter-spacing: 0.005em;
 }
 
 body {
   min-height: 100dvh;
 }
 
+h1, h2, h3, h4 {
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
 ::selection {
-  background-color: rgba(255, 90, 31, 0.35);
+  background-color: rgba(255, 122, 53, 0.3);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -29,13 +37,13 @@ body {
 
 @layer components {
   .card {
-    @apply bg-ink-850 border border-ink-700 rounded-2xl shadow-card;
+    @apply rounded-2xl border border-ink-700 bg-ink-850 shadow-card;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent hover:bg-accent-bright active:scale-[0.98] text-white font-semibold px-6 py-3 transition-all;
+    @apply inline-flex items-center justify-center gap-2 rounded-[9px] bg-accent px-6 py-3 font-semibold text-[#171000] transition-all hover:bg-accent-bright active:scale-[0.98];
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink-600 hover:border-accent/60 hover:bg-ink-800 active:scale-[0.98] text-white font-semibold px-6 py-3 transition-all;
+    @apply inline-flex items-center justify-center gap-2 rounded-[9px] border border-blue px-6 py-3 font-semibold text-blue transition-all hover:bg-blue/10 active:scale-[0.98];
   }
   .pill {
     @apply inline-flex items-center rounded-full bg-ink-800 border border-ink-600 px-2.5 py-0.5 text-xs font-medium text-white/70;

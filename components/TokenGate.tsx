@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { getSessionId } from '@/lib/session';
-import { DEFAULT_TOKEN_STATUS, UNLOCK_COST, notifyTokensChanged, type TokenStatus } from '@/lib/tokens';
+import { DEFAULT_TOKEN_STATUS, TOKENS_CHANGED_EVENT, UNLOCK_COST, notifyTokensChanged, type TokenStatus } from '@/lib/tokens';
 
 /**
  * Soft paywall: `children` is server-rendered content (so it's present in
@@ -13,7 +13,7 @@ import { DEFAULT_TOKEN_STATUS, UNLOCK_COST, notifyTokensChanged, type TokenStatu
  * for real visitors who haven't earned/spent enough tokens yet.
  */
 export function TokenGate({ children }: { children: React.ReactNode }) {
-  const supabase = createClient();
+  const [supabase] = useState(createClient);
   const [status, setStatus] = useState<TokenStatus>(DEFAULT_TOKEN_STATUS);
   const [loaded, setLoaded] = useState(false);
   const [unlocking, setUnlocking] = useState(false);
@@ -22,13 +22,16 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
   async function refresh() {
     const sid = getSessionId();
     if (!sid) return;
-    const { data } = await supabase.rpc('get_token_status', { p_session_id: sid }).single();
+    const { data, error: rpcError } = await supabase.rpc('get_token_status', { p_session_id: sid }).single();
     if (data) setStatus(data as TokenStatus);
+    if (rpcError) setError('Could not check your token balance. Please retry.');
     setLoaded(true);
   }
 
   useEffect(() => {
     refresh();
+    window.addEventListener(TOKENS_CHANGED_EVENT, refresh);
+    return () => window.removeEventListener(TOKENS_CHANGED_EVENT, refresh);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -49,7 +52,11 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
   // Avoid a flash of the lock overlay before we know the real status —
   // render children plainly until the first check completes. This keeps
   // first paint (and SEO'd HTML) identical either way.
-  if (!loaded || status.unlocked) {
+  if (!loaded) {
+    return <div className="card mt-6 animate-pulse p-8 text-center text-sm text-white/40">Checking unlock status…</div>;
+  }
+
+  if (status.unlocked) {
     return <>{children}</>;
   }
 
@@ -89,6 +96,7 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
             </Link>
           )}
           {error && <p className="mt-2 text-xs text-negative">{error}</p>}
+          {error && <button type="button" onClick={refresh} className="mt-2 text-xs text-accent-bright hover:underline">Retry balance check</button>}
         </div>
       </div>
     </div>

@@ -5,6 +5,9 @@ import { NextResponse, type NextRequest } from 'next/server';
 // components always see an up-to-date session. Standard @supabase/ssr
 // pattern for Next.js App Router.
 export async function middleware(request: NextRequest) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return NextResponse.next();
+  }
   let response = NextResponse.next({ request: { headers: request.headers } });
 
   const supabase = createServerClient(
@@ -27,7 +30,7 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  await supabase.auth.getSession();
+  await supabase.auth.getUser();
   return response;
 }
 

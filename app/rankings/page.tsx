@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RankingsPage({ searchParams }: { searchParams: { limit?: string } }) {
-  const limit = searchParams.limit === 'all' ? 300 : Number(searchParams.limit ?? 50);
+  const limit = searchParams.limit === 'all' ? 300 : searchParams.limit === '25' ? 25 : 50;
   const rows = await fetchRankings('overall', limit);
 
   const jsonLd = {

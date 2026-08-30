@@ -7,37 +7,34 @@ const config: Config = {
       colors: {
         // Exact background match to orderupfantasy.com's dark theme (#07090D).
         ink: {
-          950: '#07090d',
-          900: '#0b0d12',
-          850: '#10131a',
-          800: '#161a23',
-          700: '#1f232f',
-          600: '#2b303f',
-          500: '#3c4256',
+          950: '#14161a',
+          900: '#17191e',
+          850: '#1f2228',
+          800: '#262a32',
+          700: '#2c303a',
+          600: '#3a4050',
+          500: '#6b7280',
         },
         // Bold "order up" orange in place of the old blue — punchy against
         // the near-black background, fits a playful/competitive sports brand.
         accent: {
-          DEFAULT: '#ff5a1f',
-          bright: '#ff7a45',
-          dim: '#c23f10',
-          50: '#fff1ea',
+          DEFAULT: '#ff7a35',
+          bright: '#ff8c52',
+          dim: '#e0590f',
+          50: '#fff2e9',
         },
-        positive: '#22c55e',
-        negative: '#ef4444',
+        blue: '#5c93ff',
+        positive: '#3ecf8e',
+        negative: '#f2585c',
         gold: '#d4af37',
       },
       fontFamily: {
-        // Body copy stays a clean system stack for readability.
-        sans: ['var(--font-inter)', '-apple-system', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],
-        // Headlines/scores use a bold condensed display face (loaded via a
-        // runtime <link> in app/layout.tsx, not next/font — see that file's
-        // comment for why) for a scoreboard/sports-ticket feel.
-        display: ['var(--font-display)', 'Impact', '-apple-system', 'Segoe UI', 'Roboto', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-inter)', 'Arial', 'sans-serif'],
+        display: ['var(--font-poppins)', 'Arial', 'sans-serif'],
       },
       boxShadow: {
-        card: '0 1px 0 0 rgba(255,255,255,0.04) inset, 0 8px 24px -8px rgba(0,0,0,0.6)',
-        glow: '0 0 0 1px rgba(255,90,31,0.4), 0 0 32px -4px rgba(255,90,31,0.35)',
+        card: '0 1px 2px rgba(0,0,0,0.18), 0 12px 30px -18px rgba(0,0,0,0.7)',
+        glow: '0 0 0 1px rgba(255,122,53,0.45), 0 0 28px -7px rgba(255,122,53,0.35)',
       },
       keyframes: {
         'pop-win': {

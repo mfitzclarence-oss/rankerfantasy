@@ -7,7 +7,7 @@ import { DEFAULT_TOKEN_STATUS, TOKENS_CHANGED_EVENT, UNLOCK_COST, type TokenStat
 
 /** Small persistent "tokens earned" indicator — shown in the nav so voting progress is always visible. */
 export function TokenBadge({ className = '' }: { className?: string }) {
-  const supabase = createClient();
+  const [supabase] = useState(createClient);
   const [status, setStatus] = useState<TokenStatus>(DEFAULT_TOKEN_STATUS);
   const [loaded, setLoaded] = useState(false);
 

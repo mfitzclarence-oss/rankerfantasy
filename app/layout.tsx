@@ -1,17 +1,25 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import { Nav } from '@/components/Nav';
 import { BottomNav } from '@/components/BottomNav';
 import { Analytics } from '@/components/Analytics';
 
-// Display font (Bebas Neue — bold/condensed, scoreboard feel) is loaded via
-// a plain <link> tag below rather than next/font/google. next/font fetches
-// and embeds the font FILE at build time, which needs network access during
-// `next build` (that's what broke the build in a sandboxed test earlier).
-// A runtime <link> instead fetches in the visitor's browser, same as any
-// normal website — it can never fail your build. Body text stays a system
-// font stack (see tailwind.config.ts) for fast, dependency-free readability.
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['700', '800', '900'],
+  display: 'swap',
+  variable: '--font-poppins',
+});
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankerfantasy.com';
 
 export const metadata: Metadata = {
@@ -40,13 +48,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
-        <style>{`:root { --font-display: 'Bebas Neue'; }`}</style>
-      </head>
+    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <body className="flex min-h-dvh flex-col bg-ink-950 font-sans antialiased">
         <Nav />
         <main className="flex-1 pb-20 md:pb-0">{children}</main>
