@@ -62,21 +62,36 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 function Footer() {
   return (
-    <footer className="hidden border-t border-ink-800 py-10 md:block">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 text-sm text-white/40 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <LogoWordmark className="h-5 w-auto opacity-70" />
-          <p>&copy; {new Date().getFullYear()} RankerFantasy. Rankings built by fantasy players, not experts.</p>
+    <footer className="border-t border-ink-800 py-10 pb-24 md:pb-10">
+      <div className="mx-auto grid max-w-6xl gap-8 px-5 text-sm text-white/45 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div>
+          <LogoWordmark className="h-7 w-auto opacity-90" />
+          <p className="mt-3 max-w-sm">Community rankings built by fantasy players, not experts.</p>
+          <p className="mt-4 text-xs font-bold uppercase tracking-[0.12em] text-white/30">
+            A StylishFantasy company
+          </p>
         </div>
-        <div className="flex gap-6">
-          <a href="/rankings" className="hover:text-white/70">Rankings</a>
-          <a href="/trades" className="hover:text-white/70">Trade Vote</a>
-          <a href="/how-it-works" className="hover:text-white/70">How It Works</a>
-          <a href="https://www.orderupfantasy.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white/70">
-            OrderUp Fantasy ↗
-          </a>
+        <div>
+          <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.12em] text-white/70">Explore</p>
+          <div className="flex flex-col gap-2.5">
+            <a href="/rankings" className="hover:text-white">Rankings</a>
+            <a href="/trades" className="hover:text-white">Trade Vote</a>
+            <a href="/how-it-works" className="hover:text-white">How It Works</a>
+            <a href="https://www.orderupfantasy.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white">Order Up Fantasy ↗</a>
+          </div>
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.12em] text-white/70">Support &amp; social</p>
+          <div className="flex flex-col gap-2.5">
+            <a href="https://github.com/mfitzclarence-oss/rankerfantasy/issues/new?template=bug_report.yml" target="_blank" rel="noopener noreferrer" className="hover:text-white">Report a bug ↗</a>
+            <a href="https://github.com/mfitzclarence-oss/rankerfantasy/issues/new?template=feature_request.yml" target="_blank" rel="noopener noreferrer" className="hover:text-white">Suggest a feature ↗</a>
+            <a href="https://www.instagram.com/orderupfantasy/" target="_blank" rel="noopener noreferrer" className="hover:text-white">Order Up Instagram ↗</a>
+          </div>
         </div>
       </div>
+      <p className="mx-auto mt-8 max-w-6xl border-t border-ink-800 px-5 pt-5 text-xs text-white/25 sm:px-6">
+        &copy; {new Date().getFullYear()} StylishFantasy. RankerFantasy and Order Up Fantasy are StylishFantasy products.
+      </p>
     </footer>
   );
 }

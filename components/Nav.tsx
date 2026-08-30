@@ -36,6 +36,15 @@ export function Nav() {
           >
             Order Up Fantasy ↗
           </a>
+          <a
+            href="https://www.instagram.com/orderupfantasy/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Order Up Fantasy on Instagram"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-ink-600 bg-ink-850 text-white/70 transition-colors hover:border-accent hover:text-white"
+          >
+            <InstagramIcon />
+          </a>
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
@@ -51,5 +60,15 @@ export function Nav() {
         </div>
       </div>
     </header>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+    </svg>
   );
 }
