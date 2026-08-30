@@ -1,22 +1,13 @@
 import Link from 'next/link';
 import { VoteArena } from '@/components/VoteArena';
 import { OrderUpPromo } from '@/components/OrderUpPromo';
-import { createServerSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/server';
 import { byeLabel } from '@/lib/format';
-import { JerseyAvatar } from '@/components/JerseyAvatar';
+import { fetchRankings } from '@/lib/rankings';
 
 export const revalidate = 60;
 
 async function getTopOverall() {
-  if (!isSupabaseConfigured()) return [];
-  const supabase = createServerSupabaseClient();
-  const { data } = await supabase
-    .from('player_ratings')
-    .select('rating, comparisons, players(id, full_name, position, team_abbreviation, headshot_url, slug, bye_week, jersey_number)')
-    .eq('category', 'overall')
-    .order('rating', { ascending: false })
-    .limit(6);
-  return data ?? [];
+  return fetchRankings('overall', 6);
 }
 
 export default async function HomePage() {
@@ -62,22 +53,16 @@ export default async function HomePage() {
         <div className="card divide-y divide-ink-700 overflow-hidden">
           {top.length === 0 && (
             <p className="p-6 text-sm text-white/40">
-              Rankings will appear here once the player database is seeded and voting begins — see the README.
+              Community rankings are temporarily unavailable. Please try again shortly.
             </p>
           )}
-          {top.map((row: any, i: number) => (
-            <div key={row.players.id} className="flex items-center gap-4 px-4 py-3 sm:px-6">
+          {top.map((row, i) => (
+            <div key={row.player_id} className="flex items-center gap-4 px-4 py-3 sm:px-6">
               <span className="w-6 shrink-0 text-center font-display text-lg font-bold text-white/30">{i + 1}</span>
-              <JerseyAvatar
-                teamAbbreviation={row.players.team_abbreviation}
-                jerseyNumber={row.players.jersey_number}
-                fullName={row.players.full_name}
-                size="xs"
-              />
               <div className="min-w-0 flex-1">
-                <p className="truncate font-semibold text-white">{row.players.full_name}</p>
+                <p className="truncate font-display text-lg font-black uppercase text-white sm:text-xl">{row.full_name}</p>
                 <p className="text-xs text-white/40">
-                  {row.players.position} &middot; {row.players.team_abbreviation} &middot; {byeLabel(row.players.bye_week)}
+                  {row.position} &middot; {row.team_abbreviation} &middot; {byeLabel(row.bye_week)}
                 </p>
               </div>
               <div className="text-right">

@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { PlayerRow } from '@/lib/database.types';
-import { JerseyAvatar } from '@/components/JerseyAvatar';
 
 export function PlayerSearch({
   onSelect,
@@ -73,11 +72,10 @@ export function PlayerSearch({
                 setResults([]);
                 setOpen(false);
               }}
-              className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-ink-700"
+              className="flex w-full items-center px-4 py-3 text-left hover:bg-ink-700"
             >
-              <JerseyAvatar teamAbbreviation={p.team_abbreviation} jerseyNumber={p.jersey_number} fullName={p.full_name} size="xs" />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-medium text-white">{p.full_name}</span>
+                <span className="block truncate font-display text-lg font-extrabold uppercase text-white">{p.full_name}</span>
                 <span className="block text-xs text-white/40">{p.position} &middot; {p.team_abbreviation}</span>
               </span>
             </button>

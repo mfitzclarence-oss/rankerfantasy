@@ -5,7 +5,6 @@ import './globals.css';
 import { Nav } from '@/components/Nav';
 import { BottomNav } from '@/components/BottomNav';
 import { Analytics } from '@/components/Analytics';
-import { LogoWordmark } from '@/components/LogoWordmark';
 
 const imprima = Imprima({
   subsets: ['latin'],
@@ -59,7 +58,13 @@ function Footer() {
     <footer className="border-t border-ink-800 py-10 pb-24 md:pb-10">
       <div className="mx-auto grid max-w-6xl gap-8 px-5 text-sm text-white/45 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <LogoWordmark className="h-7 w-auto opacity-90" />
+          <Image
+            src="/logo-wordmark.png"
+            alt="RankerFantasy"
+            width={354}
+            height={86}
+            className="h-auto w-56 opacity-90"
+          />
           <p className="mt-3 max-w-sm">Community rankings built by fantasy players, not experts.</p>
           <Image
             src="/stylishfantasy-logo.svg"

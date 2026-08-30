@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { byeLabel, winPercentageLabel, POSITION_LABEL } from '@/lib/format';
 import { PlayerProfileTracker } from '@/components/PlayerProfileTracker';
-import { JerseyAvatar } from '@/components/JerseyAvatar';
 
 export const revalidate = 30;
 
@@ -114,10 +113,9 @@ export default async function PlayerPage({ params }: { params: { slug: string } 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PlayerProfileTracker playerId={player.id} playerName={player.full_name} position={player.position} />
 
-      <div className="card flex flex-col items-center gap-4 p-8 text-center sm:flex-row sm:text-left">
-        <JerseyAvatar teamAbbreviation={player.team_abbreviation} jerseyNumber={player.jersey_number} fullName={player.full_name} size="md" />
+      <div className="card p-8 text-center sm:text-left">
         <div>
-          <h1 className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl">{player.full_name}</h1>
+          <h1 className="font-display text-5xl font-black uppercase leading-none tracking-tight text-white sm:text-6xl">{player.full_name}</h1>
           <p className="mt-1 text-white/50">
             {player.position} &middot; {player.nfl_team} &middot; {byeLabel(player.bye_week)}
           </p>

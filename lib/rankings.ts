@@ -5,37 +5,53 @@ import type { RankingRow } from '@/components/RankingsTable';
 export async function fetchRankings(category: Category, limit: number): Promise<RankingRow[]> {
   if (!isSupabaseConfigured()) return [];
   const supabase = createServerSupabaseClient();
-  const { data, error } = await supabase
+  const { data: ratings, error: ratingsError } = await supabase
     .from('player_ratings')
-    .select(
-      'rating, comparisons, wins, losses, players(id, full_name, position, team_abbreviation, bye_week, slug, seed_rank_overall, seed_rank_position, jersey_number)'
-    )
+    .select('player_id, rating, comparisons, wins, losses')
     .eq('category', category)
     .order('rating', { ascending: false })
     .limit(limit);
 
-  if (!error && data && data.length > 0) {
-    return data.flatMap((row: any, i: number) => {
-      if (!row.players) return [];
-      const seedRank = category === 'overall' ? row.players.seed_rank_overall : row.players.seed_rank_position;
-      const movement = typeof seedRank === 'number' ? seedRank - (i + 1) : null;
-      return [{
-        rank: i + 1,
-        player_id: row.players.id,
-        slug: row.players.slug,
-        full_name: row.players.full_name,
-        position: row.players.position,
-        team_abbreviation: row.players.team_abbreviation,
-        bye_week: row.players.bye_week,
-        rating: row.rating,
-        comparisons: row.comparisons,
-        wins: row.wins,
-        losses: row.losses,
-        seed_rank_overall: row.players.seed_rank_overall,
-        seed_rank_position: row.players.seed_rank_position,
-        movement,
-      } satisfies RankingRow];
-    });
+  if (ratingsError) console.error('Failed to load player ratings', ratingsError);
+
+  if (ratings && ratings.length > 0) {
+    const playerIds = ratings.map((row) => row.player_id);
+    const { data: players, error: playersError } = await supabase
+      .from('players')
+      .select('id, full_name, position, team_abbreviation, bye_week, slug, seed_rank_overall, seed_rank_position')
+      .in('id', playerIds)
+      .eq('fantasy_relevant', true)
+      .eq('active', true);
+
+    if (playersError) console.error('Failed to load ranked players', playersError);
+
+    if (players && players.length > 0) {
+      const playersById = new Map(players.map((player) => [player.id, player]));
+      let visibleRank = 0;
+      return ratings.flatMap((row) => {
+        const player = playersById.get(row.player_id);
+        if (!player) return [];
+        const rank = ++visibleRank;
+        const seedRank = category === 'overall' ? player.seed_rank_overall : player.seed_rank_position;
+        const movement = typeof seedRank === 'number' ? seedRank - rank : null;
+        return [{
+          rank,
+          player_id: player.id,
+          slug: player.slug,
+          full_name: player.full_name,
+          position: player.position,
+          team_abbreviation: player.team_abbreviation,
+          bye_week: player.bye_week,
+          rating: row.rating,
+          comparisons: row.comparisons,
+          wins: row.wins,
+          losses: row.losses,
+          seed_rank_overall: player.seed_rank_overall,
+          seed_rank_position: player.seed_rank_position,
+          movement,
+        } satisfies RankingRow];
+      });
+    }
   }
 
   // Ratings are populated separately from players. Use the draft seed as a
@@ -43,7 +59,7 @@ export async function fetchRankings(category: Category, limit: number): Promise<
   const position = category === 'dst' ? 'DST' : category.toUpperCase();
   let query = supabase
     .from('players')
-    .select('id, full_name, position, team_abbreviation, bye_week, slug, seed_rank_overall, seed_rank_position, jersey_number')
+    .select('id, full_name, position, team_abbreviation, bye_week, slug, seed_rank_overall, seed_rank_position')
     .eq('fantasy_relevant', true)
     .eq('active', true);
   if (category === 'overall') query = query.in('position', ['QB', 'RB', 'WR', 'TE']);
@@ -64,7 +80,6 @@ export async function fetchRankings(category: Category, limit: number): Promise<
       full_name: player.full_name,
       position: player.position,
       team_abbreviation: player.team_abbreviation,
-      jersey_number: player.jersey_number,
       bye_week: player.bye_week,
       rating: 1500,
       comparisons: 0,
