@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { VoteArena } from '@/components/VoteArena';
 import { OrderUpPromo } from '@/components/OrderUpPromo';
 import { createServerSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/server';
-import { initials, byeLabel } from '@/lib/format';
+import { byeLabel } from '@/lib/format';
+import { JerseyAvatar } from '@/components/JerseyAvatar';
 
 export const revalidate = 60;
 
@@ -11,7 +12,7 @@ async function getTopOverall() {
   const supabase = createServerSupabaseClient();
   const { data } = await supabase
     .from('player_ratings')
-    .select('rating, comparisons, players(id, full_name, position, team_abbreviation, headshot_url, slug, bye_week)')
+    .select('rating, comparisons, players(id, full_name, position, team_abbreviation, headshot_url, slug, bye_week, jersey_number)')
     .eq('category', 'overall')
     .order('rating', { ascending: false })
     .limit(6);
@@ -27,10 +28,10 @@ export default async function HomePage() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_800px_400px_at_20%_0%,rgba(255,122,53,0.12),transparent_65%),radial-gradient(ellipse_700px_400px_at_90%_100%,rgba(92,147,255,0.10),transparent_65%)]" />
         <div className="relative mx-auto max-w-6xl px-4 pb-6 pt-14 text-center sm:px-6 sm:pt-20">
           <span className="pill mb-5">2026 Season &middot; Community Powered</span>
-          <h1 className="mx-auto max-w-3xl font-display text-4xl font-black uppercase leading-[1.05] tracking-tight text-white sm:text-6xl">
+          <h1 className="mx-auto max-w-4xl font-display text-5xl font-black uppercase leading-[1.02] tracking-tight text-white sm:text-7xl">
             Who would you <span className="text-accent-bright">rather</span> draft?
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-balance text-white/60 sm:text-lg">
+          <p className="mx-auto mt-6 max-w-xl text-balance text-white/60 sm:text-xl">
             Vote. Rank. Settle the debate. Thousands of head-to-head votes create rankings built by fantasy players, not experts.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -47,8 +48,8 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <div className="mb-6 flex items-end justify-between">
           <div>
-            <h2 className="font-display text-2xl font-bold text-white">Live Community Rankings</h2>
-            <p className="mt-1 text-sm text-white/50">Updated with every vote. Overall, skill positions only.</p>
+            <h2 className="font-display text-3xl font-black tracking-tight text-white sm:text-4xl">Live Community Rankings</h2>
+            <p className="mt-1.5 text-sm text-white/50">Updated with every vote. Overall, skill positions only.</p>
           </div>
           <Link href="/rankings" className="hidden text-sm font-semibold text-accent-bright hover:underline sm:block">
             View full rankings →
@@ -64,9 +65,12 @@ export default async function HomePage() {
           {top.map((row: any, i: number) => (
             <div key={row.players.id} className="flex items-center gap-4 px-4 py-3 sm:px-6">
               <span className="w-6 shrink-0 text-center font-display text-lg font-bold text-white/30">{i + 1}</span>
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink-700 text-xs font-bold text-white/70">
-                {initials(row.players.full_name)}
-              </div>
+              <JerseyAvatar
+                teamAbbreviation={row.players.team_abbreviation}
+                jerseyNumber={row.players.jersey_number}
+                fullName={row.players.full_name}
+                size="xs"
+              />
               <div className="min-w-0 flex-1">
                 <p className="truncate font-semibold text-white">{row.players.full_name}</p>
                 <p className="text-xs text-white/40">
@@ -87,7 +91,7 @@ export default async function HomePage() {
 
       <section className="border-t border-ink-800 bg-ink-900/40 py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="mb-6 font-display text-2xl font-bold text-white">Vote by Position</h2>
+          <h2 className="mb-6 font-display text-3xl font-black tracking-tight text-white sm:text-4xl">Vote by Position</h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
             {[
               ['QB', 'qb'], ['RB', 'rb'], ['WR', 'wr'], ['TE', 'te'], ['K', 'k'], ['D/ST', 'dst'],
@@ -113,7 +117,7 @@ export default async function HomePage() {
         <div className="card grid grid-cols-1 items-center gap-8 overflow-hidden p-8 sm:grid-cols-2 sm:p-12">
           <div>
             <span className="pill mb-4">New: Trade Vote</span>
-            <h2 className="font-display text-3xl font-bold text-white">Let the community judge your trade.</h2>
+            <h2 className="font-display text-4xl font-black tracking-tight text-white">Let the community judge your trade.</h2>
             <p className="mt-3 text-white/60">
               Submit any trade — 1-for-1 up to larger multi-player deals — and get a real-time read from other
               fantasy managers: Team A Wins, Fair Trade, or Team B Wins.
@@ -129,7 +133,7 @@ export default async function HomePage() {
 
       <section className="border-t border-ink-800 py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="mb-8 text-center font-display text-2xl font-bold text-white">How It Works</h2>
+          <h2 className="mb-8 text-center font-display text-3xl font-black tracking-tight text-white sm:text-4xl">How It Works</h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             <HowStep n={1} title="Vote head-to-head" body="Two players. One tap. Who would you rather have in fantasy this season?" />
             <HowStep n={2} title="Ratings update instantly" body="Every vote feeds an Elo rating system — beating a favorite is worth more than beating a scrub." />

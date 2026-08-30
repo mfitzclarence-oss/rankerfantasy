@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { TokenBadge } from '@/components/TokenBadge';
+import { LogoWordmark } from '@/components/LogoWordmark';
 
 const LINKS = [
   { href: '/vote', label: 'Vote' },
@@ -13,15 +13,8 @@ export function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b border-ink-700/80 bg-ink-950/85 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center">
-          <Image
-            src="/logo-wordmark.png"
-            alt="RankerFantasy"
-            width={900}
-            height={300}
-            priority
-            className="h-8 w-auto sm:h-9"
-          />
+        <Link href="/" className="flex items-center py-2">
+          <LogoWordmark className="h-16 w-auto sm:h-[72px]" />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">

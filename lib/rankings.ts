@@ -8,7 +8,7 @@ export async function fetchRankings(category: Category, limit: number): Promise<
   const { data, error } = await supabase
     .from('player_ratings')
     .select(
-      'rating, comparisons, wins, losses, players(id, full_name, position, team_abbreviation, bye_week, slug, seed_rank_overall, seed_rank_position)'
+      'rating, comparisons, wins, losses, players(id, full_name, position, team_abbreviation, bye_week, slug, seed_rank_overall, seed_rank_position, jersey_number)'
     )
     .eq('category', category)
     .order('rating', { ascending: false })
@@ -26,6 +26,7 @@ export async function fetchRankings(category: Category, limit: number): Promise<
       full_name: row.players.full_name,
       position: row.players.position,
       team_abbreviation: row.players.team_abbreviation,
+      jersey_number: row.players.jersey_number,
       bye_week: row.players.bye_week,
       rating: row.rating,
       comparisons: row.comparisons,

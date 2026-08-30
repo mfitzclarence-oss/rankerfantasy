@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { initials, byeLabel } from '@/lib/format';
-import { teamColor } from '@/lib/teamColors';
+import { byeLabel } from '@/lib/format';
+import { JerseyAvatar } from '@/components/JerseyAvatar';
 
 export interface RankingRow {
   rank: number;
@@ -9,6 +9,7 @@ export interface RankingRow {
   full_name: string;
   position: string;
   team_abbreviation: string;
+  jersey_number?: number | null;
   bye_week: number | null;
   rating: number;
   comparisons: number;
@@ -31,9 +32,7 @@ export function RankingsTable({ rows, showSeedComparison = true }: { rows: Ranki
         <span className="text-right">{showSeedComparison ? 'ADP Δ' : ''}</span>
       </div>
       <div className="divide-y divide-ink-700/70">
-        {rows.map((row) => {
-          const { primary, secondary } = teamColor(row.team_abbreviation);
-          return (
+        {rows.map((row) => (
           <Link
             key={row.player_id}
             href={`/players/${row.slug}` as any}
@@ -42,15 +41,12 @@ export function RankingsTable({ rows, showSeedComparison = true }: { rows: Ranki
             <span className="font-display text-base font-bold text-white/50 sm:text-lg">{row.rank}</span>
 
             <div className="flex min-w-0 items-center gap-3">
-              <div
-                style={{
-                  boxShadow: `0 0 0 2px ${primary}`,
-                  backgroundImage: `linear-gradient(135deg, ${primary}33, ${secondary}33)`,
-                }}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink-700 text-[11px] font-bold text-white/70"
-              >
-                {initials(row.full_name)}
-              </div>
+              <JerseyAvatar
+                teamAbbreviation={row.team_abbreviation}
+                jerseyNumber={row.jersey_number}
+                fullName={row.full_name}
+                size="xs"
+              />
               <div className="min-w-0">
                 <p className="truncate font-semibold text-white">{row.full_name}</p>
                 <p className="text-xs text-white/40">
@@ -76,8 +72,7 @@ export function RankingsTable({ rows, showSeedComparison = true }: { rows: Ranki
               )}
             </span>
           </Link>
-          );
-        })}
+        ))}
         {rows.length === 0 && (
           <p className="p-8 text-center text-sm text-white/40">
             No ranked players yet in this category — vote a few matchups to get it started.

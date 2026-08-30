@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import clsx from 'clsx';
 import type { PlayerRow, PlayerRatingRow } from '@/lib/database.types';
-import { initials, byeLabel } from '@/lib/format';
+import { byeLabel } from '@/lib/format';
 import { teamColor } from '@/lib/teamColors';
+import { JerseyAvatar } from '@/components/JerseyAvatar';
 
 interface Props {
   player: PlayerRow;
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export function PlayerCard({ player, rating, rank, onClick, disabled, exiting, size = 'lg' }: Props) {
-  const { primary, secondary } = teamColor(player.team_abbreviation);
+  const { primary } = teamColor(player.team_abbreviation);
 
   return (
     <button
@@ -33,30 +33,18 @@ export function PlayerCard({ player, rating, rank, onClick, disabled, exiting, s
         exiting === 'right' && 'animate-slide-out-right'
       )}
     >
-      <div
-        style={{
-          boxShadow: `0 0 0 3px ${primary}, 0 0 0 5px ${secondary}`,
-          backgroundImage: `linear-gradient(135deg, ${primary}33, ${secondary}33)`,
-        }}
-        className={clsx(
-          'relative flex items-center justify-center overflow-hidden rounded-full bg-ink-700',
-          size === 'lg' ? 'h-28 w-28 sm:h-36 sm:w-36' : 'h-12 w-12'
-        )}
-      >
-        {player.headshot_url ? (
-          <Image src={player.headshot_url} alt={player.full_name} fill sizes="150px" className="object-cover" />
-        ) : (
-          <span className={clsx('font-display font-bold text-white/70', size === 'lg' ? 'text-3xl' : 'text-sm')}>
-            {initials(player.full_name)}
-          </span>
-        )}
-      </div>
+      <JerseyAvatar
+        teamAbbreviation={player.team_abbreviation}
+        jerseyNumber={player.jersey_number}
+        fullName={player.full_name}
+        size={size === 'lg' ? 'lg' : 'sm'}
+      />
 
       <div className="min-w-0">
-        <p className={clsx('truncate font-display font-bold text-white', size === 'lg' ? 'text-xl sm:text-2xl' : 'text-sm')}>
+        <p className={clsx('truncate font-display font-bold tracking-tight text-white', size === 'lg' ? 'text-2xl sm:text-3xl' : 'text-base')}>
           {player.full_name}
         </p>
-        <div className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-xs text-white/50">
+        <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5 text-xs text-white/50">
           <span
             className="pill"
             style={{ backgroundColor: `${primary}26`, borderColor: `${primary}80`, color: '#fff' }}

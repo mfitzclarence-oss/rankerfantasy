@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import { Nav } from '@/components/Nav';
 import { BottomNav } from '@/components/BottomNav';
 import { Analytics } from '@/components/Analytics';
+import { LogoWordmark } from '@/components/LogoWordmark';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -65,7 +65,7 @@ function Footer() {
     <footer className="hidden border-t border-ink-800 py-10 md:block">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 text-sm text-white/40 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <Image src="/logo-wordmark.png" alt="RankerFantasy" width={900} height={300} className="h-5 w-auto opacity-70" />
+          <LogoWordmark className="h-5 w-auto opacity-70" />
           <p>&copy; {new Date().getFullYear()} RankerFantasy. Rankings built by fantasy players, not experts.</p>
         </div>
         <div className="flex gap-6">

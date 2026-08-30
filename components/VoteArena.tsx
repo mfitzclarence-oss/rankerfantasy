@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import clsx from 'clsx';
 import { createClient } from '@/lib/supabase/client';
 import { getSessionId, recordSeenPair } from '@/lib/session';
 import { track } from '@/lib/analytics';
@@ -14,6 +15,18 @@ interface Matchup {
   b: PlayerRow;
 }
 
+interface Consensus {
+  agree: boolean;
+  percent: number;
+  totalVotes: number;
+  winnerName: string;
+}
+
+// Below this many total votes on a specific pairing, a percentage reads as
+// noise rather than signal — show an encouraging "you're early" message
+// instead of a misleading "100% agree" from a single vote.
+const MIN_VOTES_FOR_CONSENSUS = 3;
+
 export function VoteArena({ category }: { category: Category }) {
   const [supabase] = useState(createClient);
   const [matchup, setMatchup] = useState<Matchup | null>(null);
@@ -22,6 +35,7 @@ export function VoteArena({ category }: { category: Category }) {
   const [exiting, setExiting] = useState<'left' | 'right' | null>(null);
   const [voteCount, setVoteCount] = useState(0);
   const [sessionId, setSessionId] = useState('');
+  const [consensus, setConsensus] = useState<Consensus | null>(null);
 
   const loadMatchup = useCallback(async () => {
     setLoading(true);
@@ -61,16 +75,41 @@ export function VoteArena({ category }: { category: Category }) {
   useEffect(() => {
     setLoading(true);
     setMatchup(null);
+    setConsensus(null);
     track('vote_category_selected', { category });
     loadMatchup();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
+
+  async function loadConsensus(winner: PlayerRow, loser: PlayerRow) {
+    const { data, error: consensusError } = await supabase.rpc('get_matchup_consensus', {
+      p_category: category,
+      p_player_a_id: winner.id,
+      p_player_b_id: loser.id,
+    });
+
+    if (consensusError || !data) return;
+
+    const rows = data as { player_id: string; vote_count: number }[];
+    const winnerVotes = rows.find((r) => r.player_id === winner.id)?.vote_count ?? 0;
+    const loserVotes = rows.find((r) => r.player_id === loser.id)?.vote_count ?? 0;
+    const totalVotes = winnerVotes + loserVotes;
+
+    if (totalVotes < MIN_VOTES_FOR_CONSENSUS) {
+      setConsensus({ agree: true, percent: 0, totalVotes, winnerName: winner.full_name });
+      return;
+    }
+
+    const percent = Math.round((winnerVotes / totalVotes) * 100);
+    setConsensus({ agree: percent >= 50, percent, totalVotes, winnerName: winner.full_name });
+  }
 
   async function handlePick(winnerSide: 'a' | 'b') {
     if (!matchup || exiting) return;
     const winner = winnerSide === 'a' ? matchup.a : matchup.b;
     const loser = winnerSide === 'a' ? matchup.b : matchup.a;
     setExiting(winnerSide === 'a' ? 'right' : 'left');
+    setConsensus(null);
 
     const sid = sessionId || getSessionId();
     recordSeenPair(category, matchup.a.id, matchup.b.id);
@@ -91,6 +130,7 @@ export function VoteArena({ category }: { category: Category }) {
     }
 
     notifyTokensChanged();
+    loadConsensus(winner, loser);
 
     setVoteCount((n) => n + 1);
     setTimeout(() => {
@@ -105,11 +145,30 @@ export function VoteArena({ category }: { category: Category }) {
       <CategoryTabs active={category} basePath="/vote" />
 
       <div className="text-center">
-        <h1 className="font-display text-2xl font-bold text-white sm:text-3xl">Who would you rather have?</h1>
-        <p className="mt-1 text-sm text-white/50">
+        <h1 className="font-display text-3xl font-black tracking-tight text-white sm:text-4xl">Who would you rather have?</h1>
+        <p className="mt-2 text-sm text-white/50">
           {voteCount > 0 ? `${voteCount} votes this session — keep going.` : 'Tap a player to vote. Instant, no account needed.'}
         </p>
       </div>
+
+      {consensus && (
+        <div
+          className={clsx(
+            'w-full rounded-xl border px-4 py-2.5 text-center text-sm font-medium',
+            consensus.totalVotes < MIN_VOTES_FOR_CONSENSUS
+              ? 'border-blue/40 bg-blue/10 text-blue'
+              : consensus.agree
+                ? 'border-positive/40 bg-positive/10 text-positive'
+                : 'border-accent/40 bg-accent/10 text-accent-bright'
+          )}
+        >
+          {consensus.totalVotes < MIN_VOTES_FOR_CONSENSUS
+            ? `You're one of the first to vote on this matchup — check back once more votes are in.`
+            : consensus.agree
+              ? `You're with the crowd — ${consensus.percent}% of voters also picked ${consensus.winnerName}.`
+              : `Bold take — only ${consensus.percent}% of voters agree with you on ${consensus.winnerName}.`}
+        </div>
+      )}
 
       {error && (
         <div className="card w-full p-6 text-center text-white/70">
