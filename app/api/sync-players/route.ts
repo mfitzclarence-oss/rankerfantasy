@@ -34,6 +34,7 @@ interface SleeperPlayer {
   team?: string | null;
   status?: string | null; // 'Active', 'Inactive', 'Injured Reserve', etc.
   injury_status?: string | null; // 'Questionable', 'Out', 'IR', 'Suspended', etc.
+  number?: number | null; // jersey number
 }
 
 function isAuthorized(request: Request): boolean {
@@ -54,7 +55,7 @@ export async function GET(request: Request) {
 
   const { data: ourPlayers, error: fetchError } = await supabase
     .from('players')
-    .select('id, full_name, position, team_abbreviation, injury_status')
+    .select('id, full_name, position, team_abbreviation, injury_status, jersey_number')
     .eq('active', true);
 
   if (fetchError || !ourPlayers) {
@@ -107,10 +108,12 @@ export async function GET(request: Request) {
 
     const newTeam = match.team ?? player.team_abbreviation; // keep last known team if Sleeper shows no team (e.g. between signings)
     const newInjury = match.injury_status ?? null;
+    const newJerseyNumber = typeof match.number === 'number' ? match.number : player.jersey_number;
 
     const teamChanged = newTeam !== player.team_abbreviation;
     const injuryChanged = newInjury !== player.injury_status;
-    if (!teamChanged && !injuryChanged) continue;
+    const jerseyChanged = newJerseyNumber !== player.jersey_number;
+    if (!teamChanged && !injuryChanged && !jerseyChanged) continue;
 
     const { error: updateError } = await supabase
       .from('players')
@@ -118,6 +121,7 @@ export async function GET(request: Request) {
         team_abbreviation: newTeam,
         nfl_team: NFL_TEAM_NAMES[newTeam] ?? player.team_abbreviation,
         injury_status: newInjury,
+        jersey_number: newJerseyNumber,
       })
       .eq('id', player.id);
 
