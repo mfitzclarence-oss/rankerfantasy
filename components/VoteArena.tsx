@@ -7,6 +7,7 @@ import { track } from '@/lib/analytics';
 import { notifyTokensChanged } from '@/lib/tokens';
 import { PlayerCard } from '@/components/PlayerCard';
 import { CategoryTabs } from '@/components/CategoryTabs';
+import { poolForCategory } from '@/lib/matchmaking';
 import type { Category, PlayerRow } from '@/lib/database.types';
 
 interface Matchup {
@@ -35,8 +36,26 @@ export function VoteArena({ category }: { category: Category }) {
 
     const pair = pairData as { player_a: string; player_b: string } | null;
 
+    // A newly seeded database can have players before its rating rows/RPC
+    // shortlist are ready. Fall back to the public player pool so voting is
+    // never an empty screen while Supabase finishes seeding.
     if (rpcError || !pair) {
-      setError("Couldn't load a matchup. The player pool for this category may still be seeding.");
+      const { data: fallbackPlayers, error: fallbackError } = await supabase
+        .from('players')
+        .select('*')
+        .eq('fantasy_relevant', true)
+        .eq('active', true)
+        .limit(500);
+
+      const pool = poolForCategory((fallbackPlayers ?? []) as PlayerRow[], category);
+      if (fallbackError || pool.length < 2) {
+        setError("Players aren't available yet. Please try again in a moment.");
+        setLoading(false);
+        return;
+      }
+
+      const shuffled = [...pool].sort(() => Math.random() - 0.5);
+      setMatchup({ a: shuffled[0], b: shuffled[1] });
       setLoading(false);
       return;
     }
@@ -101,12 +120,12 @@ export function VoteArena({ category }: { category: Category }) {
   }
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-8 sm:py-12">
+    <div className="mx-auto flex max-w-4xl flex-col items-center gap-4 px-3 py-5 sm:gap-6 sm:px-4 sm:py-12">
       <CategoryTabs active={category} basePath="/vote" />
 
       <div className="text-center">
         <h1 className="section-title">Who would you rather have?</h1>
-        <p className="mt-1 text-sm text-white/50">
+        <p className="mt-1 text-xs text-white/55 sm:text-sm">
           {voteCount > 0 ? `${voteCount} votes this session — keep going.` : 'Tap a player to vote. Instant, no account needed.'}
         </p>
       </div>

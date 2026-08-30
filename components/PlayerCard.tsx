@@ -27,18 +27,18 @@ export function PlayerCard({ player, rating, rank, onClick, disabled, exiting, s
       style={{ borderTopColor: primary }}
       className={clsx(
         'card group relative flex w-full flex-col items-center overflow-hidden border-t-[3px] text-center transition-transform',
-        size === 'lg' ? 'gap-4 p-6 sm:p-8' : 'gap-2 p-3',
+        size === 'lg' ? 'gap-2 p-3 sm:gap-4 sm:p-8' : 'gap-2 p-3',
         !disabled && 'hover:-translate-y-0.5 hover:border-t-[3px] active:scale-[0.97]',
         exiting === 'left' && 'animate-slide-out-left',
         exiting === 'right' && 'animate-slide-out-right'
       )}
     >
-      <div className={clsx('flex items-center justify-center', size === 'lg' ? 'h-40 w-44 sm:h-48 sm:w-52' : 'h-14 w-16')}>
+      <div className={clsx('flex items-center justify-center', size === 'lg' ? 'h-32 w-36 sm:h-48 sm:w-52' : 'h-14 w-16')}>
         <PlayerJersey name={player.full_name} primary={primary} secondary={secondary} compact={size !== 'lg'} className="h-full w-full" />
       </div>
 
       <div className="min-w-0">
-        <p className={clsx('text-balance font-display font-black uppercase leading-none text-white', size === 'lg' ? 'text-3xl sm:text-4xl' : 'text-base')}>
+        <p className={clsx('text-balance font-display font-black uppercase leading-none text-white', size === 'lg' ? 'text-2xl sm:text-4xl' : 'text-base')}>
           {player.full_name}
         </p>
         <div className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-xs text-white/50">

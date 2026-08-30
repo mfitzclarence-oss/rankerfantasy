@@ -12,7 +12,7 @@ const LINKS = [
 export function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b border-ink-700/80 bg-ink-950/85 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-3 py-2.5 sm:px-6 sm:py-3">
         <Link href="/" className="flex items-center">
           <Image
             src="/logo-wordmark.png"
@@ -20,7 +20,7 @@ export function Nav() {
             width={354}
             height={86}
             priority
-            className="h-7 w-auto sm:h-8"
+            className="h-12 w-auto sm:h-14 lg:h-16"
           />
         </Link>
 
@@ -53,8 +53,8 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
-          <a href="https://www.orderupfantasy.com/" target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-blue">Order Up ↗</a>
-          <Link href="/vote" className="btn-primary !px-4 !py-2 text-sm">Vote</Link>
+          <a href="https://www.orderupfantasy.com/" target="_blank" rel="noopener noreferrer" className="hidden text-xs font-semibold text-blue min-[390px]:block">Order Up ↗</a>
+          <TokenBadge />
         </div>
       </div>
     </header>

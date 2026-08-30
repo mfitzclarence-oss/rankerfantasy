@@ -6,7 +6,7 @@ import { CATEGORIES, CATEGORY_LABEL } from '@/lib/format';
 
 export function CategoryTabs({ active, basePath }: { active: string; basePath: string }) {
   return (
-    <div className="no-scrollbar flex w-full gap-2 overflow-x-auto px-0 sm:flex-wrap">
+    <div className="no-scrollbar -mx-3 flex w-[calc(100%+1.5rem)] gap-2 overflow-x-auto px-3 pb-1 sm:mx-0 sm:w-full sm:flex-wrap sm:px-0">
       {CATEGORIES.map((cat) => {
         const href = cat === 'overall' ? basePath : `${basePath}/${cat}`;
         const isActive = active === cat;
@@ -15,7 +15,7 @@ export function CategoryTabs({ active, basePath }: { active: string; basePath: s
             key={cat}
             href={href as any}
             className={clsx(
-              'shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-colors',
+              'shrink-0 rounded-full border px-4 py-2.5 text-sm font-semibold transition-colors',
               isActive
                 ? 'border-accent bg-accent text-white shadow-glow'
                 : 'border-ink-600 bg-ink-800/60 text-white/60 hover:border-accent/50 hover:text-white'
