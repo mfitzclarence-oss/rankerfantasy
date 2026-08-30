@@ -1,23 +1,17 @@
 import type { Metadata } from 'next';
-import { Inter, Poppins } from 'next/font/google';
+import Image from 'next/image';
+import { Imprima } from 'next/font/google';
 import './globals.css';
 import { Nav } from '@/components/Nav';
 import { BottomNav } from '@/components/BottomNav';
 import { Analytics } from '@/components/Analytics';
 import { LogoWordmark } from '@/components/LogoWordmark';
 
-const inter = Inter({
+const imprima = Imprima({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: '400',
   display: 'swap',
-  variable: '--font-inter',
-});
-
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['700', '800', '900'],
-  display: 'swap',
-  variable: '--font-poppins',
+  variable: '--font-imprima',
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankerfantasy.com';
@@ -48,7 +42,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
+    <html lang="en" className={imprima.variable}>
       <body className="flex min-h-dvh flex-col bg-ink-950 font-sans antialiased">
         <Nav />
         <main className="flex-1 pb-20 md:pb-0">{children}</main>

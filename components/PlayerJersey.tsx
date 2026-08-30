@@ -43,7 +43,7 @@ export function PlayerJersey({
             stroke="rgba(0,0,0,.55)"
             strokeWidth="1.4"
             paintOrder="stroke"
-            fontFamily="var(--font-poppins), Arial, sans-serif"
+            fontFamily="var(--font-imprima), Arial, sans-serif"
             fontSize={fontSize}
             fontWeight="900"
             letterSpacing=".4"

@@ -13,7 +13,7 @@ export function LogoWordmark({ className = 'h-9 w-auto' }: { className?: string 
       role="img"
       aria-label="RankerFantasy"
     >
-      <g fontFamily="var(--font-poppins), Arial, sans-serif" fontWeight={900} letterSpacing="-1.5">
+      <g fontFamily="var(--font-imprima), Arial, sans-serif" fontWeight={900} letterSpacing="-1.5">
         <g transform="skewX(-6)">
           <text x="0" y="48" fontSize="46" fill="#f5f6f8">
             RANKER

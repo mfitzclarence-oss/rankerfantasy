@@ -26,8 +26,8 @@ const config: Config = {
         gold: '#d4af37',
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'Arial', 'sans-serif'],
-        display: ['var(--font-poppins)', 'Arial', 'sans-serif'],
+        sans: ['var(--font-imprima)', 'Arial', 'sans-serif'],
+        display: ['var(--font-imprima)', 'Arial', 'sans-serif'],
       },
       boxShadow: {
         card: '0 20px 50px -32px rgba(0,0,0,0.95)',
