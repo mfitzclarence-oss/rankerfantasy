@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { initials, byeLabel, winPercentageLabel, POSITION_LABEL } from '@/lib/format';
-import { teamColor } from '@/lib/teamColors';
+import { byeLabel, winPercentageLabel, POSITION_LABEL } from '@/lib/format';
 import { PlayerProfileTracker } from '@/components/PlayerProfileTracker';
+import { JerseyAvatar } from '@/components/JerseyAvatar';
 
 export const revalidate = 30;
 
@@ -100,7 +100,6 @@ export default async function PlayerPage({ params }: { params: { slug: string } 
   const data = await getPlayer(params.slug);
   if (!data) notFound();
   const { player, overallRating, posRating, overallRank, positionRank, category, beatenBy, beats } = data;
-  const { primary, secondary } = teamColor(player.team_abbreviation);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -116,17 +115,9 @@ export default async function PlayerPage({ params }: { params: { slug: string } 
       <PlayerProfileTracker playerId={player.id} playerName={player.full_name} position={player.position} />
 
       <div className="card flex flex-col items-center gap-4 p-8 text-center sm:flex-row sm:text-left">
-        <div
-          style={{
-            boxShadow: `0 0 0 3px ${primary}, 0 0 0 5px ${secondary}`,
-            backgroundImage: `linear-gradient(135deg, ${primary}33, ${secondary}33)`,
-          }}
-          className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full bg-ink-700 text-2xl font-bold text-white/70"
-        >
-          {initials(player.full_name)}
-        </div>
+        <JerseyAvatar teamAbbreviation={player.team_abbreviation} jerseyNumber={player.jersey_number} fullName={player.full_name} size="md" />
         <div>
-          <h1 className="font-display text-3xl font-bold text-white">{player.full_name}</h1>
+          <h1 className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl">{player.full_name}</h1>
           <p className="mt-1 text-white/50">
             {player.position} &middot; {player.nfl_team} &middot; {byeLabel(player.bye_week)}
           </p>
