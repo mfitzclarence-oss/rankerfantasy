@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { byeLabel } from '@/lib/format';
-import { JerseyAvatar } from '@/components/JerseyAvatar';
 
 export interface RankingRow {
   rank: number;
@@ -40,19 +39,11 @@ export function RankingsTable({ rows, showSeedComparison = true }: { rows: Ranki
           >
             <span className="font-display text-base font-bold text-white/50 sm:text-lg">{row.rank}</span>
 
-            <div className="flex min-w-0 items-center gap-3">
-              <JerseyAvatar
-                teamAbbreviation={row.team_abbreviation}
-                jerseyNumber={row.jersey_number}
-                fullName={row.full_name}
-                size="xs"
-              />
-              <div className="min-w-0">
-                <p className="truncate font-semibold text-white">{row.full_name}</p>
-                <p className="text-xs text-white/40">
-                  {row.position} &middot; {row.team_abbreviation} &middot; {byeLabel(row.bye_week)}
-                </p>
-              </div>
+            <div className="min-w-0">
+              <p className="truncate font-display text-lg font-bold text-white sm:text-xl">{row.full_name}</p>
+              <p className="text-xs text-white/40">
+                {row.position} &middot; {row.team_abbreviation} &middot; {byeLabel(row.bye_week)}
+              </p>
             </div>
 
             <span className="hidden text-right font-display font-bold text-accent-bright sm:block">
