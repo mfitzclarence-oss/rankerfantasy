@@ -26,29 +26,12 @@ export default function SignInPage() {
     else setSent(true);
   }
 
-  async function signInWithGoogle() {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
-    });
-  }
-
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-4 py-16">
       <h1 className="text-center font-display text-2xl font-bold text-white">Sign in to RankUp Fantasy</h1>
       <p className="mt-1 text-center text-sm text-white/50">
         Voting and rankings don&apos;t require an account. Existing members can sign in to view their actions and saved players.
       </p>
-
-      <button onClick={signInWithGoogle} className="btn-secondary mt-8 w-full">
-        Continue with Google
-      </button>
-
-      <div className="my-6 flex items-center gap-3 text-xs text-white/30">
-        <div className="h-px flex-1 bg-ink-700" />
-        or
-        <div className="h-px flex-1 bg-ink-700" />
-      </div>
 
       {sent ? (
         <p className="text-center text-sm text-positive">Check your email for a sign-in link.</p>
