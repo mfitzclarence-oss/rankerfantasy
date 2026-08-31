@@ -13,7 +13,7 @@ const imprima = Imprima({
   variable: '--font-imprima',
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankupfantasy.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.rankupfantasy.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   },
   description:
     'Who would you rather draft? Vote head-to-head on NFL fantasy football players and build live, crowd-sourced rankings for the 2026 season.',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: 'RankUp Fantasy — Vote. Rank. Rise.',
     description:

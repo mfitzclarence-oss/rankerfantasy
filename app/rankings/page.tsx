@@ -25,7 +25,7 @@ export default async function RankingsPage({ searchParams }: { searchParams: { l
       '@type': 'ListItem',
       position: r.rank,
       name: r.full_name,
-      url: `${(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankupfantasy.com').replace(/\/$/, '')}/players/${r.slug}`,
+      url: `${(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.rankupfantasy.com').replace(/\/$/, '')}/players/${r.slug}`,
     })),
   };
 
