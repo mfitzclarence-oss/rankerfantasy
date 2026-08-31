@@ -29,11 +29,11 @@ export function TokenBadge({ className = '' }: { className?: string }) {
 
   return (
     <span
-      title={progress.unlocked ? 'Rankings and Trades unlocked' : `${progress.qualified_votes}/${UNLOCK_TOTAL} required category votes complete`}
+      title={progress.unlocked ? 'Guided run complete — keep voting anywhere' : `${progress.qualified_votes}/${UNLOCK_TOTAL} guided position votes complete`}
       className={`pill !gap-2 !border-accent/35 !bg-accent/10 !px-3 !py-1.5 ${className}`}
     >
       <span aria-hidden>{progress.unlocked ? '✓' : '↗'}</span>
-      {progress.unlocked ? 'Rankings unlocked' : `Voting plan ${progress.qualified_votes}/${UNLOCK_TOTAL}`}
+      {progress.unlocked ? '12 complete — keep voting' : `Guided voting ${progress.qualified_votes}/${UNLOCK_TOTAL}`}
     </span>
   );
 }

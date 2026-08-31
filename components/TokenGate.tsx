@@ -9,6 +9,7 @@ import {
   TOKENS_CHANGED_EVENT,
   UNLOCK_STEPS,
   UNLOCK_TOTAL,
+  nextRequiredCategory,
   votesForCategory,
   type UnlockProgress,
 } from '@/lib/tokens';
@@ -51,7 +52,8 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  const nextStep = UNLOCK_STEPS.find((step) => votesForCategory(progress, step.category) < step.required);
+  const nextCategory = nextRequiredCategory(progress);
+  const nextStep = UNLOCK_STEPS.find((step) => step.category === nextCategory);
 
   return (
     <div className="relative">
@@ -62,16 +64,16 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
       <div className="absolute inset-0 flex items-start justify-center pt-10 sm:pt-16">
         <div className="card mx-4 max-w-md p-5 text-center shadow-glow sm:p-6">
           <span className="text-2xl" aria-hidden>🔒</span>
-          <h2 className="mt-2 font-display text-xl font-bold text-white">Complete the voting plan</h2>
+          <h2 className="mt-2 font-display text-xl font-bold text-white">Complete 12 guided votes</h2>
           <p className="mt-2 text-sm text-white/60">
-            Vote across every position to unlock Rankings and Trade Vote. Overall votes alone won&apos;t count for the full plan.
+            We&apos;ll take you through two matchups at every position. Rankings and Trade Vote unlock after the twelfth vote.
           </p>
 
-          <div className="mt-4 grid grid-cols-4 gap-2">
+          <div className="mt-4 grid grid-cols-3 gap-2">
             {UNLOCK_STEPS.map((step) => {
               const votes = Math.min(votesForCategory(progress, step.category), step.required);
               const complete = votes >= step.required;
-              const href = step.category === 'overall' ? '/vote' : `/vote/${step.category}`;
+              const href = `/vote/${step.category}`;
               return (
                 <Link
                   key={step.category}
@@ -98,8 +100,8 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
           </div>
 
           {nextStep && (
-            <Link href={(nextStep.category === 'overall' ? '/vote' : `/vote/${nextStep.category}`) as any} className="btn-primary mt-5 w-full">
-              Vote next: {nextStep.label}
+            <Link href={`/vote/${nextStep.category}` as any} className="btn-primary mt-5 w-full">
+              Continue guided voting: {nextStep.label}
             </Link>
           )}
           {error && <p className="mt-2 text-xs text-negative">{error}</p>}

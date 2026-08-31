@@ -1,11 +1,10 @@
 export const UNLOCK_REQUIREMENTS = {
-  overall: 2,
   qb: 2,
   rb: 2,
   wr: 2,
-  te: 1,
-  k: 1,
-  dst: 1,
+  te: 2,
+  k: 2,
+  dst: 2,
 } as const;
 
 export const UNLOCK_TOTAL = Object.values(UNLOCK_REQUIREMENTS).reduce((total, required) => total + required, 0);
@@ -37,17 +36,21 @@ export const DEFAULT_UNLOCK_PROGRESS: UnlockProgress = {
 };
 
 export const UNLOCK_STEPS: { category: UnlockCategory; label: string; required: number }[] = [
-  { category: 'overall', label: 'Overall', required: 2 },
   { category: 'qb', label: 'QB', required: 2 },
   { category: 'rb', label: 'RB', required: 2 },
   { category: 'wr', label: 'WR', required: 2 },
-  { category: 'te', label: 'TE', required: 1 },
-  { category: 'k', label: 'K', required: 1 },
-  { category: 'dst', label: 'D/ST', required: 1 },
+  { category: 'te', label: 'TE', required: 2 },
+  { category: 'k', label: 'K', required: 2 },
+  { category: 'dst', label: 'D/ST', required: 2 },
 ];
 
 export function votesForCategory(progress: UnlockProgress, category: UnlockCategory): number {
   return progress[`${category}_votes`];
+}
+
+/** The next position in the 12-vote guided run, or null once it is complete. */
+export function nextRequiredCategory(progress: UnlockProgress): UnlockCategory | null {
+  return UNLOCK_STEPS.find((step) => votesForCategory(progress, step.category) < step.required)?.category ?? null;
 }
 
 /** Custom event fired whenever this session's unlock progress changes after a vote. */

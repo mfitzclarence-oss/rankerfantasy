@@ -1,11 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import { createClient } from '@/lib/supabase/client';
 import { getSessionId, recordSeenPair } from '@/lib/session';
 import { track } from '@/lib/analytics';
-import { notifyTokensChanged } from '@/lib/tokens';
+import { nextRequiredCategory, notifyTokensChanged, type UnlockProgress } from '@/lib/tokens';
 import { PlayerCard } from '@/components/PlayerCard';
 import { CategoryTabs } from '@/components/CategoryTabs';
 import { TokenBadge } from '@/components/TokenBadge';
@@ -30,6 +31,7 @@ interface Consensus {
 const MIN_VOTES_FOR_CONSENSUS = 3;
 
 export function VoteArena({ category }: { category: Category }) {
+  const router = useRouter();
   const [supabase] = useState(createClient);
   const [matchup, setMatchup] = useState<Matchup | null>(null);
   const [loading, setLoading] = useState(true);
@@ -97,7 +99,25 @@ export function VoteArena({ category }: { category: Category }) {
     setMatchup(null);
     setConsensus(null);
     track('vote_category_selected', { category });
-    loadMatchup();
+    let cancelled = false;
+
+    async function startGuidedVote() {
+      const sid = getSessionId();
+      setSessionId(sid);
+      const { data } = await supabase.rpc('get_unlock_progress', { p_session_id: sid }).single();
+      if (cancelled) return;
+
+      const nextCategory = data ? nextRequiredCategory(data as UnlockProgress) : null;
+      if (nextCategory && nextCategory !== category) {
+        router.replace(`/vote/${nextCategory}` as any);
+        return;
+      }
+
+      loadMatchup();
+    }
+
+    startGuidedVote();
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
 
@@ -152,11 +172,20 @@ export function VoteArena({ category }: { category: Category }) {
     notifyTokensChanged();
     loadConsensus(winner, loser);
 
+    const { data: progressData } = await supabase
+      .rpc('get_unlock_progress', { p_session_id: sid })
+      .single();
+    const nextCategory = progressData ? nextRequiredCategory(progressData as UnlockProgress) : null;
+
     setVoteCount((n) => n + 1);
     setTimeout(() => {
       setExiting(null);
-      setLoading(true);
-      loadMatchup();
+      if (nextCategory && nextCategory !== category) {
+        router.push(`/vote/${nextCategory}` as any);
+      } else {
+        setLoading(true);
+        loadMatchup();
+      }
     }, 260);
   }
 
@@ -167,7 +196,7 @@ export function VoteArena({ category }: { category: Category }) {
       <div className="text-center">
         <h1 className="section-title">Who would you rather have?</h1>
         <p className="mt-1 text-xs text-white/55 sm:text-sm">
-          {voteCount > 0 ? `${voteCount} votes this session — keep going.` : 'Tap a player to vote. Instant, no account needed.'}
+          {voteCount > 0 ? `${voteCount} votes this session — keep going.` : 'Your first 12 votes guide you through every position.'}
         </p>
         <TokenBadge className="mt-3" />
       </div>
