@@ -22,29 +22,41 @@ export function BrandWordmark({ className, compact = false }: BrandWordmarkProps
         )}
       >
         <span className="text-white">Rank</span>
-        <span className="relative ml-[0.04em] text-blue">
-          Up
+        <span className="ml-[0.04em] inline-flex items-baseline text-blue">
           <svg
             aria-hidden="true"
-            viewBox="0 0 18 10"
-            className="absolute -right-[0.34em] -top-[0.08em] h-[0.34em] w-[0.58em]"
+            viewBox="0 0 30 36"
+            className="mr-[-0.06em] h-[0.92em] w-[0.68em] overflow-visible"
             fill="none"
           >
-            <path d="M2 8 9 2l7 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M8 4v21c0 9 16 9 16 0V12"
+              stroke="currentColor"
+              strokeWidth="3.4"
+              strokeLinecap="round"
+            />
+            <path
+              d="m3.5 9 4.5-6 4.5 6"
+              stroke="currentColor"
+              strokeWidth="3.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
+          <span>p</span>
         </span>
       </span>
-      <span className="mt-1 flex items-center gap-2 px-[0.12em]">
-        <span className="h-px flex-1 bg-gradient-to-r from-transparent to-blue/70" />
+      <span className="mt-0.5 flex items-center gap-2 px-[0.12em]">
+        <span className="h-px flex-1 bg-blue/80" />
         <span
           className={clsx(
-            'font-sans font-bold uppercase text-white/60',
+            'font-sans font-bold uppercase text-white/55',
             compact ? 'text-[0.38rem] tracking-[0.46em]' : 'text-[0.46rem] tracking-[0.58em] sm:text-[0.5rem]'
           )}
         >
           Fantasy
         </span>
-        <span className="h-px flex-1 bg-gradient-to-l from-transparent to-blue/70" />
+        <span className="h-px flex-1 bg-blue/80" />
       </span>
     </span>
   );

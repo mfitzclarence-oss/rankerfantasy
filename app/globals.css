@@ -24,9 +24,8 @@ h1, h2, h3, h4 {
 }
 
 .brand-wordmark-main {
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 900;
-  font-stretch: condensed;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-weight: 500;
 }
 
 ::selection {
