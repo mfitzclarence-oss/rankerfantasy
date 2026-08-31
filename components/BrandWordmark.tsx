@@ -3,17 +3,26 @@ import clsx from 'clsx';
 type BrandWordmarkProps = {
   className?: string;
   compact?: boolean;
+  prefix?: 'Rank' | 'Style';
+  descriptor?: string;
 };
 
 /**
  * RankUp Fantasy wordmark. The clean typographic lockup deliberately mirrors
  * the OrderUp Fantasy family without relying on a baked-in image background.
  */
-export function BrandWordmark({ className, compact = false }: BrandWordmarkProps) {
+export function BrandWordmark({
+  className,
+  compact = false,
+  prefix = 'Rank',
+  descriptor = 'Fantasy',
+}: BrandWordmarkProps) {
+  const label = `${prefix}Up ${descriptor}`;
+
   return (
     <span
       className={clsx('inline-flex select-none flex-col items-stretch leading-none', className)}
-      aria-label="RankUp Fantasy"
+      aria-label={label}
     >
       <span
         className={clsx(
@@ -21,8 +30,8 @@ export function BrandWordmark({ className, compact = false }: BrandWordmarkProps
           compact ? 'text-[1.55rem]' : 'text-[2rem] sm:text-[2.35rem]'
         )}
       >
-        <span className="text-white">Rank</span>
-        <span className="ml-[0.04em] inline-flex items-baseline text-blue">
+        <span className="text-white">{prefix}</span>
+        <span className="ml-[0.04em] inline-flex items-baseline text-[#087cff]">
           <svg
             aria-hidden="true"
             viewBox="0 0 30 36"
@@ -30,15 +39,15 @@ export function BrandWordmark({ className, compact = false }: BrandWordmarkProps
             fill="none"
           >
             <path
-              d="M8 4v21c0 9 16 9 16 0V12"
+              d="M6 12v13c0 9 16 9 16 0V4"
               stroke="currentColor"
-              strokeWidth="3.4"
+              strokeWidth="4"
               strokeLinecap="round"
             />
             <path
-              d="m3.5 9 4.5-6 4.5 6"
+              d="m17.5 9 4.5-6 4.5 6"
               stroke="currentColor"
-              strokeWidth="3.4"
+              strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
@@ -47,16 +56,16 @@ export function BrandWordmark({ className, compact = false }: BrandWordmarkProps
         </span>
       </span>
       <span className="mt-0.5 flex items-center gap-2 px-[0.12em]">
-        <span className="h-px flex-1 bg-blue/80" />
+        <span className="h-px flex-1 bg-[#087cff]" />
         <span
           className={clsx(
             'font-sans font-bold uppercase text-white/55',
             compact ? 'text-[0.38rem] tracking-[0.46em]' : 'text-[0.46rem] tracking-[0.58em] sm:text-[0.5rem]'
           )}
         >
-          Fantasy
+          {descriptor}
         </span>
-        <span className="h-px flex-1 bg-blue/80" />
+        <span className="h-px flex-1 bg-[#087cff]" />
       </span>
     </span>
   );
