@@ -35,13 +35,13 @@ export function BrandWordmark({
           <svg
             aria-hidden="true"
             viewBox="0 0 30 36"
-            className="mr-[-0.1em] h-[1.22em] w-[0.94em] overflow-visible"
+            className="mr-[-0.1em] h-[1.22em] w-[0.98em] overflow-visible"
             fill="none"
           >
             <path
-              d="M6 12v13c0 9 16 9 16 0V4"
+              d="M6 5v20c0 9 16 9 16 0V4"
               stroke="currentColor"
-              strokeWidth="4"
+              strokeWidth="4.4"
               strokeLinecap="round"
             />
             <path
