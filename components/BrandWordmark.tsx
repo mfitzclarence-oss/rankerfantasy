@@ -26,32 +26,23 @@ export function BrandWordmark({
     >
       <span
         className={clsx(
-          'brand-wordmark-main whitespace-nowrap tracking-[-0.07em]',
+          'brand-wordmark-main whitespace-nowrap tracking-[-0.055em]',
           compact ? 'text-[1.55rem]' : 'text-[2rem] sm:text-[2.35rem]'
         )}
+        aria-hidden="true"
       >
         <span className="text-white">{prefix}</span>
-        <span className="ml-[0.04em] inline-flex items-baseline text-[#087cff]">
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 30 36"
-            className="mr-[-0.1em] h-[1.22em] w-[0.98em] overflow-visible"
-            fill="none"
-          >
-            <path
-              d="M6 5v20c0 9 16 9 16 0V4"
-              stroke="currentColor"
-              strokeWidth="4.4"
-              strokeLinecap="round"
-            />
-            <path
-              d="m17.5 9 4.5-6 4.5 6"
-              stroke="currentColor"
-              strokeWidth="4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+        <span className="ml-[0.035em] text-[#2783ff]">
+          <span className="relative inline-block">
+            U
+            <svg
+              viewBox="0 0 12 20"
+              className="pointer-events-none absolute -right-[0.01em] -top-[0.28em] h-[0.63em] w-[0.32em] overflow-visible"
+              fill="none"
+            >
+              <path d="M6 19V3M1.5 7.5 6 2l4.5 5.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
           <span>p</span>
         </span>
       </span>

@@ -25,7 +25,7 @@ h1, h2, h3, h4 {
 
 .brand-wordmark-main {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 ::selection {
@@ -54,32 +54,24 @@ h1, h2, h3, h4 {
     @apply inline-flex items-center rounded-full bg-ink-800 border border-ink-600 px-2.5 py-0.5 text-xs font-medium text-white/70;
   }
   .page-title {
-    @apply relative inline-block text-balance font-display text-3xl font-black uppercase leading-[0.95] tracking-[-0.035em] text-white sm:text-5xl;
+    @apply relative block text-center text-balance font-display text-3xl font-black uppercase leading-[0.95] tracking-[-0.035em] text-white sm:text-5xl;
   }
   .page-title::after {
     content: '';
     display: block;
     width: 4rem;
     height: 0.3rem;
-    margin-top: 0.75rem;
+    margin: 0.75rem auto 0;
     border-radius: 999px;
     background: #2f7df4;
   }
   .section-title {
-    @apply font-display text-[1.65rem] font-black uppercase leading-[1.05] tracking-[-0.035em] text-white sm:text-3xl;
+    @apply text-center font-display text-[1.65rem] font-black uppercase leading-[1.05] tracking-[-0.035em] text-white sm:text-3xl;
   }
 }
 
 @media (max-width: 767px) {
   button, a { -webkit-tap-highlight-color: transparent; }
   .card { border-radius: 0.9rem; }
-  .page-title {
-    display: block;
-    text-align: center;
-  }
-  .page-title::after {
-    margin-left: auto;
-    margin-right: auto;
-  }
   .section-title { text-align: center; }
 }

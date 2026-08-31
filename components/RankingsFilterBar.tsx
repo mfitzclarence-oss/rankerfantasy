@@ -21,7 +21,7 @@ export function RankingsFilterBar() {
   }
 
   return (
-    <div className="flex gap-2">
+    <div className="flex justify-center gap-2">
       {FILTERS.map((f) => (
         <button
           key={f.key}

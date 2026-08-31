@@ -5,10 +5,10 @@ import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
 const ITEMS = [
+  { href: '/', label: 'Home', icon: HomeIcon },
   { href: '/vote', label: 'Vote', icon: VoteIcon },
   { href: '/rankings', label: 'Rankings', icon: RankIcon },
   { href: '/trades', label: 'Trades', icon: TradeIcon },
-  { href: '/profile', label: 'Profile', icon: ProfileIcon },
 ];
 
 export function BottomNav() {
@@ -18,7 +18,7 @@ export function BottomNav() {
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-ink-700 bg-ink-950/95 backdrop-blur md:hidden">
       <div className="mx-auto flex max-w-6xl items-stretch justify-around px-2 pb-[env(safe-area-inset-bottom)]">
         {ITEMS.map((item) => {
-          const active = pathname?.startsWith(item.href);
+          const active = item.href === '/' ? pathname === '/' : pathname?.startsWith(item.href);
           const Icon = item.icon;
           return (
             <Link
@@ -36,6 +36,14 @@ export function BottomNav() {
         })}
       </div>
     </nav>
+  );
+}
+
+function HomeIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.4 : 1.8}>
+      <path d="m4 10 8-6 8 6v9a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-9Z" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
@@ -58,14 +66,6 @@ function TradeIcon({ active }: { active: boolean }) {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.4 : 1.8}>
       <path d="M7 8h13l-3-3M17 16H4l3 3" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-function ProfileIcon({ active }: { active: boolean }) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.4 : 1.8}>
-      <circle cx="12" cy="8" r="3.4" />
-      <path d="M5 20c1.2-3.6 4-5.4 7-5.4S17.8 16.4 19 20" strokeLinecap="round" />
     </svg>
   );
 }

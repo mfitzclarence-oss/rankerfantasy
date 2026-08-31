@@ -17,16 +17,16 @@ export default async function HomePage() {
     <div>
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_700px_560px_at_82%_28%,rgba(47,125,244,0.13),transparent_68%)]" />
-        <div className="relative mx-auto max-w-7xl px-4 pb-6 pt-10 sm:px-6 sm:pb-8 sm:pt-24">
-          <div className="mx-auto max-w-4xl text-center sm:mx-0 sm:text-left">
-            <p className="mb-5 flex items-center justify-center gap-3 text-xs font-extrabold uppercase tracking-[0.12em] text-blue before:h-0.5 before:w-7 before:bg-accent sm:justify-start">Community-powered fantasy rankings</p>
-            <h1 className="max-w-4xl font-display text-[2.8rem] font-black leading-[0.98] tracking-[-0.055em] text-white sm:text-7xl">
+        <div className="relative mx-auto max-w-7xl px-4 pb-6 pt-10 sm:px-6 sm:pb-8 sm:pt-20">
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="mb-5 flex items-center justify-center gap-3 text-xs font-extrabold uppercase tracking-[0.12em] text-blue before:h-0.5 before:w-7 before:bg-accent after:h-0.5 after:w-7 after:bg-accent">Community-powered fantasy rankings</p>
+            <h1 className="mx-auto max-w-4xl text-balance font-display text-[2.8rem] font-black leading-[0.98] tracking-[-0.055em] text-white sm:text-7xl">
               The rankings start <span className="block text-blue">with your vote.</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-balance text-base leading-relaxed text-white/65 sm:mx-0 sm:text-xl">
+            <p className="mx-auto mt-6 max-w-2xl text-balance text-base leading-relaxed text-white/65 sm:text-xl">
               <strong className="text-white">Pick who you would rather draft.</strong> Every head-to-head choice builds live rankings shaped by fantasy players—not experts.
           </p>
-          <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
+          <div className="mt-8 flex flex-col justify-center gap-3 min-[420px]:flex-row">
             <Link href="/vote" className="btn-primary">Start Voting</Link>
             <Link href="/rankings" className="btn-secondary">View Rankings</Link>
           </div>
@@ -40,14 +40,11 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-        <div className="mb-6 flex items-end justify-between">
-          <div className="w-full text-center sm:w-auto sm:text-left">
+        <div className="mb-6 text-center">
+          <div>
             <h2 className="font-display text-3xl font-black tracking-tight text-white sm:text-4xl">Live Community Rankings</h2>
             <p className="mt-1.5 text-sm text-white/50">Updated with every vote. Overall, skill positions only.</p>
           </div>
-          <Link href="/rankings" className="hidden text-sm font-semibold text-accent-bright hover:underline sm:block">
-            View full rankings →
-          </Link>
         </div>
 
         <div className="card divide-y divide-ink-700 overflow-hidden">
@@ -72,14 +69,14 @@ export default async function HomePage() {
             </div>
           ))}
         </div>
-        <Link href="/rankings" className="mt-4 block text-center text-sm font-semibold text-accent-bright sm:hidden">
+        <Link href="/rankings" className="mt-5 block text-center text-sm font-semibold text-accent-bright hover:underline">
           View full rankings →
         </Link>
       </section>
 
       <section className="mx-3 rounded-[1.75rem] border border-ink-700 bg-ink-900/55 py-16 sm:mx-5">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="mb-6 text-center font-display text-3xl font-black tracking-tight text-white sm:text-left sm:text-4xl">Vote by Position</h2>
+          <h2 className="mb-6 text-center font-display text-3xl font-black tracking-tight text-white sm:text-4xl">Vote by Position</h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
             {[
               ['QB', 'qb'], ['RB', 'rb'], ['WR', 'wr'], ['TE', 'te'], ['K', 'k'], ['D/ST', 'dst'],
@@ -103,14 +100,14 @@ export default async function HomePage() {
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <div className="card grid grid-cols-1 items-center gap-8 overflow-hidden p-6 sm:grid-cols-2 sm:p-12">
-          <div className="text-center sm:text-left">
+          <div className="text-center">
             <span className="pill mb-4">New: Trade Vote</span>
             <h2 className="font-display text-3xl font-black tracking-tight text-white sm:text-4xl">Let the community judge your trade.</h2>
             <p className="mt-3 text-white/60">
               Submit any trade — 1-for-1 up to larger multi-player deals — and get a real-time read from other
               fantasy managers: Team A Wins, Fair Trade, or Team B Wins.
             </p>
-            <div className="mt-6 flex flex-col gap-3 min-[420px]:flex-row">
+            <div className="mt-6 flex flex-col justify-center gap-3 min-[420px]:flex-row">
               <Link href="/trades/new" className="btn-primary">Submit a Trade</Link>
               <Link href="/trades" className="btn-secondary">Browse Trades</Link>
             </div>

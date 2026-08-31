@@ -11,7 +11,7 @@ export default function NewTradePage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       <h1 className="page-title">Submit a Trade</h1>
-      <p className="mt-1 text-white/50">Add players to each side, set your league context, and see what the community thinks.</p>
+      <p className="mx-auto mt-3 max-w-xl text-center text-white/50">Add players to each side, set your league context, and see what the community thinks.</p>
       <TokenGate>
         <div className="mt-6">
           <TradeBuilder />

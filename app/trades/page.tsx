@@ -23,16 +23,16 @@ export default async function TradesPage({ searchParams }: { searchParams: { sor
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
+      <div className="flex flex-col items-center gap-5 text-center">
+        <div className="max-w-xl">
           <h1 className="page-title">Trade Vote</h1>
-          <p className="mt-1 text-white/50">The community judges every trade.</p>
+          <p className="mt-3 text-white/50">The community judges every trade.</p>
         </div>
         <Link href="/trades/new" className="btn-primary !px-5 !py-2.5 text-sm">Submit a Trade</Link>
       </div>
 
       <TokenGate>
-        <div className="mt-6 flex gap-2">
+        <div className="mt-7 flex flex-wrap justify-center gap-2">
           {SORTS.map((s) => (
             <Link
               key={s.key}

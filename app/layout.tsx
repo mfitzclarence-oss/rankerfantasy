@@ -59,8 +59,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 function Footer() {
   return (
     <footer className="border-t border-ink-800 py-10 pb-24 md:pb-10">
-      <div className="mx-auto grid max-w-6xl gap-8 px-5 text-sm text-white/45 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
-        <div>
+      <div className="mx-auto grid max-w-6xl gap-8 px-5 text-center text-sm text-white/45 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="flex flex-col items-center">
           <BrandWordmark />
           <p className="mt-3 max-w-sm">Community rankings built by fantasy players, not experts.</p>
           <BrandWordmark
@@ -87,7 +87,7 @@ function Footer() {
           </div>
         </div>
       </div>
-      <p className="mx-auto mt-8 max-w-6xl border-t border-ink-800 px-5 pt-5 text-xs text-white/25 sm:px-6">
+      <p className="mx-auto mt-8 max-w-6xl border-t border-ink-800 px-5 pt-5 text-center text-xs text-white/25 sm:px-6">
         &copy; {new Date().getFullYear()} StyleUp Fantasy Apps. RankUp Fantasy and Order Up Fantasy are StyleUp Fantasy Apps products.
       </p>
     </footer>

@@ -25,7 +25,7 @@ export default async function TradeDetailPage({ params }: { params: { id: string
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
       <h1 className="page-title">Trade Detail</h1>
-      <p className="mt-1 text-sm text-white/50">Submitted {new Date(trade.created_at).toLocaleDateString()}</p>
+      <p className="mt-3 text-center text-sm text-white/50">Submitted {new Date(trade.created_at).toLocaleDateString()}</p>
       <TokenGate>
         <div className="mt-6">
           <TradeCard trade={trade} linkToDetail={false} />
