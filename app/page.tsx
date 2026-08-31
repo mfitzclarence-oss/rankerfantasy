@@ -17,20 +17,20 @@ export default async function HomePage() {
     <div>
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_700px_560px_at_82%_28%,rgba(47,125,244,0.13),transparent_68%)]" />
-        <div className="relative mx-auto max-w-7xl px-4 pb-8 pt-16 sm:px-6 sm:pt-24">
-          <div className="max-w-4xl text-left">
-            <p className="mb-5 flex items-center gap-3 text-xs font-extrabold uppercase tracking-[0.12em] text-blue before:h-0.5 before:w-7 before:bg-accent">Community-powered fantasy rankings</p>
+        <div className="relative mx-auto max-w-7xl px-4 pb-6 pt-10 sm:px-6 sm:pb-8 sm:pt-24">
+          <div className="mx-auto max-w-4xl text-center sm:mx-0 sm:text-left">
+            <p className="mb-5 flex items-center justify-center gap-3 text-xs font-extrabold uppercase tracking-[0.12em] text-blue before:h-0.5 before:w-7 before:bg-accent sm:justify-start">Community-powered fantasy rankings</p>
             <h1 className="max-w-4xl font-display text-[2.8rem] font-black leading-[0.98] tracking-[-0.055em] text-white sm:text-7xl">
               The rankings start <span className="block text-blue">with your vote.</span>
             </h1>
-            <p className="mt-6 max-w-2xl text-balance text-base leading-relaxed text-white/65 sm:text-xl">
+            <p className="mx-auto mt-6 max-w-2xl text-balance text-base leading-relaxed text-white/65 sm:mx-0 sm:text-xl">
               <strong className="text-white">Pick who you would rather draft.</strong> Every head-to-head choice builds live rankings shaped by fantasy players—not experts.
           </p>
           <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
             <Link href="/vote" className="btn-primary">Start Voting</Link>
             <Link href="/rankings" className="btn-secondary">View Rankings</Link>
           </div>
-          <p className="mt-5 text-xs font-semibold text-white/45">No account needed <span className="mx-2 text-blue">•</span> One tap per vote <span className="mx-2 text-blue">•</span> Rankings update live</p>
+          <p className="mt-5 text-xs font-semibold leading-relaxed text-white/45">No account needed <span className="mx-2 text-blue">•</span> One tap per vote <span className="mx-2 text-blue">•</span> Rankings update live</p>
           </div>
         </div>
 
@@ -39,9 +39,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <div className="mb-6 flex items-end justify-between">
-          <div>
+          <div className="w-full text-center sm:w-auto sm:text-left">
             <h2 className="font-display text-3xl font-black tracking-tight text-white sm:text-4xl">Live Community Rankings</h2>
             <p className="mt-1.5 text-sm text-white/50">Updated with every vote. Overall, skill positions only.</p>
           </div>
@@ -79,7 +79,7 @@ export default async function HomePage() {
 
       <section className="mx-3 rounded-[1.75rem] border border-ink-700 bg-ink-900/55 py-16 sm:mx-5">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="mb-6 font-display text-3xl font-black tracking-tight text-white sm:text-4xl">Vote by Position</h2>
+          <h2 className="mb-6 text-center font-display text-3xl font-black tracking-tight text-white sm:text-left sm:text-4xl">Vote by Position</h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
             {[
               ['QB', 'qb'], ['RB', 'rb'], ['WR', 'wr'], ['TE', 'te'], ['K', 'k'], ['D/ST', 'dst'],
@@ -102,15 +102,15 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <div className="card grid grid-cols-1 items-center gap-8 overflow-hidden p-8 sm:grid-cols-2 sm:p-12">
-          <div>
+        <div className="card grid grid-cols-1 items-center gap-8 overflow-hidden p-6 sm:grid-cols-2 sm:p-12">
+          <div className="text-center sm:text-left">
             <span className="pill mb-4">New: Trade Vote</span>
-            <h2 className="font-display text-4xl font-black tracking-tight text-white">Let the community judge your trade.</h2>
+            <h2 className="font-display text-3xl font-black tracking-tight text-white sm:text-4xl">Let the community judge your trade.</h2>
             <p className="mt-3 text-white/60">
               Submit any trade — 1-for-1 up to larger multi-player deals — and get a real-time read from other
               fantasy managers: Team A Wins, Fair Trade, or Team B Wins.
             </p>
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex flex-col gap-3 min-[420px]:flex-row">
               <Link href="/trades/new" className="btn-primary">Submit a Trade</Link>
               <Link href="/trades" className="btn-secondary">Browse Trades</Link>
             </div>
@@ -119,28 +119,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-t border-ink-800 py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="mb-8 text-center font-display text-3xl font-black tracking-tight text-white sm:text-4xl">How It Works</h2>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-            <HowStep n={1} title="Vote head-to-head" body="Two players. One tap. Who would you rather have in fantasy this season?" />
-            <HowStep n={2} title="Ratings update instantly" body="Every vote feeds an Elo rating system — beating a favorite is worth more than beating a scrub." />
-            <HowStep n={3} title="Rankings emerge from the crowd" body="No experts, no editorial bias — just thousands of real fantasy managers' preferences, aggregated live." />
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-function HowStep({ n, title, body }: { n: number; title: string; body: string }) {
-  return (
-    <div className="card p-6">
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/15 font-display font-bold text-accent-bright">
-        {n}
-      </span>
-      <h3 className="mt-4 font-display text-lg font-bold text-white">{title}</h3>
-      <p className="mt-2 text-sm text-white/55">{body}</p>
     </div>
   );
 }

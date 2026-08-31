@@ -1,53 +1,44 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { getSessionId } from '@/lib/session';
-import { DEFAULT_TOKEN_STATUS, TOKENS_CHANGED_EVENT, UNLOCK_COST, notifyTokensChanged, type TokenStatus } from '@/lib/tokens';
+import {
+  DEFAULT_UNLOCK_PROGRESS,
+  TOKENS_CHANGED_EVENT,
+  UNLOCK_STEPS,
+  UNLOCK_TOTAL,
+  votesForCategory,
+  type UnlockProgress,
+} from '@/lib/tokens';
 
 /**
  * Soft paywall: `children` is server-rendered content (so it's present in
  * the raw HTML for SEO/crawlers/link previews — see the note in the README
  * about the SEO tradeoff), visually blurred + overlaid with an unlock prompt
- * for real visitors who haven't earned/spent enough tokens yet.
+ * for visitors who have not completed the required category voting plan.
  */
 export function TokenGate({ children }: { children: React.ReactNode }) {
   const [supabase] = useState(createClient);
-  const [status, setStatus] = useState<TokenStatus>(DEFAULT_TOKEN_STATUS);
+  const [progress, setProgress] = useState<UnlockProgress>(DEFAULT_UNLOCK_PROGRESS);
   const [loaded, setLoaded] = useState(false);
-  const [unlocking, setUnlocking] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function refresh() {
+  const refresh = useCallback(async () => {
     const sid = getSessionId();
     if (!sid) return;
-    const { data, error: rpcError } = await supabase.rpc('get_token_status', { p_session_id: sid }).single();
-    if (data) setStatus(data as TokenStatus);
-    if (rpcError) setError('Could not check your token balance. Please retry.');
+    const { data, error: rpcError } = await supabase.rpc('get_unlock_progress', { p_session_id: sid }).single();
+    if (data) setProgress(data as UnlockProgress);
+    if (rpcError) setError('Could not check your voting progress. Please retry.');
     setLoaded(true);
-  }
+  }, [supabase]);
 
   useEffect(() => {
     refresh();
     window.addEventListener(TOKENS_CHANGED_EVENT, refresh);
     return () => window.removeEventListener(TOKENS_CHANGED_EVENT, refresh);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  async function handleUnlock() {
-    setUnlocking(true);
-    setError(null);
-    const sid = getSessionId();
-    const { data, error: rpcError } = await supabase.rpc('unlock_site', { p_session_id: sid }).single();
-    setUnlocking(false);
-    if (rpcError || !data) {
-      setError(rpcError?.message ?? 'Could not unlock — try again.');
-      return;
-    }
-    setStatus(data as TokenStatus);
-    notifyTokensChanged();
-  }
+  }, [refresh]);
 
   // Avoid a flash of the lock overlay before we know the real status —
   // render children plainly until the first check completes. This keeps
@@ -56,9 +47,11 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
     return <div className="card mt-6 animate-pulse p-8 text-center text-sm text-white/40">Checking unlock status…</div>;
   }
 
-  if (status.unlocked) {
+  if (progress.unlocked) {
     return <>{children}</>;
   }
+
+  const nextStep = UNLOCK_STEPS.find((step) => votesForCategory(progress, step.category) < step.required);
 
   return (
     <div className="relative">
@@ -67,36 +60,50 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
       </div>
 
       <div className="absolute inset-0 flex items-start justify-center pt-10 sm:pt-16">
-        <div className="card mx-4 max-w-sm p-6 text-center shadow-glow">
-          <span className="text-3xl">🔒</span>
-          <h2 className="mt-3 font-display text-xl font-bold text-white">Vote to unlock</h2>
+        <div className="card mx-4 max-w-md p-5 text-center shadow-glow sm:p-6">
+          <span className="text-2xl" aria-hidden>🔒</span>
+          <h2 className="mt-2 font-display text-xl font-bold text-white">Complete the voting plan</h2>
           <p className="mt-2 text-sm text-white/60">
-            Rankings and Trade Vote unlock once you&apos;ve earned {UNLOCK_COST} tokens — 1 token per vote you cast.
+            Vote across every position to unlock Rankings and Trade Vote. Overall votes alone won&apos;t count for the full plan.
           </p>
+
+          <div className="mt-4 grid grid-cols-4 gap-2">
+            {UNLOCK_STEPS.map((step) => {
+              const votes = Math.min(votesForCategory(progress, step.category), step.required);
+              const complete = votes >= step.required;
+              const href = step.category === 'overall' ? '/vote' : `/vote/${step.category}`;
+              return (
+                <Link
+                  key={step.category}
+                  href={href as any}
+                  className={`rounded-xl border px-2 py-2 text-xs font-bold ${complete ? 'border-positive/40 bg-positive/10 text-positive' : 'border-ink-600 bg-ink-800 text-white/65'}`}
+                >
+                  <span className="block">{step.label}</span>
+                  <span className="mt-0.5 block text-[11px]">{complete ? '✓' : `${votes}/${step.required}`}</span>
+                </Link>
+              );
+            })}
+          </div>
 
           <div className="mt-4">
             <div className="h-2 overflow-hidden rounded-full bg-ink-700">
               <div
                 className="h-full bg-accent transition-all"
-                style={{ width: `${Math.min(100, (status.balance / UNLOCK_COST) * 100)}%` }}
+                style={{ width: `${Math.min(100, (progress.qualified_votes / UNLOCK_TOTAL) * 100)}%` }}
               />
             </div>
             <p className="mt-1.5 text-xs text-white/40">
-              {Math.max(0, status.balance)} / {UNLOCK_COST} tokens
+              {progress.qualified_votes} / {UNLOCK_TOTAL} required votes complete
             </p>
           </div>
 
-          {status.balance >= UNLOCK_COST ? (
-            <button onClick={handleUnlock} disabled={unlocking} className="btn-primary mt-5 w-full disabled:opacity-50">
-              {unlocking ? 'Unlocking…' : `Unlock for ${UNLOCK_COST} tokens`}
-            </button>
-          ) : (
-            <Link href="/vote" className="btn-primary mt-5 w-full">
-              Vote now ({UNLOCK_COST - Math.max(0, status.balance)} more to go)
+          {nextStep && (
+            <Link href={(nextStep.category === 'overall' ? '/vote' : `/vote/${nextStep.category}`) as any} className="btn-primary mt-5 w-full">
+              Vote next: {nextStep.label}
             </Link>
           )}
           {error && <p className="mt-2 text-xs text-negative">{error}</p>}
-          {error && <button type="button" onClick={refresh} className="mt-2 text-xs text-accent-bright hover:underline">Retry balance check</button>}
+          {error && <button type="button" onClick={refresh} className="mt-2 text-xs text-accent-bright hover:underline">Retry progress check</button>}
         </div>
       </div>
     </div>

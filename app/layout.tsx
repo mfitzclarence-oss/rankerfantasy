@@ -63,7 +63,7 @@ function Footer() {
             alt="RankerFantasy"
             width={354}
             height={86}
-            className="h-auto w-56 opacity-90"
+            className="h-auto w-56 mix-blend-screen opacity-90"
           />
           <p className="mt-3 max-w-sm">Community rankings built by fantasy players, not experts.</p>
           <Image
@@ -79,7 +79,6 @@ function Footer() {
           <div className="flex flex-col gap-2.5">
             <a href="/rankings" className="hover:text-white">Rankings</a>
             <a href="/trades" className="hover:text-white">Trade Vote</a>
-            <a href="/how-it-works" className="hover:text-white">How It Works</a>
             <a href="https://www.orderupfantasy.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white">Order Up Fantasy ↗</a>
           </div>
         </div>

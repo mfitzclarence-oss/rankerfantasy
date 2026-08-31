@@ -1,26 +1,24 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { TokenBadge } from '@/components/TokenBadge';
 
 const LINKS = [
   { href: '/vote', label: 'Vote' },
   { href: '/rankings', label: 'Rankings' },
   { href: '/trades', label: 'Trades' },
-  { href: '/how-it-works', label: 'How It Works' },
 ];
 
 export function Nav() {
   return (
     <header className="sticky top-0 z-40 px-2 pt-2 sm:px-5 sm:pt-3">
       <div className="mx-auto flex max-w-7xl items-center justify-between rounded-[1.35rem] border border-ink-700/90 bg-ink-950/90 px-3 py-2.5 shadow-card backdrop-blur-xl sm:px-6 sm:py-3">
-        <Link href="/" className="flex items-center py-1">
+        <Link href="/" className="mx-auto flex items-center py-1 md:mx-0">
           <Image
             src="/logo-wordmark.png"
             alt="RankerFantasy"
             width={354}
             height={86}
             priority
-            className="h-auto w-[210px] sm:w-[300px] lg:w-[354px]"
+            className="h-auto w-[230px] mix-blend-screen sm:w-[300px] lg:w-[354px]"
           />
         </Link>
 
@@ -55,15 +53,9 @@ export function Nav() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <TokenBadge />
           <Link href="/auth/sign-in" className="btn-secondary !px-5 !py-2 text-sm">
             Sign In
           </Link>
-        </div>
-
-        <div className="flex items-center gap-2 md:hidden">
-          <a href="https://www.orderupfantasy.com/" target="_blank" rel="noopener noreferrer" className="hidden text-xs font-semibold text-blue min-[390px]:block">Order Up ↗</a>
-          <TokenBadge />
         </div>
       </div>
     </header>

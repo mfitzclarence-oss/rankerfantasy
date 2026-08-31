@@ -32,9 +32,9 @@ export default async function RankingsPage({ searchParams }: { searchParams: { l
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent-bright">Live Community Data</p>
+      <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-accent-bright sm:text-left">Live Community Data</p>
       <h1 className="page-title mt-2">Community Rankings</h1>
-      <p className="mt-1 text-white/50">Started from current ESPN PPR ADP and updated by every community vote.</p>
+      <p className="mt-2 text-center text-white/50 sm:text-left">Started from current ESPN PPR ADP and updated by every community vote.</p>
 
       <TokenGate>
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

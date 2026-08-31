@@ -8,6 +8,7 @@ import { track } from '@/lib/analytics';
 import { notifyTokensChanged } from '@/lib/tokens';
 import { PlayerCard } from '@/components/PlayerCard';
 import { CategoryTabs } from '@/components/CategoryTabs';
+import { TokenBadge } from '@/components/TokenBadge';
 import { poolForCategory } from '@/lib/matchmaking';
 import type { Category, PlayerRow } from '@/lib/database.types';
 
@@ -168,6 +169,7 @@ export function VoteArena({ category }: { category: Category }) {
         <p className="mt-1 text-xs text-white/55 sm:text-sm">
           {voteCount > 0 ? `${voteCount} votes this session — keep going.` : 'Tap a player to vote. Instant, no account needed.'}
         </p>
+        <TokenBadge className="mt-3" />
       </div>
 
       {consensus && (
@@ -232,9 +234,8 @@ export function VoteArena({ category }: { category: Category }) {
 function CardSkeleton() {
   return (
     <div className="card flex animate-pulse flex-col items-center gap-4 p-6 sm:p-8">
-      <div className="h-28 w-28 rounded-full bg-ink-700 sm:h-36 sm:w-36" />
-      <div className="h-5 w-32 rounded bg-ink-700" />
-      <div className="h-3 w-20 rounded bg-ink-700" />
+      <div className="h-9 w-4/5 rounded bg-ink-700 sm:h-12" />
+      <div className="h-4 w-2/5 rounded bg-ink-700" />
     </div>
   );
 }
