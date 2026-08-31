@@ -30,7 +30,7 @@ interface Consensus {
 // instead of a misleading "100% agree" from a single vote.
 const MIN_VOTES_FOR_CONSENSUS = 3;
 
-export function VoteArena({ category }: { category: Category }) {
+export function VoteArena({ category, redirectOnLoad = true }: { category: Category; redirectOnLoad?: boolean }) {
   const router = useRouter();
   const [supabase] = useState(createClient);
   const [matchup, setMatchup] = useState<Matchup | null>(null);
@@ -104,6 +104,12 @@ export function VoteArena({ category }: { category: Category }) {
     async function startGuidedVote() {
       const sid = getSessionId();
       setSessionId(sid);
+
+      if (!redirectOnLoad) {
+        loadMatchup();
+        return;
+      }
+
       const { data } = await supabase.rpc('get_unlock_progress', { p_session_id: sid }).single();
       if (cancelled) return;
 
@@ -119,7 +125,7 @@ export function VoteArena({ category }: { category: Category }) {
     startGuidedVote();
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category]);
+  }, [category, redirectOnLoad]);
 
   async function loadConsensus(winner: PlayerRow, loser: PlayerRow) {
     const { data, error: consensusError } = await supabase.rpc('get_matchup_consensus', {
@@ -196,7 +202,7 @@ export function VoteArena({ category }: { category: Category }) {
       <div className="text-center">
         <h1 className="section-title">Who would you rather have?</h1>
         <p className="mt-1 text-xs text-white/55 sm:text-sm">
-          {voteCount > 0 ? `${voteCount} votes this session — keep going.` : 'Your first 12 votes guide you through every position.'}
+          {voteCount > 0 ? `${voteCount} votes this session — keep going.` : 'Complete 12 guided votes. Progress is saved on this browser.'}
         </p>
         <TokenBadge className="mt-3" />
       </div>

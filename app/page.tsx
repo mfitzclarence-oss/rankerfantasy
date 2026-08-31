@@ -35,7 +35,7 @@ export default async function HomePage() {
         </div>
 
         <div className="relative mx-auto max-w-6xl pb-16 pt-4">
-          <VoteArena category="overall" />
+          <VoteArena category="qb" redirectOnLoad={false} />
         </div>
       </section>
 
