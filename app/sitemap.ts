@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { CATEGORIES } from '@/lib/format';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankerfantasy3.vercel.app';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankupfantasy.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [

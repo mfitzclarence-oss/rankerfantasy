@@ -13,7 +13,7 @@ const imprima = Imprima({
   variable: '--font-imprima',
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankerfantasy3.vercel.app';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankupfantasy.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
