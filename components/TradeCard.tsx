@@ -83,7 +83,7 @@ export function TradeCard({ trade, linkToDetail = true }: { trade: TradeCardData
     track('trade_shared', { trade_id: trade.id, method: canShare ? 'native' : 'clipboard' });
     if (canShare) {
       try {
-        await navigator.share({ url, title: 'Fantasy trade — RankerFantasy' });
+        await navigator.share({ url, title: 'Fantasy trade — RankUp Fantasy' });
         return;
       } catch {
         /* user cancelled */

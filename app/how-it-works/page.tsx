@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'How It Works',
-  description: 'How RankerFantasy turns head-to-head votes into crowd-sourced fantasy football rankings using an Elo rating system.',
+  description: 'How RankUp Fantasy turns head-to-head votes into crowd-sourced fantasy football rankings using an Elo rating system.',
 };
 
 export default function HowItWorksPage() {
@@ -11,7 +11,7 @@ export default function HowItWorksPage() {
     <div className="mx-auto max-w-2xl px-4 py-14 sm:px-6">
       <h1 className="page-title">How It Works</h1>
       <p className="mt-3 text-white/60">
-        RankerFantasy ranks players by what fantasy managers would actually rather have — not by who scored the
+        RankUp Fantasy ranks players by what fantasy managers would actually rather have — not by who scored the
         most points last year. Every ranking on this site is built entirely from real head-to-head votes.
       </p>
 

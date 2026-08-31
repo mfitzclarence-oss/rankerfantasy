@@ -1,11 +1,11 @@
 name: Bug report
-description: Tell StylishFantasy about something that is not working on RankerFantasy.
+description: Tell Stylish Fantasy about something that is not working on RankUp Fantasy.
 title: "[Bug]: "
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
-      value: Thanks for helping us improve RankerFantasy.
+      value: Thanks for helping us improve RankUp Fantasy.
   - type: textarea
     id: problem
     attributes:

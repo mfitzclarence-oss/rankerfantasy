@@ -1,4 +1,4 @@
--- RankerFantasy — core schema
+-- RankUp Fantasy — core schema
 -- Run in order: 0001_init.sql, 0002_functions.sql, 0003_policies.sql
 -- (or `supabase db push` picks up all files in supabase/migrations in order)
 

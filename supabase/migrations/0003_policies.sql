@@ -1,4 +1,4 @@
--- RankerFantasy — Row Level Security
+-- RankUp Fantasy — Row Level Security
 -- Principle: anonymous + authenticated users can READ freely, and can INSERT
 -- only the append-only rows that represent "casting a vote" — but never via
 -- a raw table write for anything that mutates ratings or aggregates. All

@@ -1,8 +1,8 @@
 {
-  "name": "rankerfantasy",
+  "name": "rankupfantasy",
   "version": "0.1.0",
   "private": true,
-  "description": "Pairwise-voting fantasy football rankings — Vote. Rank. Settle the debate.",
+  "description": "Pairwise-voting fantasy football rankings — Vote. Rank. Rise.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

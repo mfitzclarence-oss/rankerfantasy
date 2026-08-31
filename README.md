@@ -1,4 +1,4 @@
-# RankerFantasy
+# RankUp Fantasy
 
 Vote. Rank. Settle the debate.
 

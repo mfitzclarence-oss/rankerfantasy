@@ -5,6 +5,7 @@ import './globals.css';
 import { Nav } from '@/components/Nav';
 import { BottomNav } from '@/components/BottomNav';
 import { Analytics } from '@/components/Analytics';
+import { BrandWordmark } from '@/components/BrandWordmark';
 
 const imprima = Imprima({
   subsets: ['latin'],
@@ -13,27 +14,27 @@ const imprima = Imprima({
   variable: '--font-imprima',
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankerfantasy.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rankerfantasy3.vercel.app';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'RankerFantasy — Vote. Rank. Settle the debate.',
-    template: '%s | RankerFantasy',
+    default: 'RankUp Fantasy — Vote. Rank. Rise.',
+    template: '%s | RankUp Fantasy',
   },
   description:
     'Who would you rather draft? Vote head-to-head on NFL fantasy football players and build live, crowd-sourced rankings for the 2026 season.',
   openGraph: {
-    title: 'RankerFantasy — Vote. Rank. Settle the debate.',
+    title: 'RankUp Fantasy — Vote. Rank. Rise.',
     description:
       'Thousands of head-to-head votes create rankings built by fantasy players, not experts.',
     url: SITE_URL,
-    siteName: 'RankerFantasy',
+    siteName: 'RankUp Fantasy',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'RankerFantasy — Vote. Rank. Settle the debate.',
+    title: 'RankUp Fantasy — Vote. Rank. Rise.',
     description: 'Who would you rather draft? Vote head-to-head and build the community rankings.',
   },
   robots: { index: true, follow: true },
@@ -58,13 +59,7 @@ function Footer() {
     <footer className="border-t border-ink-800 py-10 pb-24 md:pb-10">
       <div className="mx-auto grid max-w-6xl gap-8 px-5 text-sm text-white/45 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <Image
-            src="/logo-wordmark.png"
-            alt="RankerFantasy"
-            width={354}
-            height={86}
-            className="h-auto w-56 contrast-200 mix-blend-screen opacity-90"
-          />
+          <BrandWordmark />
           <p className="mt-3 max-w-sm">Community rankings built by fantasy players, not experts.</p>
           <Image
             src="/stylishfantasy-logo.svg"
@@ -92,7 +87,7 @@ function Footer() {
         </div>
       </div>
       <p className="mx-auto mt-8 max-w-6xl border-t border-ink-800 px-5 pt-5 text-xs text-white/25 sm:px-6">
-        &copy; {new Date().getFullYear()} Stylish Fantasy Applications. RankerFantasy and Order Up Fantasy are Stylish Fantasy Applications products.
+        &copy; {new Date().getFullYear()} Stylish Fantasy Applications. RankUp Fantasy and Order Up Fantasy are Stylish Fantasy Applications products.
       </p>
     </footer>
   );

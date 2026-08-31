@@ -32,7 +32,7 @@ export default function SignInPage() {
 
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-4 py-16">
-      <h1 className="text-center font-display text-2xl font-bold text-white">Sign in to RankerFantasy</h1>
+      <h1 className="text-center font-display text-2xl font-bold text-white">Sign in to RankUp Fantasy</h1>
       <p className="mt-1 text-center text-sm text-white/50">
         Voting and rankings don&apos;t require an account — sign in to save favorites and track your history.
       </p>

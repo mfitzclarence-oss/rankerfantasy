@@ -91,7 +91,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     title: `${player.full_name} — Fantasy Rankings & Elo Rating`,
     description: `${player.full_name} (${player.position}, ${player.team_abbreviation}) community fantasy football ranking, Elo rating, and head-to-head voting record for 2026.`,
     alternates: { canonical: `/players/${player.slug}` },
-    openGraph: { title: `${player.full_name} — RankerFantasy`, images: player.headshot_url ? [player.headshot_url] : undefined },
+    openGraph: { title: `${player.full_name} — RankUp Fantasy`, images: player.headshot_url ? [player.headshot_url] : undefined },
   };
 }
 

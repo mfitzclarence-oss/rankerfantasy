@@ -1,4 +1,4 @@
--- RankerFantasy — RPC functions
+-- RankUp Fantasy — RPC functions
 -- All rating mutation happens here (SECURITY DEFINER), never via a direct
 -- client UPDATE on player_ratings. RLS on player_ratings only grants SELECT
 -- to anon/authenticated (see 0003_policies.sql), so this is the sole write path.

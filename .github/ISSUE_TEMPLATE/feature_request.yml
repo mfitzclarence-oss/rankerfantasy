@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest an improvement for RankerFantasy.
+description: Suggest an improvement for RankUp Fantasy.
 title: "[Idea]: "
 labels: ["enhancement"]
 body:
@@ -7,7 +7,7 @@ body:
     id: idea
     attributes:
       label: What would you like us to add?
-      placeholder: It would be useful if RankerFantasy could...
+      placeholder: It would be useful if RankUp Fantasy could...
     validations:
       required: true
   - type: textarea
