@@ -35,7 +35,7 @@ export function BrandWordmark({
           <svg
             aria-hidden="true"
             viewBox="0 0 30 36"
-            className="mr-[-0.06em] h-[0.92em] w-[0.68em] overflow-visible"
+            className="mr-[-0.1em] h-[1.22em] w-[0.94em] overflow-visible"
             fill="none"
           >
             <path
