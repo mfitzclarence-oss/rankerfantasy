@@ -41,9 +41,7 @@ function isAuthorized(request: Request): boolean {
   const secret = process.env.CRON_SECRET;
   if (!secret) return false; // never run unauthenticated
   const auth = request.headers.get('authorization');
-  if (auth === `Bearer ${secret}`) return true; // Vercel Cron sends this automatically
-  const url = new URL(request.url);
-  return url.searchParams.get('secret') === secret; // manual trigger fallback
+  return auth === `Bearer ${secret}`; // Vercel Cron sends this automatically
 }
 
 export async function GET(request: Request) {

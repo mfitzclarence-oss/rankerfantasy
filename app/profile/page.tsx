@@ -13,9 +13,9 @@ export default async function ProfilePage() {
   if (!user) {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-sm flex-col items-center justify-center px-4 text-center">
-        <h1 className="font-display text-2xl font-bold text-white">You&apos;re not signed in</h1>
+        <h1 className="font-display text-2xl font-bold text-white">My Actions</h1>
         <p className="mt-2 text-sm text-white/50">
-          Voting and rankings work without an account. Sign in to save favorites and see your voting history.
+          Voting and rankings work without an account. Sign in to see your votes, trades, and saved players in one place.
         </p>
         <Link href="/auth/sign-in" className="btn-primary mt-6">Sign In</Link>
       </div>
@@ -34,7 +34,12 @@ export default async function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <div className="card flex items-center gap-4 p-6">
+      <div className="text-center">
+        <h1 className="page-title">My Actions</h1>
+        <p className="mt-3 text-white/50">Your votes, trades, and saved players.</p>
+      </div>
+
+      <div className="card mt-7 flex items-center gap-4 p-6">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent/20 text-lg font-bold text-accent-bright">
           {initials(user.email ?? 'U')}
         </div>

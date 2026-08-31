@@ -16,7 +16,10 @@ export default function SignInPage() {
     setError(null);
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        shouldCreateUser: false,
+      },
     });
     setLoading(false);
     if (otpError) setError(otpError.message);
@@ -34,7 +37,7 @@ export default function SignInPage() {
     <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-4 py-16">
       <h1 className="text-center font-display text-2xl font-bold text-white">Sign in to RankUp Fantasy</h1>
       <p className="mt-1 text-center text-sm text-white/50">
-        Voting and rankings don&apos;t require an account — sign in to save favorites and track your history.
+        Voting and rankings don&apos;t require an account. Existing members can sign in to view their actions and saved players.
       </p>
 
       <button onClick={signInWithGoogle} className="btn-secondary mt-8 w-full">

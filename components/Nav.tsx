@@ -27,7 +27,10 @@ export function Nav() {
           ))}
         </nav>
 
-        <div className="hidden md:flex md:justify-self-end">
+        <div className="hidden items-center gap-2 md:flex md:justify-self-end">
+          <Link href={'/actions' as any} className="btn-secondary !px-4 !py-2.5 text-sm">
+            My Actions
+          </Link>
           <Link href="/vote" className="btn-primary !px-5 !py-2.5 text-sm">
             Start voting
           </Link>
