@@ -10,7 +10,7 @@ html, body {
   background: radial-gradient(circle at 8% 0%, rgba(35, 104, 210, 0.13), transparent 28rem), linear-gradient(180deg, #080d16 0%, #070b12 100%);
   background-attachment: fixed;
   color: #f2f3f5;
-  font-family: var(--font-imprima), Arial, sans-serif;
+  font-family: var(--font-manrope), Arial, sans-serif;
   letter-spacing: 0.005em;
 }
 
@@ -24,8 +24,8 @@ h1, h2, h3, h4 {
 }
 
 .brand-wordmark-main {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  font-weight: 600;
+  font-family: var(--font-outfit), Arial, Helvetica, sans-serif;
+  font-weight: 700;
 }
 
 ::selection {

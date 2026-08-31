@@ -1,16 +1,23 @@
 import type { Metadata } from 'next';
-import { Imprima } from 'next/font/google';
+import { Manrope, Outfit } from 'next/font/google';
 import './globals.css';
 import { Nav } from '@/components/Nav';
 import { BottomNav } from '@/components/BottomNav';
 import { Analytics } from '@/components/Analytics';
 import { BrandWordmark } from '@/components/BrandWordmark';
 
-const imprima = Imprima({
+const manrope = Manrope({
   subsets: ['latin'],
-  weight: '400',
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
-  variable: '--font-imprima',
+  variable: '--font-manrope',
+});
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  display: 'swap',
+  variable: '--font-outfit',
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.rankupfantasy.com';
@@ -44,7 +51,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={imprima.variable}>
+    <html lang="en" className={`${manrope.variable} ${outfit.variable}`}>
       <body className="flex min-h-dvh flex-col bg-ink-950 font-sans antialiased">
         <Nav />
         <main className="flex-1 pb-20 md:pb-0">{children}</main>
