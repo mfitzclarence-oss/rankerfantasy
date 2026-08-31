@@ -47,7 +47,7 @@ export default async function RankingsCategoryPage({
         </div>
 
         <div className="mt-6">
-          <RankingsTable rows={rows} rankingLabel={`${CATEGORY_LABEL[params.category]} Ranking`} />
+          <RankingsTable rows={rows} />
         </div>
       </TokenGate>
     </div>

@@ -17,19 +17,22 @@ export interface RankingRow {
   seed_rank_overall?: number | null;
   seed_rank_position?: number | null;
   movement?: number | null; // + = moved up vs seed rank, - = moved down
+  position_rank?: number | null;
+  overall_rank?: number | null;
 }
 
-export function RankingsTable({ rows, rankingLabel = 'Overall Ranking' }: { rows: RankingRow[]; rankingLabel?: string }) {
+export function RankingsTable({ rows }: { rows: RankingRow[] }) {
   const leaderRating = rows[0]?.rating ?? 1500;
 
   return (
     <div className="card overflow-hidden">
-      <div className="hidden grid-cols-[1fr_5rem_6rem_5rem_7.5rem] gap-2 border-b border-ink-700 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-white/35 sm:grid">
+      <div className="hidden grid-cols-[1fr_5rem_6rem_5rem_7rem_7rem] gap-2 border-b border-ink-700 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-white/35 sm:grid">
         <span>Player</span>
         <span className="text-right">Rating</span>
         <span className="text-right">Record</span>
         <span className="text-right">Votes</span>
-        <span className="text-right">{rankingLabel}</span>
+        <span className="text-right">Position Ranking</span>
+        <span className="text-right">Overall Ranking</span>
       </div>
       <div>
         {rows.map((row) => {
@@ -44,7 +47,7 @@ export function RankingsTable({ rows, rankingLabel = 'Overall Ranking' }: { rows
                 backgroundColor: primary,
                 backgroundImage: `linear-gradient(100deg, rgba(4,8,18,0.42), rgba(4,8,18,0.78)), linear-gradient(120deg, ${primary} 0%, ${primary} 82%, ${secondary} 82%, ${secondary} 100%)`,
               }}
-              className="grid grid-cols-[1fr_auto_auto] items-center gap-3 border-b px-4 py-3.5 transition-[filter,transform] hover:brightness-110 active:scale-[0.995] sm:grid-cols-[1fr_5rem_6rem_5rem_7.5rem] sm:gap-2 sm:px-4"
+              className="grid grid-cols-[1fr_auto_auto] items-center gap-3 border-b px-4 py-3.5 transition-[filter,transform] hover:brightness-110 active:scale-[0.995] sm:grid-cols-[1fr_5rem_6rem_5rem_7rem_7rem] sm:gap-2 sm:px-4"
             >
               <div className="min-w-0">
                 <div className="min-w-0">
@@ -66,9 +69,12 @@ export function RankingsTable({ rows, rankingLabel = 'Overall Ranking' }: { rows
                 {row.wins}-{row.losses}
               </span>
               <span className="hidden text-right text-sm text-white/50 sm:block">{row.comparisons}</span>
+              <span className="hidden text-right text-sm text-white/65 sm:block">{row.position_rank ? `#${row.position_rank}` : '—'}</span>
               <span className="text-right">
-                <span className="block font-display text-base font-bold text-white/65">#{row.rank}</span>
-                <span className="block text-[10px] uppercase tracking-wide text-white/30 sm:hidden">Rank</span>
+                <span className="block text-sm font-bold text-white/65 sm:text-sm">{row.overall_rank ? `#${row.overall_rank}` : '—'}</span>
+                <span className="block text-[10px] uppercase tracking-wide text-white/30 sm:hidden">
+                  Pos {row.position_rank ? `#${row.position_rank}` : '—'} &middot; Overall {row.overall_rank ? `#${row.overall_rank}` : '—'}
+                </span>
               </span>
             </Link>
           );

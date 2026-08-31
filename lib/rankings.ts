@@ -26,6 +26,32 @@ export async function fetchRankings(category: Category, limit: number): Promise<
     if (playersError) console.error('Failed to load ranked players', playersError);
 
     if (players && players.length > 0) {
+      const overallRankMap = new Map<string, number>();
+      const positionRankMap = new Map<string, number>();
+
+      if (category === 'overall') {
+        const { data: positionRatings } = await supabase
+          .from('player_ratings')
+          .select('player_id, category, rating')
+          .in('category', ['qb', 'rb', 'wr', 'te'])
+          .order('rating', { ascending: false })
+          .limit(2000);
+        const positionCounters = new Map<string, number>();
+        for (const row of positionRatings ?? []) {
+          const nextRank = (positionCounters.get(row.category) ?? 0) + 1;
+          positionCounters.set(row.category, nextRank);
+          positionRankMap.set(`${row.category}:${row.player_id}`, nextRank);
+        }
+      } else {
+        const { data: overallRatings } = await supabase
+          .from('player_ratings')
+          .select('player_id, rating')
+          .eq('category', 'overall')
+          .order('rating', { ascending: false })
+          .limit(2000);
+        (overallRatings ?? []).forEach((row, index) => overallRankMap.set(row.player_id, index + 1));
+      }
+
       const playersById = new Map(players.map((player) => [player.id, player]));
       let visibleRank = 0;
       return ratings.flatMap((row) => {
@@ -49,6 +75,8 @@ export async function fetchRankings(category: Category, limit: number): Promise<
           seed_rank_overall: player.seed_rank_overall,
           seed_rank_position: player.seed_rank_position,
           movement,
+          position_rank: category === 'overall' ? positionRankMap.get(`${player.position.toLowerCase()}:${player.id}`) ?? null : rank,
+          overall_rank: category === 'overall' ? rank : overallRankMap.get(player.id) ?? null,
         } satisfies RankingRow];
       });
     }
@@ -88,6 +116,8 @@ export async function fetchRankings(category: Category, limit: number): Promise<
       seed_rank_overall: player.seed_rank_overall,
       seed_rank_position: player.seed_rank_position,
       movement: 0,
+      position_rank: category === 'overall' ? null : player.seed_rank_position ?? i + 1,
+      overall_rank: category === 'overall' ? i + 1 : player.seed_rank_overall ?? null,
     } satisfies RankingRow;
   });
 }
