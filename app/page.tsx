@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { VoteArena } from '@/components/VoteArena';
 import { OrderUpPromo } from '@/components/OrderUpPromo';
 import { byeLabel } from '@/lib/format';
+import { ratingOutOf100 } from '@/lib/ratingScore';
 import { fetchRankings } from '@/lib/rankings';
 
 export const revalidate = 60;
@@ -12,6 +13,7 @@ async function getTopOverall() {
 
 export default async function HomePage() {
   const top = await getTopOverall();
+  const leaderRating = top[0]?.rating ?? 1500;
 
   return (
     <div>
@@ -63,8 +65,8 @@ export default async function HomePage() {
                 </p>
               </div>
               <div className="text-right">
-                <p className="font-display font-bold text-accent-bright">{Math.round(row.rating)}</p>
-                <p className="text-[11px] text-white/30">{row.comparisons} votes</p>
+                <p className="font-display text-lg font-bold text-accent-bright">{ratingOutOf100(row.rating, leaderRating, i + 1)}</p>
+                <p className="text-[11px] text-white/30">Rating · {row.comparisons} votes</p>
               </div>
             </div>
           ))}

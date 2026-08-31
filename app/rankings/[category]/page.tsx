@@ -38,7 +38,7 @@ export default async function RankingsCategoryPage({
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-accent-bright">Live Community Data</p>
       <h1 className="page-title mt-2">{CATEGORY_LABEL[params.category]} Rankings</h1>
-      <p className="mx-auto mt-3 max-w-2xl text-center text-white/50">Started from current ESPN PPR ADP and updated by every community vote.</p>
+      <p className="mx-auto mt-3 max-w-2xl text-center text-white/50">Started from current ESPN PPR ADP and updated by every community vote. Ratings are out of 100, and only the current No. 1 receives 100.</p>
 
       <TokenGate>
         <div className="mt-7 flex flex-col items-center gap-4">
@@ -47,7 +47,7 @@ export default async function RankingsCategoryPage({
         </div>
 
         <div className="mt-6">
-          <RankingsTable rows={rows} />
+          <RankingsTable rows={rows} rankingLabel={`${CATEGORY_LABEL[params.category]} Ranking`} />
         </div>
       </TokenGate>
     </div>

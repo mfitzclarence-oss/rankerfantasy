@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { byeLabel, winPercentageLabel, POSITION_LABEL } from '@/lib/format';
+import { ratingOutOf100 } from '@/lib/ratingScore';
+import { fetchRankings } from '@/lib/rankings';
 import { PlayerProfileTracker } from '@/components/PlayerProfileTracker';
 
 export const revalidate = 30;
@@ -19,20 +21,12 @@ async function getPlayer(slug: string) {
     supabase.from('player_ratings').select('*').eq('player_id', player.id).eq('category', category).maybeSingle(),
   ]);
 
-  async function rankFor(cat: string, rating: number | undefined) {
-    if (rating === undefined) return null;
-    const { count } = await supabase
-      .from('player_ratings')
-      .select('player_id', { count: 'exact', head: true })
-      .eq('category', cat)
-      .gt('rating', rating);
-    return (count ?? 0) + 1;
-  }
-
-  const [overallRank, positionRank] = await Promise.all([
-    rankFor('overall', overallRating?.rating),
-    rankFor(category, posRating?.rating),
+  const [overallRows, positionRows] = await Promise.all([
+    fetchRankings('overall', 500),
+    fetchRankings(category, 500),
   ]);
+  const overallRank = overallRows.findIndex((row) => row.player_id === player.id) + 1 || null;
+  const positionRank = positionRows.findIndex((row) => row.player_id === player.id) + 1 || null;
 
   // "Players most often picked over this player" — matchups this player lost, grouped by opponent.
   const { data: losses } = await supabase
@@ -66,6 +60,7 @@ async function getPlayer(slug: string) {
     posRating,
     overallRank,
     positionRank,
+    positionLeaderRating: positionRows[0]?.rating ?? null,
     category,
     beatenBy: beatenByIds.slice(0, 5).map((x) => ({ ...oppMap.get(x.id)!, count: x.count })).filter((x) => x.id),
     beats: beatsIds.slice(0, 5).map((x) => ({ ...oppMap.get(x.id)!, count: x.count })).filter((x) => x.id),
@@ -98,7 +93,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function PlayerPage({ params }: { params: { slug: string } }) {
   const data = await getPlayer(params.slug);
   if (!data) notFound();
-  const { player, overallRating, posRating, overallRank, positionRank, category, beatenBy, beats } = data;
+  const { player, overallRating, posRating, overallRank, positionRank, positionLeaderRating, category, beatenBy, beats } = data;
+  const displayRating = ratingOutOf100(
+    posRating?.rating ?? 1500,
+    positionLeaderRating ?? posRating?.rating ?? 1500,
+    positionRank ?? 1
+  );
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -130,7 +130,7 @@ export default async function PlayerPage({ params }: { params: { slug: string } 
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat label="Elo Rating" value={Math.round(posRating?.rating ?? 1500).toString()} />
+        <Stat label="Rating" value={`${displayRating}/100`} />
         <Stat label="Record" value={`${posRating?.wins ?? 0}-${posRating?.losses ?? 0}`} />
         <Stat label="Win %" value={winPercentageLabel(posRating?.wins ?? 0, posRating?.losses ?? 0)} />
         <Stat label="Total Votes" value={(posRating?.comparisons ?? 0).toLocaleString()} />
