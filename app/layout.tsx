@@ -63,7 +63,7 @@ function Footer() {
             alt="RankerFantasy"
             width={354}
             height={86}
-            className="h-auto w-56 mix-blend-screen opacity-90"
+            className="h-auto w-56 contrast-200 mix-blend-screen opacity-90"
           />
           <p className="mt-3 max-w-sm">Community rankings built by fantasy players, not experts.</p>
           <Image

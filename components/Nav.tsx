@@ -18,7 +18,7 @@ export function Nav() {
             width={354}
             height={86}
             priority
-            className="h-auto w-[230px] mix-blend-screen sm:w-[300px] lg:w-[354px]"
+            className="h-auto w-[230px] contrast-200 mix-blend-screen sm:w-[300px] lg:w-[354px]"
           />
         </Link>
 
