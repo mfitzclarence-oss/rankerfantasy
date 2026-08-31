@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { byeLabel } from '@/lib/format';
 import { ratingOutOf100 } from '@/lib/ratingScore';
+import { teamColor } from '@/lib/teamColors';
 
 export interface RankingRow {
   rank: number;
@@ -31,22 +31,30 @@ export function RankingsTable({ rows, rankingLabel = 'Overall Ranking' }: { rows
         <span className="text-right">Votes</span>
         <span className="text-right">{rankingLabel}</span>
       </div>
-      <div className="divide-y divide-ink-700/70">
+      <div>
         {rows.map((row) => {
           const displayRating = ratingOutOf100(row.rating, leaderRating, row.rank);
+          const { primary, secondary } = teamColor(row.team_abbreviation);
           return (
             <Link
               key={row.player_id}
               href={`/players/${row.slug}` as any}
-              className="grid grid-cols-[1fr_auto_auto] items-center gap-3 px-4 py-3 transition-colors hover:bg-ink-800/60 sm:grid-cols-[1fr_5rem_6rem_5rem_7.5rem] sm:gap-2 sm:px-4"
+              style={{
+                borderColor: `${secondary}aa`,
+                backgroundColor: primary,
+                backgroundImage: `linear-gradient(100deg, rgba(4,8,18,0.42), rgba(4,8,18,0.78)), linear-gradient(120deg, ${primary} 0%, ${primary} 82%, ${secondary} 82%, ${secondary} 100%)`,
+              }}
+              className="grid grid-cols-[1fr_auto_auto] items-center gap-3 border-b px-4 py-3.5 transition-[filter,transform] hover:brightness-110 active:scale-[0.995] sm:grid-cols-[1fr_5rem_6rem_5rem_7.5rem] sm:gap-2 sm:px-4"
             >
               <div className="min-w-0">
                 <div className="min-w-0">
                   <p className="truncate font-display text-lg font-black uppercase text-white sm:text-xl">{row.full_name}</p>
-                  <p className="text-xs text-white/40">
-                    {row.position} &middot; {row.team_abbreviation} &middot; {byeLabel(row.bye_week)}
-                    <span className="sm:hidden"> &middot; {row.wins}-{row.losses} &middot; {row.comparisons} votes</span>
-                  </p>
+                  <div className="mt-1 flex items-center gap-2 text-white">
+                    <span className="font-display text-lg font-black uppercase leading-none">{row.position}</span>
+                    <span className="h-4 w-px bg-white/30" />
+                    <span className="font-display text-base font-black uppercase leading-none tracking-wide sm:text-lg">{row.team_abbreviation}</span>
+                  </div>
+                  <p className="mt-1 text-[11px] font-medium text-white/65 sm:hidden">{row.wins}-{row.losses} record &middot; {row.comparisons} votes</p>
                 </div>
               </div>
 

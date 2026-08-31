@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { VoteArena } from '@/components/VoteArena';
 import { OrderUpPromo } from '@/components/OrderUpPromo';
-import { byeLabel } from '@/lib/format';
 import { ratingOutOf100 } from '@/lib/ratingScore';
 import { fetchRankings } from '@/lib/rankings';
+import { teamColor } from '@/lib/teamColors';
 
 export const revalidate = 60;
 
@@ -49,27 +49,40 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <div className="card divide-y divide-ink-700 overflow-hidden">
+        <div className="card overflow-hidden">
           {top.length === 0 && (
             <p className="p-6 text-sm text-white/40">
               Community rankings are temporarily unavailable. Please try again shortly.
             </p>
           )}
-          {top.map((row, i) => (
-            <div key={row.player_id} className="flex items-center gap-4 px-4 py-3 sm:px-6">
-              <span className="w-6 shrink-0 text-center font-display text-lg font-bold text-white/30">{i + 1}</span>
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-display text-lg font-black uppercase text-white sm:text-xl">{row.full_name}</p>
-                <p className="text-xs text-white/40">
-                  {row.position} &middot; {row.team_abbreviation} &middot; {byeLabel(row.bye_week)}
-                </p>
+          {top.map((row, i) => {
+            const { primary, secondary } = teamColor(row.team_abbreviation);
+            return (
+              <div
+                key={row.player_id}
+                style={{
+                  borderColor: `${secondary}aa`,
+                  backgroundColor: primary,
+                  backgroundImage: `linear-gradient(100deg, rgba(4,8,18,0.42), rgba(4,8,18,0.78)), linear-gradient(120deg, ${primary} 0%, ${primary} 82%, ${secondary} 82%, ${secondary} 100%)`,
+                }}
+                className="flex items-center gap-4 border-b px-4 py-3.5 sm:px-6"
+              >
+                <span className="w-6 shrink-0 text-center font-display text-lg font-bold text-white/55">{i + 1}</span>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-display text-lg font-black uppercase text-white sm:text-xl">{row.full_name}</p>
+                  <div className="mt-1 flex items-center gap-2 text-white">
+                    <span className="font-display text-lg font-black uppercase leading-none">{row.position}</span>
+                    <span className="h-4 w-px bg-white/30" />
+                    <span className="font-display text-base font-black uppercase leading-none tracking-wide sm:text-lg">{row.team_abbreviation}</span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-display text-lg font-bold text-accent-bright">{ratingOutOf100(row.rating, leaderRating, i + 1)}</p>
+                  <p className="text-[11px] text-white/60">Rating · {row.comparisons} votes</p>
+                </div>
               </div>
-              <div className="text-right">
-                <p className="font-display text-lg font-bold text-accent-bright">{ratingOutOf100(row.rating, leaderRating, i + 1)}</p>
-                <p className="text-[11px] text-white/30">Rating · {row.comparisons} votes</p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         <Link href="/rankings" className="mt-5 block text-center text-sm font-semibold text-accent-bright hover:underline">
           View full rankings →
