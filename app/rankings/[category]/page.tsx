@@ -5,7 +5,7 @@ import { RankingsFilterBar } from '@/components/RankingsFilterBar';
 import { RankingsTable } from '@/components/RankingsTable';
 import { TokenGate } from '@/components/TokenGate';
 import { fetchRankings } from '@/lib/rankings';
-import { CATEGORIES, CATEGORY_LABEL } from '@/lib/format';
+import { CATEGORIES, CATEGORY_LABEL, isActiveCategory } from '@/lib/format';
 import type { Category } from '@/lib/database.types';
 
 export const revalidate = 30;
@@ -30,7 +30,7 @@ export default async function RankingsCategoryPage({
   params: { category: string };
   searchParams: { limit?: string };
 }) {
-  if (!CATEGORIES.includes(params.category as Category) || params.category === 'overall') notFound();
+  if (!isActiveCategory(params.category) || params.category === 'overall') notFound();
   const limit = searchParams.limit === 'all' ? 300 : searchParams.limit === '25' ? 25 : 50;
   const rows = await fetchRankings(params.category as Category, limit);
 
@@ -38,7 +38,7 @@ export default async function RankingsCategoryPage({
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-accent-bright">Live Community Data</p>
       <h1 className="page-title mt-2">{CATEGORY_LABEL[params.category]} Rankings</h1>
-      <p className="mx-auto mt-3 max-w-2xl text-center text-white/50">Started from current ESPN PPR ADP and updated by every community vote. Ratings are out of 100, and only the current No. 1 receives 100.</p>
+      <p className="mx-auto mt-3 max-w-2xl text-center text-white/50">Ratings are out of 100 and update as the community votes. Only the current No. 1 receives 100.</p>
 
       <TokenGate>
         <div className="mt-7 flex flex-col items-center gap-4">

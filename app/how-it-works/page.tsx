@@ -12,7 +12,7 @@ export default function HowItWorksPage() {
       <h1 className="page-title">How It Works</h1>
       <p className="mt-3 text-white/60">
         RankUp Fantasy ranks players by what fantasy managers would actually rather have — not by who scored the
-        most points last year. Every ranking on this site is built entirely from real head-to-head votes.
+        most points last year. Current draft-market data provides a sensible starting order, then real head-to-head votes reshape it.
       </p>
 
       <div className="mt-10 space-y-8">
@@ -21,7 +21,7 @@ export default function HowItWorksPage() {
           Tap one, see the next matchup instantly. No account required.
         </Step>
         <Step n={2} title="Every vote updates an Elo rating">
-          Each player has a rating per category (Overall, QB, RB, WR, TE, K, D/ST) seeded from current ADP.
+          Each player has a rating for Overall and their active position (QB, RB, WR or TE), seeded from current draft data.
           When an underdog beats a favorite, their rating jumps more than it would from beating another underdog —
           the same math chess uses to rate players.
         </Step>
@@ -31,8 +31,8 @@ export default function HowItWorksPage() {
           only pairs draft-relevant QB/RB/WR/TE players — no first-round running backs against kickers.
         </Step>
         <Step n={4} title="Rankings are always live">
-          The Rankings pages sort every player by their current community rating. Watch where the crowd disagrees
-          with conventional ADP — that gap is the signal.
+          The Rankings pages blend the current draft baseline with community results. As a player receives more votes,
+          the community result carries more weight and the draft baseline carries less.
         </Step>
         <Step n={5} title="Trade Vote settles debates">
           Submit any trade and the community weighs in: Team A Wins, Fair Trade, or Team B Wins — with your league&apos;s

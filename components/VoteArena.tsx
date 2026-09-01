@@ -202,7 +202,7 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
       <div className="text-center">
         <h1 className="section-title">Who would you rather have?</h1>
         <p className="mt-1 text-xs text-white/55 sm:text-sm">
-          {voteCount > 0 ? `${voteCount} votes this session — keep going.` : 'Complete 12 guided votes. Progress is saved on this browser.'}
+          {voteCount > 0 ? `${voteCount} votes this visit — keep going.` : 'Vote three times at QB, RB, WR and TE. The 12-vote run resets next visit.'}
         </p>
         <TokenBadge className="mt-3" />
       </div>

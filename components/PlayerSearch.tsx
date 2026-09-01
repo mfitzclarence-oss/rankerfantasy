@@ -39,6 +39,7 @@ export function PlayerSearch({
         .select('*')
         .ilike('full_name', `%${query.trim()}%`)
         .eq('active', true)
+        .in('position', ['QB', 'RB', 'WR', 'TE'])
         .limit(8);
       if (!cancelled) {
         setResults((data ?? []).filter((p) => !excludeIds.includes(p.id)));

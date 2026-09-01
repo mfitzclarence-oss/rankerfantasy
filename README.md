@@ -15,7 +15,7 @@ This document is both the architecture proposal and the as-built reference — i
 - **Frontend:** Next.js Server Components fetch and render rankings, player profiles, and the trade feed (fast, SEO-indexable HTML on first load). Voting, trade submission, and trade voting are Client Components that talk to Supabase directly via `@supabase/supabase-js`/`@supabase/ssr` — there's no custom API layer in between for those actions.
 - **Database:** Supabase Postgres is the single source of truth. All rating math lives in `SECURITY DEFINER` Postgres functions (RPCs), not in application code, so it can't be bypassed by a browser client and stays consistent under concurrent votes (see §3).
 - **Auth:** Supabase Auth (email magic link + Google OAuth). Voting and trade-viewing never require an account — auth only gates favorites, voting history, and (optionally in the future) trade authorship moderation.
-- **Session identity:** an anonymous UUID in `localStorage` (`lib/session.ts`) travels with every vote/trade-vote so duplicate-matchup protection and rate limiting work without an account.
+- **Session identity:** an anonymous UUID in `sessionStorage` (`lib/session.ts`) travels with every vote/trade-vote so duplicate-matchup protection and rate limiting work without an account. A fresh browser visit gets a fresh guided voting run.
 - **Why this stack:** Postgres RPCs give us atomic, race-safe rating updates and a hard security boundary (RLS) without standing up a separate backend service. Server Components keep rankings/player/trade pages fast and crawlable. This is the same shape you'd use whether you're seeding 300 players or 3,000.
 
 ```
@@ -70,7 +70,7 @@ Indexes cover every hot path: rankings sort (`category, rating desc`), matchmaki
 
 ## 3b. Vote-to-unlock tokens
 
-Rankings and Trade Vote are gated behind a small token economy, so casual visitors are nudged into voting before they can browse: 1 token per vote cast (derived from the existing `votes` table by session — no separate ledger), and unlocking Rankings + Trades together costs **20 tokens** as one "site pass" (not 20 per section). Once a session spends, it stays unlocked for that browser going forward — it does not re-charge on every visit, which was a deliberate choice to avoid punishing repeat visitors; if you actually want a harsher "pay every visit" model, that's a straightforward change to `unlock_site()` in `supabase/migrations/0005_tokens.sql`.
+Rankings and Trade Vote unlock after a guided 12-vote run: three QB, three RB, three WR, and three TE matchups. The visit UUID lives in `sessionStorage`, so returning after the browser session ends starts a new run while every accepted vote remains in the global ranking history.
 
 **SEO-safe by design:** the gate is a soft, client-side overlay (`components/TokenGate.tsx`) — gated pages still render their real content server-side into the HTML (so Google indexing and link-preview scrapers see it), and only a signed-in browser without enough tokens sees it visually blurred behind an unlock prompt. This does mean a shared trade URL (`/trades/[id]`) shows the gate to a first-time visitor too, even though sharing trade links is otherwise a core feature — worth knowing if that friction doesn't feel right for that specific page.
 
@@ -84,7 +84,7 @@ Rankings and Trade Vote are gated behind a small token economy, so casual visito
 /                       Home — hero, live embedded voting widget, top-6 overall rankings, position grid, trade CTA, how-it-works
 /vote, /vote/[category] Pairwise voting screen (overall + 6 positions)
 /rankings               Overall rankings, Top 25/50/All filter
-/rankings/[category]    QB / RB / WR / TE / K / DST rankings
+/rankings/[category]    QB / RB / WR / TE rankings
 /players/[slug]         Player profile — Elo, rank, record, "most often beats" / "most often beaten by"
 /trades                 Public trade feed — New / Most Voted / Most Controversial
 /trades/new             Trade submission (player search, league context)
@@ -106,7 +106,7 @@ components/
   Nav.tsx, BottomNav.tsx        desktop top nav / mobile bottom nav
   PlayerCard.tsx                 the tappable voting card (image, name, team, pos, bye, rank, exit animation)
   VoteArena.tsx                  the voting loop: fetch matchup → render two PlayerCards → cast_vote → next matchup
-  CategoryTabs.tsx                Overall | QB | RB | WR | TE | K | D/ST, shared by /vote and /rankings
+  CategoryTabs.tsx                Overall | QB | RB | WR | TE, shared by /vote and /rankings
   RankingsTable.tsx, RankingsFilterBar.tsx
   PlayerSearch.tsx                autocomplete used by the trade builder
   TradeBuilder.tsx                two-sided player search + league context + submit
@@ -144,13 +144,15 @@ As-delivered, this seeds **272 players**: 30 QB, 69 RB, 91 WR, 27 TE, 23 K, 32 D
 
 **Automated team/injury sync (`/api/sync-players`):** beyond the manual refresh above, `app/api/sync-players/route.ts` runs on a schedule (see `vercel.json` — daily by default, Vercel Cron) and pulls current team + injury status for every player from Sleeper's free public player directory (`api.sleeper.app/v1/players/nfl`, no key required). It matches players by normalized name + position (there's no shared ID between our database and Sleeper's), updates `team_abbreviation`/`nfl_team`/`injury_status` when they've changed, and reports anything it couldn't confidently match rather than guessing. This is the honest ceiling for "free and automatic" — same-day accuracy on trades/injuries, not real-time. For instant updates you'd need a paid, licensed sports-data feed (SportsDataIO, MySportsFeeds) — swapping the fetch in that route to a different source is a small, contained change.
 
-To enable it: set a `CRON_SECRET` environment variable (any long random string — Vercel automatically sends it as a Bearer token to your own cron-triggered requests, which is what authorizes the route) and a `SUPABASE_SERVICE_ROLE_KEY` (from Supabase Settings → API Keys → Secret key; this route needs to bypass RLS to write player updates). You can also trigger it manually any time: `GET /api/sync-players?secret=<your CRON_SECRET>`.
+**Automated rankings baseline (`/api/sync-rankings`):** a second daily cron reads Sleeper's 2026 PPR ADP field and refreshes `seed_rank_overall` and `seed_rank_position` for active QB/RB/WR/TE players. Rankings blend that current market baseline with community Elo; votes receive progressively more weight as comparisons accumulate, up to an 80% community / 20% market blend.
+
+To enable both jobs: set a `CRON_SECRET` environment variable (any long random string — Vercel automatically sends it as a Bearer token to cron requests) and a `SUPABASE_SERVICE_ROLE_KEY` (from Supabase Settings → API Keys → Secret key; these maintenance routes need to bypass RLS to write updates).
 
 ---
 
 ## 7. Product risks
 
-- **Vote manipulation / bots.** Anonymous voting is the whole point, but it's also the attack surface. Mitigated with: per-session duplicate-matchup blocking (12h), a 300-votes/10-min rate limit, and K-factor decay so a single burst of votes on a fresh matchup can't swing a rating far. **Not** mitigated: a determined attacker rotating `localStorage` sessions from one IP. If this becomes a real problem, add IP-based rate limiting at the edge (Vercel/Cloudflare) and consider a lightweight CAPTCHA or requiring auth past some vote-count threshold — the schema already has `user_id` on `votes` ready for that.
+- **Vote manipulation / bots.** Anonymous voting is the whole point, but it's also the attack surface. Mitigated with: per-session duplicate-matchup blocking (12h), a 300-votes/10-min rate limit, K-factor decay, and a persistent 20% market anchor after a ranking matures. A determined attacker can still rotate visit sessions; add IP-based rate limiting or a lightweight CAPTCHA if abuse appears.
 - **Cold-start rankings.** A freshly-seeded category has thin data; early votes will swing ratings hard (by design — that's what the higher K-factor at low comparison-counts is for) and the "ADP Δ" column will look noisy until each player has ~10+ votes. Consider seeding with a synthetic round of votes derived from ADP order itself, or just message "still calibrating" under ~10 comparisons.
 - **Overall-category positional bias.** Restricting Overall to QB/RB/WR/TE avoids the "elite RB vs. kicker" problem, but it also means Overall is really "skill-position overall" — if users expect K/DST in there too, that's a product call to revisit, not a bug.
 - **Trade Vote has no player-value guardrails.** Nothing stops someone submitting a joke or wildly lopsided trade — that's arguably fine (Fair Trade voting is the whole point), but the "Most Controversial" sort could get gamed by planting a fake close vote if trade-vote rate limiting is too loose. Current limit is 100 trade-votes/session/10 min; tune down if abused.

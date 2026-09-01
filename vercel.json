@@ -3,6 +3,10 @@
     {
       "path": "/api/sync-players",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/sync-rankings",
+      "schedule": "15 8 * * *"
     }
   ]
 }

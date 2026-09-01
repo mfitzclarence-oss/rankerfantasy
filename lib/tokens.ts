@@ -1,10 +1,8 @@
 export const UNLOCK_REQUIREMENTS = {
-  qb: 2,
-  rb: 2,
-  wr: 2,
-  te: 2,
-  k: 2,
-  dst: 2,
+  qb: 3,
+  rb: 3,
+  wr: 3,
+  te: 3,
 } as const;
 
 export const UNLOCK_TOTAL = Object.values(UNLOCK_REQUIREMENTS).reduce((total, required) => total + required, 0);
@@ -36,12 +34,10 @@ export const DEFAULT_UNLOCK_PROGRESS: UnlockProgress = {
 };
 
 export const UNLOCK_STEPS: { category: UnlockCategory; label: string; required: number }[] = [
-  { category: 'qb', label: 'QB', required: 2 },
-  { category: 'rb', label: 'RB', required: 2 },
-  { category: 'wr', label: 'WR', required: 2 },
-  { category: 'te', label: 'TE', required: 2 },
-  { category: 'k', label: 'K', required: 2 },
-  { category: 'dst', label: 'D/ST', required: 2 },
+  { category: 'qb', label: 'QB', required: 3 },
+  { category: 'rb', label: 'RB', required: 3 },
+  { category: 'wr', label: 'WR', required: 3 },
+  { category: 'te', label: 'TE', required: 3 },
 ];
 
 export function votesForCategory(progress: UnlockProgress, category: UnlockCategory): number {

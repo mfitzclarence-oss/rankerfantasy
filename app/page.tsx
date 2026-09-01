@@ -92,9 +92,9 @@ export default async function HomePage() {
       <section className="mx-3 rounded-[1.75rem] border border-ink-700 bg-ink-900/55 py-16 sm:mx-5">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <h2 className="mb-6 text-center font-display text-3xl font-black tracking-tight text-white sm:text-4xl">Vote by Position</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
-              ['QB', 'qb'], ['RB', 'rb'], ['WR', 'wr'], ['TE', 'te'], ['K', 'k'], ['D/ST', 'dst'],
+              ['QB', 'qb'], ['RB', 'rb'], ['WR', 'wr'], ['TE', 'te'],
             ].map(([label, slug]) => (
               <Link
                 key={slug}

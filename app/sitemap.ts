@@ -20,7 +20,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const supabase = createServerSupabaseClient();
-    const { data: players } = await supabase.from('players').select('slug, updated_at').eq('fantasy_relevant', true).limit(1000);
+    const { data: players } = await supabase
+      .from('players')
+      .select('slug, updated_at')
+      .eq('fantasy_relevant', true)
+      .in('position', ['QB', 'RB', 'WR', 'TE'])
+      .limit(1000);
     const { data: trades } = await supabase.from('trades').select('id, created_at').eq('status', 'open').limit(1000);
 
     const playerRoutes: MetadataRoute.Sitemap = (players ?? []).map((p) => ({

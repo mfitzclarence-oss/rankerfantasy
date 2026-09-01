@@ -34,7 +34,7 @@ export default async function RankingsPage({ searchParams }: { searchParams: { l
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-accent-bright">Live Community Data</p>
       <h1 className="page-title mt-2">Community Rankings</h1>
-      <p className="mx-auto mt-3 max-w-2xl text-center text-white/50">Started from current ESPN PPR ADP and updated by every community vote. Ratings are out of 100, and only the current No. 1 receives 100.</p>
+      <p className="mx-auto mt-3 max-w-2xl text-center text-white/50">Ratings are out of 100 and update as the community votes. Only the current No. 1 receives 100.</p>
 
       <TokenGate>
         <div className="mt-7 flex flex-col items-center gap-4">

@@ -66,10 +66,10 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
           <span className="text-2xl" aria-hidden>🔒</span>
           <h2 className="mt-2 font-display text-xl font-bold text-white">Complete 12 guided votes</h2>
           <p className="mt-2 text-sm text-white/60">
-            We&apos;ll take you through two matchups at every position. Rankings and Trade Vote unlock after the twelfth vote.
+            We&apos;ll take you through three QB, RB, WR and TE matchups. Rankings and Trade Vote unlock after vote 12, and the guided run resets on your next visit.
           </p>
 
-          <div className="mt-4 grid grid-cols-3 gap-2">
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {UNLOCK_STEPS.map((step) => {
               const votes = Math.min(votesForCategory(progress, step.category), step.required);
               const complete = votes >= step.required;

@@ -2,21 +2,21 @@
 
 /**
  * Anonymous session identity. Every browser gets a random UUID stored in
- * localStorage on first visit. It travels with every vote/trade-vote so we
+ * sessionStorage for the current visit. It travels with every vote/trade-vote so we
  * can enforce "one vote per matchup per session" and rate limits without
  * requiring an account. It is NOT a security boundary (a user can clear
  * storage and get a new one) — it's a friction layer, paired with the
  * server-side rate limiting in the cast_vote/cast_trade_vote RPCs.
  */
-const KEY = 'rf_session_id';
+const KEY = 'rf_visit_session_id';
 
 export function getSessionId(): string {
   if (typeof window === 'undefined') return '';
   try {
-    let id = window.localStorage.getItem(KEY);
+    let id = window.sessionStorage.getItem(KEY);
     if (!id || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) {
       id = crypto.randomUUID();
-      window.localStorage.setItem(KEY, id);
+      window.sessionStorage.setItem(KEY, id);
     }
     return id;
   } catch {
