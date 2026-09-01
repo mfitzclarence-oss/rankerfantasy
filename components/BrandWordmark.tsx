@@ -3,7 +3,7 @@ import clsx from 'clsx';
 type BrandWordmarkProps = {
   className?: string;
   compact?: boolean;
-  prefix?: 'Rank' | 'Style';
+  prefix?: 'Rank' | 'Style' | 'Order';
   descriptor?: string;
 };
 

@@ -70,12 +70,24 @@ function Footer() {
         <div className="flex flex-col items-center">
           <BrandWordmark />
           <p className="mt-3 max-w-sm">Community rankings built by fantasy players, not experts.</p>
-          <BrandWordmark
-            prefix="Style"
-            descriptor="Fantasy Apps"
-            compact
-            className="mt-6 opacity-90"
-          />
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-5 sm:gap-7">
+            <BrandWordmark
+              prefix="Style"
+              descriptor="Fantasy Apps"
+              compact
+              className="opacity-90"
+            />
+            <span aria-hidden="true" className="hidden h-9 w-px bg-ink-700 min-[360px]:block" />
+            <a
+              href="https://www.orderupfantasy.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit OrderUp Fantasy"
+              className="rounded-lg opacity-90 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-ink-950"
+            >
+              <BrandWordmark prefix="Order" descriptor="Fantasy" compact />
+            </a>
+          </div>
         </div>
         <div>
           <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.12em] text-white/70">Explore</p>
