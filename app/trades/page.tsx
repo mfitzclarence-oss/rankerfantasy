@@ -22,22 +22,27 @@ export default async function TradesPage({ searchParams }: { searchParams: { sor
   const trades = await fetchTradeFeed(sort);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <div className="flex flex-col items-center gap-5 text-center">
-        <div className="max-w-xl">
-          <h1 className="page-title">Trade Vote</h1>
-          <p className="mt-3 text-white/50">The community judges every trade.</p>
+    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+      <div className="relative overflow-hidden rounded-3xl border border-accent/20 bg-[radial-gradient(circle_at_top,rgba(47,125,244,0.22),transparent_58%)] px-5 py-9 text-center sm:px-10 sm:py-12">
+        <div aria-hidden="true" className="absolute -left-16 top-8 h-40 w-40 rounded-full bg-accent/10 blur-3xl" />
+        <div aria-hidden="true" className="absolute -right-16 bottom-0 h-40 w-40 rounded-full bg-positive/10 blur-3xl" />
+        <div className="mx-auto max-w-xl">
+          <span className="pill mb-4 !border-accent/30 !bg-accent/10 !text-accent-bright">Community Trade Room</span>
+          <h1 className="page-title">Who won the deal?</h1>
+          <p className="mx-auto mt-4 max-w-lg text-sm leading-6 text-white/60 sm:text-base">
+            Compare both sides, make the call and see whether the fantasy community agrees.
+          </p>
         </div>
-        <Link href="/trades/new" className="btn-primary !px-5 !py-2.5 text-sm">Submit a Trade</Link>
+        <Link href="/trades/new" className="btn-primary relative mt-6 !px-6 !py-3 text-sm">+ Submit Your Trade</Link>
       </div>
 
       <TokenGate>
-        <div className="mt-7 flex flex-wrap justify-center gap-2">
+        <div className="mt-7 flex gap-2 overflow-x-auto pb-1 sm:justify-center">
           {SORTS.map((s) => (
             <Link
               key={s.key}
               href={`/trades?sort=${s.key}` as any}
-              className={`rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+              className={`shrink-0 rounded-full border px-4 py-2 text-xs font-bold transition-colors ${
                 sort === s.key ? 'border-accent bg-accent text-white' : 'border-ink-600 bg-ink-800/60 text-white/60 hover:text-white'
               }`}
             >

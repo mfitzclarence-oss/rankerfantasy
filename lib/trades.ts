@@ -19,7 +19,7 @@ export async function fetchTradeFeed(sort: TradeSort, sessionId?: string): Promi
   const tradeIds = trades.map((t) => t.id);
 
   const [{ data: players }, { data: votes }] = await Promise.all([
-    supabase.from('trade_players').select('trade_id, side, players(full_name, position)').in('trade_id', tradeIds),
+    supabase.from('trade_players').select('trade_id, side, players(full_name, position, team_abbreviation)').in('trade_id', tradeIds),
     supabase.from('trade_votes').select('trade_id, vote, session_id').in('trade_id', tradeIds),
   ]);
 
@@ -87,7 +87,7 @@ export async function fetchTrade(id: string, sessionId?: string): Promise<TradeC
   if (!t) return null;
 
   const [{ data: players }, { data: votes }] = await Promise.all([
-    supabase.from('trade_players').select('side, players(full_name, position)').eq('trade_id', id),
+    supabase.from('trade_players').select('side, players(full_name, position, team_abbreviation)').eq('trade_id', id),
     supabase.from('trade_votes').select('vote, session_id').eq('trade_id', id),
   ]);
 
