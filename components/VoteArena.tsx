@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import { createClient } from '@/lib/supabase/client';
@@ -40,6 +40,7 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
   const [voteCount, setVoteCount] = useState(0);
   const [sessionId, setSessionId] = useState('');
   const [consensus, setConsensus] = useState<Consensus | null>(null);
+  const matchupRef = useRef<HTMLDivElement>(null);
 
   const loadMatchup = useCallback(async () => {
     setLoading(true);
@@ -127,6 +128,22 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, redirectOnLoad]);
 
+  useEffect(() => {
+    if (loading || !matchup || window.innerWidth >= 640) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      const arena = matchupRef.current;
+      if (!arena) return;
+      const bounds = arena.getBoundingClientRect();
+      const visibleBottom = window.innerHeight - 76;
+      if (bounds.top < 82 || bounds.bottom > visibleBottom) {
+        arena.scrollIntoView({ behavior: voteCount > 0 ? 'smooth' : 'auto', block: 'center' });
+      }
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [loading, matchup, voteCount]);
+
   async function loadConsensus(winner: PlayerRow, loser: PlayerRow) {
     const { data, error: consensusError } = await supabase.rpc('get_matchup_consensus', {
       p_category: category,
@@ -207,10 +224,39 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
         <TokenBadge className="mt-3" />
       </div>
 
+      {error && (
+        <div className="card w-full p-6 text-center text-white/70">
+          <p>{error}</p>
+          <button className="btn-secondary mt-4" onClick={loadMatchup}>Try again</button>
+        </div>
+      )}
+
+      {!error && (
+        <div ref={matchupRef} className="grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-stretch gap-2 sm:gap-3">
+          {loading || !matchup ? (
+            <>
+              <CardSkeleton />
+              <div className="flex items-center justify-center">
+                <span className="font-display text-lg font-bold text-white/20">VS</span>
+              </div>
+              <CardSkeleton />
+            </>
+          ) : (
+            <>
+              <PlayerCard size="vote" player={matchup.a} exiting={exiting === 'right' ? 'right' : null} disabled={!!exiting} onClick={() => handlePick('a')} />
+              <div className="flex items-center justify-center">
+                <span className="font-display text-xs font-black text-white/30 sm:text-lg">VS</span>
+              </div>
+              <PlayerCard size="vote" player={matchup.b} exiting={exiting === 'left' ? 'left' : null} disabled={!!exiting} onClick={() => handlePick('b')} />
+            </>
+          )}
+        </div>
+      )}
+
       {consensus && (
         <div
           className={clsx(
-            'w-full rounded-xl border px-4 py-2.5 text-center text-sm font-medium',
+            'w-full rounded-xl border px-4 py-2.5 text-center text-xs font-medium sm:text-sm',
             consensus.totalVotes < MIN_VOTES_FOR_CONSENSUS
               ? 'border-blue/40 bg-blue/10 text-blue'
               : consensus.agree
@@ -223,35 +269,6 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
             : consensus.agree
               ? `You're with the crowd — ${consensus.percent}% of voters also picked ${consensus.winnerName}.`
               : `Bold take — only ${consensus.percent}% of voters agree with you on ${consensus.winnerName}.`}
-        </div>
-      )}
-
-      {error && (
-        <div className="card w-full p-6 text-center text-white/70">
-          <p>{error}</p>
-          <button className="btn-secondary mt-4" onClick={loadMatchup}>Try again</button>
-        </div>
-      )}
-
-      {!error && (
-        <div className="grid w-full grid-cols-1 items-stretch gap-4 sm:grid-cols-[1fr_auto_1fr] sm:gap-3">
-          {loading || !matchup ? (
-            <>
-              <CardSkeleton />
-              <div className="hidden items-center justify-center sm:flex">
-                <span className="font-display text-lg font-bold text-white/20">VS</span>
-              </div>
-              <CardSkeleton />
-            </>
-          ) : (
-            <>
-              <PlayerCard player={matchup.a} exiting={exiting === 'right' ? 'right' : null} disabled={!!exiting} onClick={() => handlePick('a')} />
-              <div className="flex items-center justify-center py-1 sm:py-0">
-                <span className="font-display text-lg font-bold text-white/25">VS</span>
-              </div>
-              <PlayerCard player={matchup.b} exiting={exiting === 'left' ? 'left' : null} disabled={!!exiting} onClick={() => handlePick('b')} />
-            </>
-          )}
         </div>
       )}
 
@@ -268,8 +285,8 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
 
 function CardSkeleton() {
   return (
-    <div className="card flex animate-pulse flex-col items-center gap-4 p-6 sm:p-8">
-      <div className="h-9 w-4/5 rounded bg-ink-700 sm:h-12" />
+    <div className="card flex min-h-[168px] animate-pulse flex-col items-center justify-center gap-4 p-3 sm:min-h-[270px] sm:p-8">
+      <div className="h-7 w-4/5 rounded bg-ink-700 sm:h-12" />
       <div className="h-4 w-2/5 rounded bg-ink-700" />
     </div>
   );

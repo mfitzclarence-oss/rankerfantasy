@@ -12,7 +12,7 @@ interface Props {
   onClick?: () => void;
   disabled?: boolean;
   exiting?: 'left' | 'right' | null;
-  size?: 'lg' | 'md';
+  size?: 'lg' | 'md' | 'vote';
 }
 
 export function PlayerCard({ player, rating, rank, onClick, disabled, exiting, size = 'lg' }: Props) {
@@ -31,7 +31,9 @@ export function PlayerCard({ player, rating, rank, onClick, disabled, exiting, s
       }}
       className={clsx(
         'group relative flex w-full flex-col items-center justify-center overflow-hidden rounded-2xl border-2 text-center transition-transform',
-        size === 'lg' ? 'min-h-[190px] gap-3 p-5 sm:min-h-[270px] sm:gap-5 sm:p-8' : 'min-h-[150px] gap-2 p-4',
+        size === 'lg' && 'min-h-[190px] gap-3 p-5 sm:min-h-[270px] sm:gap-5 sm:p-8',
+        size === 'md' && 'min-h-[150px] gap-2 p-4',
+        size === 'vote' && 'min-h-[168px] gap-2 p-3 sm:min-h-[270px] sm:gap-5 sm:p-8',
         !disabled && 'hover:-translate-y-0.5 hover:brightness-110 active:scale-[0.97]',
         exiting === 'left' && 'animate-slide-out-left',
         exiting === 'right' && 'animate-slide-out-right'
@@ -42,15 +44,30 @@ export function PlayerCard({ player, rating, rank, onClick, disabled, exiting, s
       </div>
 
       <div className="relative min-w-0">
-        <p className={clsx('text-balance font-display font-black uppercase leading-[0.95] text-white', size === 'lg' ? 'text-4xl sm:text-5xl' : 'text-xl sm:text-2xl')}>
+        <p className={clsx(
+          'text-balance font-display font-black uppercase leading-[0.95] text-white',
+          size === 'lg' && 'text-4xl sm:text-5xl',
+          size === 'md' && 'text-xl sm:text-2xl',
+          size === 'vote' && 'text-lg sm:text-5xl'
+        )}>
           {player.full_name}
         </p>
         <div className="mt-4 flex flex-wrap items-end justify-center gap-x-4 gap-y-2 text-white sm:mt-6">
-          <span className={clsx('font-display font-black uppercase leading-[0.75] drop-shadow-lg', size === 'lg' ? 'text-6xl sm:text-8xl' : 'text-4xl')}>
+          <span className={clsx(
+            'font-display font-black uppercase leading-[0.75] drop-shadow-lg',
+            size === 'lg' && 'text-6xl sm:text-8xl',
+            size === 'md' && 'text-4xl',
+            size === 'vote' && 'text-3xl sm:text-8xl'
+          )}>
             {player.position}
           </span>
           <span className="flex flex-col items-start text-left">
-            <span className={clsx('font-display font-black uppercase leading-none tracking-wide', size === 'lg' ? 'text-2xl sm:text-4xl' : 'text-xl')}>
+            <span className={clsx(
+              'font-display font-black uppercase leading-none tracking-wide',
+              size === 'lg' && 'text-2xl sm:text-4xl',
+              size === 'md' && 'text-xl',
+              size === 'vote' && 'text-base sm:text-4xl'
+            )}>
               {player.team_abbreviation}
             </span>
             <span className="mt-1 text-xs font-bold uppercase tracking-wider text-white/70 sm:text-sm">{byeLabel(player.bye_week)}</span>
