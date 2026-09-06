@@ -21,13 +21,13 @@ export function RankingsFilterBar() {
   }
 
   return (
-    <div className="flex justify-center gap-2">
+    <div className="flex justify-center gap-1.5">
       {FILTERS.map((f) => (
         <button
           key={f.key}
           onClick={() => setFilter(f.key)}
           className={clsx(
-            'rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-colors',
+            'rounded-full border px-3 py-1 text-[11px] font-semibold transition-colors',
             active === f.key
               ? 'border-accent bg-accent text-white'
               : 'border-ink-600 bg-ink-800/60 text-white/60 hover:text-white'

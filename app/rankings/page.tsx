@@ -30,19 +30,19 @@ export default async function RankingsPage({ searchParams }: { searchParams: { l
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-4xl px-2.5 py-5 sm:px-6 sm:py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-accent-bright">Live Community Data</p>
-      <h1 className="page-title mt-2">Community Rankings</h1>
-      <p className="mx-auto mt-3 max-w-2xl text-center text-white/50">Ratings are out of 100 and update as the community votes. Only the current No. 1 receives 100.</p>
+      <p className="hidden text-center text-[10px] font-bold uppercase tracking-[0.2em] text-accent-bright sm:block">Live Community Data</p>
+      <h1 className="page-title mt-1 !text-2xl sm:!text-4xl">Community Rankings</h1>
+      <p className="mx-auto mt-2 max-w-2xl text-center text-xs text-white/50 sm:text-sm">Live ratings out of 100. Only No. 1 receives 100.</p>
 
       <TokenGate>
-        <div className="mt-7 flex flex-col items-center gap-4">
+        <div className="mt-4 flex flex-col items-center gap-2.5 sm:mt-5">
           <CategoryTabs active="overall" basePath="/rankings" />
           <RankingsFilterBar />
         </div>
 
-        <div className="mt-6">
+        <div className="mt-3 sm:mt-4">
           <RankingsTable rows={rows} />
         </div>
       </TokenGate>

@@ -26,7 +26,7 @@ export function RankingsTable({ rows }: { rows: RankingRow[] }) {
 
   return (
     <div className="card overflow-hidden">
-      <div className="hidden grid-cols-[1fr_5rem_6rem_5rem_7rem_7rem] gap-2 border-b border-ink-700 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-white/35 sm:grid">
+      <div className="hidden grid-cols-[1fr_4rem_5rem_4rem_6rem_6rem] gap-2 border-b border-ink-700 px-3 py-2 text-[10px] font-semibold uppercase tracking-wide text-white/40 sm:grid">
         <span>Player</span>
         <span className="text-right">Rating</span>
         <span className="text-right">Record</span>
@@ -47,34 +47,34 @@ export function RankingsTable({ rows }: { rows: RankingRow[] }) {
                 backgroundColor: primary,
                 backgroundImage: `linear-gradient(100deg, rgba(4,8,18,0.42), rgba(4,8,18,0.78)), linear-gradient(120deg, ${primary} 0%, ${primary} 82%, ${secondary} 82%, ${secondary} 100%)`,
               }}
-              className="grid grid-cols-[1fr_auto_auto] items-center gap-3 border-b px-4 py-3.5 transition-[filter,transform] hover:brightness-110 active:scale-[0.995] sm:grid-cols-[1fr_5rem_6rem_5rem_7rem_7rem] sm:gap-2 sm:px-4"
+              className="grid min-h-14 grid-cols-[minmax(0,1fr)_2.5rem_4.75rem] items-center gap-1.5 border-b px-2.5 py-1.5 transition-[filter,transform] hover:brightness-110 active:scale-[0.995] sm:min-h-0 sm:grid-cols-[1fr_4rem_5rem_4rem_6rem_6rem] sm:gap-2 sm:px-3 sm:py-2"
             >
               <div className="min-w-0">
                 <div className="min-w-0">
-                  <p className="truncate font-display text-lg font-black uppercase text-white sm:text-xl">{row.full_name}</p>
-                  <div className="mt-1 flex items-center gap-2 text-white">
-                    <span className="font-display text-lg font-black uppercase leading-none">{row.position}</span>
-                    <span className="h-4 w-px bg-white/30" />
-                    <span className="font-display text-base font-black uppercase leading-none tracking-wide sm:text-lg">{row.team_abbreviation}</span>
+                  <p className="truncate font-display text-sm font-black uppercase leading-tight text-white sm:text-base">{row.full_name}</p>
+                  <div className="mt-0.5 flex min-w-0 items-center gap-1.5 text-[10px] font-bold uppercase leading-none text-white/70 sm:text-xs">
+                    <span className="text-white">{row.position}</span>
+                    <span className="h-3 w-px bg-white/25" />
+                    <span className="text-white">{row.team_abbreviation}</span>
+                    <span className="text-white/35">•</span>
+                    <span className="truncate normal-case">{row.wins}-{row.losses} · {row.comparisons} vote{row.comparisons === 1 ? '' : 's'}</span>
                   </div>
-                  <p className="mt-1 text-[11px] font-medium text-white/65 sm:hidden">{row.wins}-{row.losses} record &middot; {row.comparisons} votes</p>
                 </div>
               </div>
 
               <span className="text-right">
-                <span className="block font-display text-lg font-bold text-accent-bright">{displayRating}</span>
-                <span className="block text-[10px] uppercase tracking-wide text-white/30 sm:hidden">Rating</span>
+                <span className="block font-display text-base font-bold leading-none text-accent-bright sm:text-sm">{displayRating}</span>
+                <span className="mt-0.5 block text-[8px] uppercase tracking-wide text-white/35 sm:hidden">Rating</span>
               </span>
-              <span className="hidden text-right text-sm text-white/50 sm:block">
+              <span className="hidden text-right text-xs text-white/55 sm:block">
                 {row.wins}-{row.losses}
               </span>
-              <span className="hidden text-right text-sm text-white/50 sm:block">{row.comparisons}</span>
-              <span className="hidden text-right text-sm text-white/65 sm:block">{row.position_rank ? `#${row.position_rank}` : '—'}</span>
+              <span className="hidden text-right text-xs text-white/55 sm:block">{row.comparisons}</span>
+              <span className="hidden text-right text-xs text-white/70 sm:block">{row.position_rank ? `#${row.position_rank}` : '—'}</span>
               <span className="text-right">
-                <span className="block text-sm font-bold text-white/65 sm:text-sm">{row.overall_rank ? `#${row.overall_rank}` : '—'}</span>
-                <span className="block text-[10px] uppercase tracking-wide text-white/30 sm:hidden">
-                  Pos {row.position_rank ? `#${row.position_rank}` : '—'} &middot; Overall {row.overall_rank ? `#${row.overall_rank}` : '—'}
-                </span>
+                <span className="hidden text-xs font-bold text-white/75 sm:block">{row.overall_rank ? `#${row.overall_rank}` : '—'}</span>
+                <span className="block whitespace-nowrap text-[9px] font-bold uppercase leading-tight text-white/70 sm:hidden">Pos {row.position_rank ? `#${row.position_rank}` : '—'}</span>
+                <span className="block whitespace-nowrap text-[9px] font-bold uppercase leading-tight text-white/45 sm:hidden">Overall {row.overall_rank ? `#${row.overall_rank}` : '—'}</span>
               </span>
             </Link>
           );
