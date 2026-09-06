@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${manrope.variable} ${outfit.variable}`}>
       <body className="flex min-h-dvh flex-col bg-ink-950 font-sans antialiased">
         <Nav />
-        <main className="flex-1 pb-20 md:pb-0">{children}</main>
+        <main className="flex-1 pb-28 md:pb-0">{children}</main>
         <Footer />
         <BottomNav />
         <Analytics />
@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 function Footer() {
   return (
-    <footer className="border-t border-ink-800 py-10 pb-24 md:pb-10">
+    <footer className="border-t border-ink-800 py-10 pb-32 md:pb-10">
       <div className="mx-auto grid max-w-6xl gap-8 px-5 text-center text-sm text-white/45 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
         <div className="flex flex-col items-center">
           <BrandWordmark />

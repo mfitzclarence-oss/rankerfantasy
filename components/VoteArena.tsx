@@ -138,20 +138,20 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
   }, [category, redirectOnLoad]);
 
   useEffect(() => {
-    if (loading || !matchup || window.innerWidth >= 640) return;
+    if (!redirectOnLoad || loading || !matchup || window.innerWidth >= 640) return;
 
     const frame = window.requestAnimationFrame(() => {
       const arena = matchupRef.current;
       if (!arena) return;
       const bounds = arena.getBoundingClientRect();
-      const visibleBottom = window.innerHeight - 76;
+      const visibleBottom = window.innerHeight - 104;
       if (bounds.top < 82 || bounds.bottom > visibleBottom) {
         arena.scrollIntoView({ behavior: voteCount > 0 ? 'smooth' : 'auto', block: 'center' });
       }
     });
 
     return () => window.cancelAnimationFrame(frame);
-  }, [loading, matchup, voteCount]);
+  }, [loading, matchup, redirectOnLoad, voteCount]);
 
   async function loadConsensus(winner: PlayerRow, loser: PlayerRow) {
     const { data, error: consensusError } = await supabase.rpc('get_matchup_consensus', {

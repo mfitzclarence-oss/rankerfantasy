@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
 const ITEMS = [
-  { href: '/', label: 'Home', icon: HomeIcon },
   { href: '/vote', label: 'Vote', icon: VoteIcon },
   { href: '/rankings', label: 'Rankings', icon: RankIcon },
   { href: '/trades', label: 'Trades', icon: TradeIcon },
@@ -17,8 +16,11 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-ink-700 bg-ink-950/95 backdrop-blur md:hidden">
-      <div className="mx-auto flex max-w-6xl items-stretch justify-around px-2 pb-[env(safe-area-inset-bottom)]">
+    <nav
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 overflow-hidden rounded-2xl border border-white/10 bg-ink-950/90 shadow-[0_20px_55px_-18px_rgba(0,0,0,0.95),0_0_35px_-20px_rgba(47,125,244,0.9)] backdrop-blur-xl md:hidden"
+      aria-label="Primary navigation"
+    >
+      <div className="mx-auto flex max-w-md items-stretch justify-around px-1">
         {ITEMS.map((item) => {
           const active = item.href === '/' ? pathname === '/' : pathname?.startsWith(item.href);
           const Icon = item.icon;
@@ -27,10 +29,11 @@ export function BottomNav() {
               key={item.href}
               href={item.href as any}
               className={clsx(
-                'flex min-w-0 flex-1 flex-col items-center gap-1 py-2.5 text-[10px] font-medium transition-colors',
-                active ? 'text-accent-bright' : 'text-white/50'
+                'relative flex min-h-16 min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl px-0.5 py-2 text-[9px] font-bold transition-[color,background-color,transform] active:scale-95 min-[390px]:text-[10px]',
+                active ? 'bg-accent/12 text-accent-bright' : 'text-white/45 hover:text-white/75'
               )}
             >
+              {active ? <span aria-hidden="true" className="absolute inset-x-3 top-0 h-0.5 rounded-full bg-accent-bright shadow-glow" /> : null}
               <Icon active={!!active} />
               {item.label}
             </Link>
@@ -38,14 +41,6 @@ export function BottomNav() {
         })}
       </div>
     </nav>
-  );
-}
-
-function HomeIcon({ active }: { active: boolean }) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.4 : 1.8}>
-      <path d="m4 10 8-6 8 6v9a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-9Z" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   );
 }
 
