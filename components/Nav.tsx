@@ -5,6 +5,7 @@ const LINKS = [
   { href: '/vote', label: 'Vote' },
   { href: '/rankings', label: 'Rankings' },
   { href: '/trades', label: 'Trades' },
+  { href: '/teams', label: 'Rate Teams' },
 ];
 
 export function Nav() {

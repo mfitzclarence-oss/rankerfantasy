@@ -10,6 +10,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/vote`, changeFrequency: 'hourly', priority: 0.9 },
     { url: `${SITE_URL}/trades`, changeFrequency: 'hourly', priority: 0.8 },
     { url: `${SITE_URL}/trades/new`, changeFrequency: 'weekly', priority: 0.5 },
+    { url: `${SITE_URL}/teams`, changeFrequency: 'hourly', priority: 0.8 },
+    { url: `${SITE_URL}/teams/new`, changeFrequency: 'weekly', priority: 0.5 },
     { url: `${SITE_URL}/how-it-works`, changeFrequency: 'monthly', priority: 0.3 },
     ...CATEGORIES.map((c) => ({
       url: `${SITE_URL}/rankings${c === 'overall' ? '' : `/${c}`}`,

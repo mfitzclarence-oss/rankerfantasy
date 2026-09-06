@@ -9,6 +9,7 @@ const ITEMS = [
   { href: '/vote', label: 'Vote', icon: VoteIcon },
   { href: '/rankings', label: 'Rankings', icon: RankIcon },
   { href: '/trades', label: 'Trades', icon: TradeIcon },
+  { href: '/teams', label: 'Teams', icon: TeamIcon },
   { href: '/actions', label: 'My Actions', icon: ActionsIcon },
 ];
 
@@ -26,7 +27,7 @@ export function BottomNav() {
               key={item.href}
               href={item.href as any}
               className={clsx(
-                'flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors',
+                'flex min-w-0 flex-1 flex-col items-center gap-1 py-2.5 text-[10px] font-medium transition-colors',
                 active ? 'text-accent-bright' : 'text-white/50'
               )}
             >
@@ -67,6 +68,15 @@ function TradeIcon({ active }: { active: boolean }) {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.4 : 1.8}>
       <path d="M7 8h13l-3-3M17 16H4l3 3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function TeamIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.4 : 1.8}>
+      <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM16.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+      <path d="M2.5 20c.7-4 2.8-6 5.5-6s4.8 2 5.5 6M13 14.3c1-.8 2.1-1.3 3.5-1.3 2.6 0 4.3 2.3 5 7" strokeLinecap="round" />
     </svg>
   );
 }

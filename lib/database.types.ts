@@ -10,6 +10,7 @@ export type LeagueSize = '8' | '10' | '12' | '14+';
 export type TradeVoteChoice = 'team_a' | 'fair' | 'team_b';
 export type TradeStatus = 'open' | 'closed';
 export type TradeSide = 'A' | 'B';
+export type CommunityTeamStatus = 'open' | 'closed';
 
 export interface PlayerRow {
   id: string;
@@ -85,6 +86,34 @@ export interface TradeVoteRow {
   created_at: string;
 }
 
+export interface CommunityTeamRow {
+  id: string;
+  user_id: string | null;
+  session_id: string;
+  team_name: string;
+  scoring: TradeScoring;
+  league_size: LeagueSize;
+  status: CommunityTeamStatus;
+  created_at: string;
+}
+
+export interface CommunityTeamPlayerRow {
+  id: string;
+  team_id: string;
+  player_id: string;
+  sort_order: number;
+}
+
+export interface CommunityTeamRatingRow {
+  id: string;
+  team_id: string;
+  session_id: string;
+  user_id: string | null;
+  score: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Database {
   public: {
     Tables: {
@@ -94,6 +123,9 @@ export interface Database {
       trades: { Row: TradeRow; Insert: Partial<TradeRow>; Update: Partial<TradeRow> };
       trade_players: { Row: TradePlayerRow; Insert: Partial<TradePlayerRow>; Update: Partial<TradePlayerRow> };
       trade_votes: { Row: TradeVoteRow; Insert: Partial<TradeVoteRow>; Update: Partial<TradeVoteRow> };
+      community_teams: { Row: CommunityTeamRow; Insert: Partial<CommunityTeamRow>; Update: Partial<CommunityTeamRow> };
+      community_team_players: { Row: CommunityTeamPlayerRow; Insert: Partial<CommunityTeamPlayerRow>; Update: Partial<CommunityTeamPlayerRow> };
+      community_team_ratings: { Row: CommunityTeamRatingRow; Insert: Partial<CommunityTeamRatingRow>; Update: Partial<CommunityTeamRatingRow> };
     };
     Views: Record<string, never>;
     Functions: {
@@ -118,6 +150,20 @@ export interface Database {
       get_matchup_consensus: {
         Args: { p_category: Category; p_player_a_id: string; p_player_b_id: string };
         Returns: { player_id: string; vote_count: number }[];
+      };
+      create_community_team: {
+        Args: {
+          p_session_id: string;
+          p_team_name: string;
+          p_scoring: TradeScoring;
+          p_league_size: LeagueSize;
+          p_player_ids: string[];
+        };
+        Returns: string;
+      };
+      cast_community_team_rating: {
+        Args: { p_team_id: string; p_session_id: string; p_score: number };
+        Returns: { average_score: number; rating_count: number }[];
       };
     };
   };

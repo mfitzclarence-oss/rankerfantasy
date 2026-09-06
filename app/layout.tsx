@@ -94,6 +94,7 @@ function Footer() {
           <div className="flex flex-col gap-2.5">
             <a href="/rankings" className="hover:text-white">Rankings</a>
             <a href="/trades" className="hover:text-white">Trade Vote</a>
+            <a href="/teams" className="hover:text-white">Rate Teams</a>
             <a href="https://www.orderupfantasy.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white">Order Up Fantasy ↗</a>
           </div>
         </div>
