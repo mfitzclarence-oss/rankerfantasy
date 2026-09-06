@@ -31,6 +31,24 @@ const SCORING_LABEL: Record<string, string> = {
   ppr: 'PPR',
 };
 
+const TEAM_GRADES = [
+  { score: 1, label: 'F' },
+  { score: 2, label: 'D' },
+  { score: 3, label: 'C' },
+  { score: 4, label: 'C+' },
+  { score: 5, label: 'B−' },
+  { score: 6, label: 'B' },
+  { score: 7, label: 'B+' },
+  { score: 8, label: 'A−' },
+  { score: 9, label: 'A' },
+  { score: 10, label: 'A+' },
+] as const;
+
+function teamGrade(score: number): string {
+  const roundedScore = Math.max(1, Math.min(10, Math.round(score)));
+  return TEAM_GRADES[roundedScore - 1].label;
+}
+
 export function CommunityTeamCard({ team }: { team: CommunityTeamCardData }) {
   const [supabase] = useState(createClient);
   const [averageScore, setAverageScore] = useState(team.averageScore);
@@ -91,9 +109,9 @@ export function CommunityTeamCard({ team }: { team: CommunityTeamCardData }) {
         </div>
         <div className="shrink-0 rounded-2xl border border-accent/30 bg-accent/10 px-3 py-2 text-center">
           <strong className="block font-display text-2xl font-black leading-none text-accent-bright">
-            {ratingCount ? averageScore.toFixed(1) : '—'}
+            {ratingCount ? teamGrade(averageScore) : '—'}
           </strong>
-          <span className="mt-1 block text-[10px] font-bold uppercase tracking-wide text-white/45">out of 10</span>
+          <span className="mt-1 block text-[10px] font-bold uppercase tracking-wide text-white/45">team grade</span>
         </div>
       </div>
 
@@ -122,18 +140,18 @@ export function CommunityTeamCard({ team }: { team: CommunityTeamCardData }) {
       <div className="mt-5 rounded-xl border border-white/[0.06] bg-black/20 p-3">
         <div className="flex items-center justify-between gap-3">
           <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-white/65">
-            {myScore ? `Your rating: ${myScore}/10` : 'Rate this team'}
+            {myScore ? `Your grade: ${teamGrade(myScore)}` : 'Grade this team'}
           </p>
           <span className="text-[11px] font-bold text-white/35">{ratingCount} {ratingCount === 1 ? 'rating' : 'ratings'}</span>
         </div>
         <div className="mt-2 grid grid-cols-5 gap-1.5 sm:grid-cols-10">
-          {Array.from({ length: 10 }, (_, index) => index + 1).map((score) => (
+          {TEAM_GRADES.map(({ score, label }) => (
             <button
               key={score}
               type="button"
               disabled={voting}
               onClick={() => rate(score)}
-              aria-label={`Rate ${team.teamName} ${score} out of 10`}
+              aria-label={`Grade ${team.teamName} ${label}`}
               className={clsx(
                 'aspect-square rounded-lg border text-xs font-black transition-colors disabled:cursor-wait sm:text-sm',
                 myScore === score
@@ -141,7 +159,7 @@ export function CommunityTeamCard({ team }: { team: CommunityTeamCardData }) {
                   : 'border-ink-600 bg-ink-800 text-white/60 hover:border-accent hover:text-white'
               )}
             >
-              {score}
+              {label}
             </button>
           ))}
         </div>

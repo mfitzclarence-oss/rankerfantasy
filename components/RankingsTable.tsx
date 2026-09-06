@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { gradeFromRating, ratingOutOf100 } from '@/lib/ratingScore';
+import { ratingOutOf100 } from '@/lib/ratingScore';
 import { teamColor } from '@/lib/teamColors';
 
 export interface RankingRow {
@@ -41,7 +41,7 @@ export function RankingsTable({ rows }: { rows: RankingRow[] }) {
     <div className="card overflow-hidden">
       <div className="hidden grid-cols-[1fr_4rem_5rem_4rem_6rem_6rem] gap-2 border-b border-ink-700 px-3 py-2 text-[10px] font-semibold uppercase tracking-wide text-white/40 sm:grid">
         <span>Player</span>
-        <span className="text-right">Grade</span>
+        <span className="text-right">Rating</span>
         <span className="text-right">Record</span>
         <span className="text-right">Votes</span>
         <span className="text-right">Position Ranking</span>
@@ -50,7 +50,6 @@ export function RankingsTable({ rows }: { rows: RankingRow[] }) {
       <div>
         {rows.map((row, index) => {
           const displayRating = ratingOutOf100(row.rating, leaderRating, row.rank);
-          const grade = gradeFromRating(displayRating);
           const { primary, secondary } = teamColor(row.team_abbreviation);
           const tier = tierForRating(displayRating);
           const previousRow = rows[index - 1];
@@ -93,8 +92,8 @@ export function RankingsTable({ rows }: { rows: RankingRow[] }) {
                 </div>
 
                 <span className="text-right">
-                  <span className="block font-display text-base font-black leading-none text-accent-bright sm:text-sm">{grade}</span>
-                  <span className="mt-0.5 block text-[8px] uppercase tracking-wide text-white/35 sm:hidden">Grade</span>
+                  <span className="block font-display text-base font-black leading-none text-accent-bright sm:text-sm">{displayRating}</span>
+                  <span className="mt-0.5 block text-[8px] uppercase tracking-wide text-white/35 sm:hidden">Rating</span>
                 </span>
                 <span className="hidden text-right text-xs text-white/55 sm:block">
                   {row.wins}-{row.losses}

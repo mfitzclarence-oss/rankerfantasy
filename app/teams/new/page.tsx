@@ -4,7 +4,7 @@ import { CommunityTeamBuilder } from '@/components/CommunityTeamBuilder';
 
 export const metadata: Metadata = {
   title: 'Add Your Fantasy Team',
-  description: 'Add your fantasy football roster and let the RankUp community rate it out of 10.',
+  description: 'Add your fantasy football roster and let the RankUp community grade it from A+ to F.',
   alternates: { canonical: '/teams/new' },
 };
 
@@ -16,7 +16,7 @@ export default function NewCommunityTeamPage() {
         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-accent-bright">Community rating</p>
         <h1 className="page-title mt-2">Put Your Team Up</h1>
         <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-white/55">
-          Add your roster and league settings. Other fantasy players will score the team from 1 to 10.
+          Add your roster and league settings. Other fantasy players will grade the team from A+ to F.
         </p>
       </div>
       <div className="mt-7">

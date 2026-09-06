@@ -8,7 +8,7 @@ export const revalidate = 15;
 
 export const metadata: Metadata = {
   title: 'Rate Fantasy Teams',
-  description: 'Submit your fantasy football roster and get a community rating out of 10.',
+  description: 'Submit your fantasy football roster and get an A+ to F community grade.',
   alternates: { canonical: '/teams' },
 };
 
@@ -28,7 +28,7 @@ export default async function TeamsPage({ searchParams }: { searchParams: { sort
         <span className="pill mb-4 !border-accent/30 !bg-accent/10 !text-accent-bright">Community Team Check</span>
         <h1 className="page-title">Rate My Team</h1>
         <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-white/60 sm:text-base">
-          Put your roster up, add your league settings and see how the fantasy community scores it out of 10.
+          Put your roster up, add your league settings and see the A+ to F grade the fantasy community gives it.
         </p>
         <Link href={'/teams/new' as any} className="btn-primary mt-6 text-sm">+ Add Your Team</Link>
       </section>

@@ -34,7 +34,7 @@ export default async function RankingsPage({ searchParams }: { searchParams: { l
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <p className="hidden text-center text-[10px] font-bold uppercase tracking-[0.2em] text-accent-bright sm:block">Live Community Data</p>
       <h1 className="page-title mt-1 !text-2xl sm:!text-4xl">Community Rankings</h1>
-      <p className="mx-auto mt-2 max-w-2xl text-center text-xs text-white/50 sm:text-sm">Live community grades from A+ to F, grouped into draft tiers.</p>
+      <p className="mx-auto mt-2 max-w-2xl text-center text-xs text-white/50 sm:text-sm">Live ratings out of 100, grouped into clear draft tiers.</p>
 
       <TokenGate>
         <div className="mt-4 flex flex-col items-center gap-2.5 sm:mt-5">
