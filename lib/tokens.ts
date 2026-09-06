@@ -34,10 +34,10 @@ export const DEFAULT_UNLOCK_PROGRESS: UnlockProgress = {
 };
 
 export const UNLOCK_STEPS: { category: UnlockCategory; label: string; required: number }[] = [
-  { category: 'qb', label: 'QB', required: 3 },
-  { category: 'rb', label: 'RB', required: 3 },
-  { category: 'wr', label: 'WR', required: 3 },
-  { category: 'te', label: 'TE', required: 3 },
+  { category: 'qb', label: 'QB', required: UNLOCK_REQUIREMENTS.qb },
+  { category: 'rb', label: 'RB', required: UNLOCK_REQUIREMENTS.rb },
+  { category: 'wr', label: 'WR', required: UNLOCK_REQUIREMENTS.wr },
+  { category: 'te', label: 'TE', required: UNLOCK_REQUIREMENTS.te },
 ];
 
 export function votesForCategory(progress: UnlockProgress, category: UnlockCategory): number {
