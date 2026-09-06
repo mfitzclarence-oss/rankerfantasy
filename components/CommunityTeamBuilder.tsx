@@ -6,16 +6,17 @@ import { PlayerSearch } from '@/components/PlayerSearch';
 import { createClient } from '@/lib/supabase/client';
 import { getSessionId } from '@/lib/session';
 import { teamColor } from '@/lib/teamColors';
-import type { LeagueSize, PlayerRow, TradeScoring } from '@/lib/database.types';
+import type { LeagueSize, PlayerRow, RosterSlot, TradeScoring } from '@/lib/database.types';
 
 const MIN_PLAYERS = 5;
 const MAX_PLAYERS = 24;
+type SelectedPlayer = { player: PlayerRow; rosterSlot: RosterSlot };
 
 export function CommunityTeamBuilder() {
   const router = useRouter();
   const [supabase] = useState(createClient);
   const [teamName, setTeamName] = useState('');
-  const [players, setPlayers] = useState<PlayerRow[]>([]);
+  const [players, setPlayers] = useState<SelectedPlayer[]>([]);
   const [scoring, setScoring] = useState<TradeScoring>('half_ppr');
   const [leagueSize, setLeagueSize] = useState<LeagueSize>('12');
   const [submitting, setSubmitting] = useState(false);
@@ -25,7 +26,14 @@ export function CommunityTeamBuilder() {
 
   function addPlayer(player: PlayerRow) {
     if (players.length >= MAX_PLAYERS) return;
-    setPlayers((current) => [...current, player]);
+    setPlayers((current) => [...current, { player, rosterSlot: player.position as RosterSlot }]);
+  }
+
+  function slotOptions(player: PlayerRow): RosterSlot[] {
+    if (player.position === 'RB' || player.position === 'WR' || player.position === 'TE') {
+      return [player.position, 'FLEX', 'BENCH'];
+    }
+    return [player.position as RosterSlot, 'BENCH'];
   }
 
   async function submit() {
@@ -38,7 +46,8 @@ export function CommunityTeamBuilder() {
       p_team_name: teamName.trim(),
       p_scoring: scoring,
       p_league_size: leagueSize,
-      p_player_ids: players.map((player) => player.id),
+      p_player_ids: players.map(({ player }) => player.id),
+      p_roster_slots: players.map(({ rosterSlot }) => rosterSlot),
     });
 
     if (rpcError) {
@@ -91,13 +100,13 @@ export function CommunityTeamBuilder() {
         </div>
         <PlayerSearch
           onSelect={addPlayer}
-          excludeIds={players.map((player) => player.id)}
+          excludeIds={players.map(({ player }) => player.id)}
           placeholder={players.length >= MAX_PLAYERS ? 'Roster full' : 'Search and add a player…'}
         />
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {players.map((player) => {
+        {players.map(({ player, rosterSlot }) => {
           const colors = teamColor(player.team_abbreviation);
           return (
             <div
@@ -110,7 +119,7 @@ export function CommunityTeamBuilder() {
             >
               <button
                 type="button"
-                onClick={() => setPlayers((current) => current.filter((item) => item.id !== player.id))}
+                onClick={() => setPlayers((current) => current.filter((item) => item.player.id !== player.id))}
                 aria-label={`Remove ${player.full_name}`}
                 className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-black/40 text-xs text-white/70 hover:text-white"
               >
@@ -118,6 +127,23 @@ export function CommunityTeamBuilder() {
               </button>
               <p className="truncate pr-6 font-display text-sm font-black uppercase text-white">{player.full_name}</p>
               <p className="mt-1 text-[11px] font-bold text-white/75">{player.position} · {player.team_abbreviation}</p>
+              <label className="mt-2 block">
+                <span className="sr-only">Roster position for {player.full_name}</span>
+                <select
+                  value={rosterSlot}
+                  onChange={(event) => {
+                    const nextSlot = event.target.value as RosterSlot;
+                    setPlayers((current) => current.map((item) => (
+                      item.player.id === player.id ? { ...item, rosterSlot: nextSlot } : item
+                    )));
+                  }}
+                  className="w-full rounded-md border border-white/20 bg-black/40 px-2 py-1.5 text-[11px] font-black text-white focus:border-white/60 focus:outline-none"
+                >
+                  {slotOptions(player).map((slot) => (
+                    <option key={slot} value={slot}>{slot === 'BENCH' ? 'Bench' : slot}</option>
+                  ))}
+                </select>
+              </label>
             </div>
           );
         })}

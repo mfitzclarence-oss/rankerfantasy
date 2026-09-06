@@ -11,6 +11,7 @@ export type TradeVoteChoice = 'team_a' | 'fair' | 'team_b';
 export type TradeStatus = 'open' | 'closed';
 export type TradeSide = 'A' | 'B';
 export type CommunityTeamStatus = 'open' | 'closed';
+export type RosterSlot = 'QB' | 'RB' | 'WR' | 'TE' | 'FLEX' | 'BENCH';
 
 export interface PlayerRow {
   id: string;
@@ -102,6 +103,7 @@ export interface CommunityTeamPlayerRow {
   team_id: string;
   player_id: string;
   sort_order: number;
+  roster_slot: RosterSlot;
 }
 
 export interface CommunityTeamRatingRow {
@@ -158,6 +160,7 @@ export interface Database {
           p_scoring: TradeScoring;
           p_league_size: LeagueSize;
           p_player_ids: string[];
+          p_roster_slots: RosterSlot[];
         };
         Returns: string;
       };

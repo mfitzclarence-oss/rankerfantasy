@@ -11,6 +11,7 @@ type TeamPlayer = {
   full_name: string;
   position: string;
   team_abbreviation: string;
+  roster_slot: string;
 };
 
 export interface CommunityTeamCardData {
@@ -109,7 +110,10 @@ export function CommunityTeamCard({ team }: { team: CommunityTeamCardData }) {
               }}
             >
               <p className="truncate font-display text-xs font-black uppercase text-white sm:text-sm">{player.full_name}</p>
-              <p className="mt-0.5 text-[10px] font-bold text-white/70">{player.position} · {player.team_abbreviation}</p>
+              <p className="mt-1 flex items-center gap-1.5 text-[10px] font-bold text-white/70">
+                <span className="rounded bg-black/40 px-1.5 py-0.5 text-white">{player.roster_slot === 'BENCH' ? 'Bench' : player.roster_slot}</span>
+                <span>{player.position} · {player.team_abbreviation}</span>
+              </p>
             </div>
           );
         })}

@@ -20,7 +20,7 @@ export async function fetchCommunityTeams(sort: CommunityTeamSort): Promise<Comm
   const [{ data: rosterRows }, { data: summaryRows }] = await Promise.all([
     supabase
       .from('community_team_players')
-      .select('team_id, sort_order, players(id, full_name, position, team_abbreviation)')
+      .select('team_id, sort_order, roster_slot, players(id, full_name, position, team_abbreviation)')
       .in('team_id', teamIds)
       .order('sort_order', { ascending: true }),
     supabase.rpc('get_community_team_rating_summaries', { p_team_ids: teamIds }),
@@ -37,7 +37,12 @@ export async function fetchCommunityTeams(sort: CommunityTeamSort): Promise<Comm
   const rostersByTeam = new Map<string, CommunityTeamCardData['players']>();
   for (const row of rosterRows ?? []) {
     const roster = rostersByTeam.get(row.team_id) ?? [];
-    if (row.players) roster.push(row.players as unknown as CommunityTeamCardData['players'][number]);
+    if (row.players) {
+      roster.push({
+        ...(row.players as unknown as Omit<CommunityTeamCardData['players'][number], 'roster_slot'>),
+        roster_slot: row.roster_slot,
+      });
+    }
     rostersByTeam.set(row.team_id, roster);
   }
 
