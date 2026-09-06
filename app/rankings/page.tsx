@@ -43,7 +43,7 @@ export default async function RankingsPage({ searchParams }: { searchParams: { l
         </div>
 
         <div className="mt-3 sm:mt-4">
-          <RankingsTable rows={rows} />
+          <RankingsTable rows={rows} category="overall" />
         </div>
       </TokenGate>
     </div>
