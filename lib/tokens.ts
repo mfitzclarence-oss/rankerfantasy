@@ -1,7 +1,7 @@
 export const UNLOCK_REQUIREMENTS = {
   qb: 3,
-  rb: 3,
-  wr: 3,
+  rb: 7,
+  wr: 7,
   te: 3,
 } as const;
 
@@ -44,7 +44,7 @@ export function votesForCategory(progress: UnlockProgress, category: UnlockCateg
   return progress[`${category}_votes`];
 }
 
-/** The next position in the 12-vote guided run, or null once it is complete. */
+/** The next position in the 20-vote guided run, or null once it is complete. */
 export function nextRequiredCategory(progress: UnlockProgress): UnlockCategory | null {
   return UNLOCK_STEPS.find((step) => votesForCategory(progress, step.category) < step.required)?.category ?? null;
 }

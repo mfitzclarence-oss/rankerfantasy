@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
-import { getSessionId } from '@/lib/session';
+import { getGuidedVisitPlan, getSessionId, type GuidedVisitPlan } from '@/lib/session';
 import {
   DEFAULT_UNLOCK_PROGRESS,
   TOKENS_CHANGED_EVENT,
@@ -25,8 +25,15 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
   const [progress, setProgress] = useState<UnlockProgress>(DEFAULT_UNLOCK_PROGRESS);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [visitPlan, setVisitPlan] = useState<GuidedVisitPlan | null>(null);
 
   const refresh = useCallback(async () => {
+    const plan = getGuidedVisitPlan();
+    setVisitPlan(plan);
+    if (!plan.requiresGuidedVoting) {
+      setLoaded(true);
+      return;
+    }
     const sid = getSessionId();
     if (!sid) return;
     const { data, error: rpcError } = await supabase.rpc('get_unlock_progress', { p_session_id: sid }).single();
@@ -48,7 +55,7 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
     return <div className="card mt-6 animate-pulse p-8 text-center text-sm text-white/40">Checking unlock status…</div>;
   }
 
-  if (progress.unlocked) {
+  if (visitPlan?.requiresGuidedVoting === false || progress.unlocked) {
     return <>{children}</>;
   }
 
@@ -64,9 +71,9 @@ export function TokenGate({ children }: { children: React.ReactNode }) {
       <div className="absolute inset-0 flex items-start justify-center pt-10 sm:pt-16">
         <div className="card mx-4 max-w-md p-5 text-center shadow-glow sm:p-6">
           <span className="text-2xl" aria-hidden>🔒</span>
-          <h2 className="mt-2 font-display text-xl font-bold text-white">Complete 12 guided votes</h2>
+          <h2 className="mt-2 font-display text-xl font-bold text-white">Complete 20 guided votes</h2>
           <p className="mt-2 text-sm text-white/60">
-            We&apos;ll take you through three QB, RB, WR and TE matchups. Rankings and Trade Vote unlock after vote 12, and the guided run resets on your next visit.
+            Vote on 3 QB, 7 RB, 7 WR and 3 TE matchups. Once complete, Rankings and Trade Vote stay open for your next two visits.
           </p>
 
           <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">

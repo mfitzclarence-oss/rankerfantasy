@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import clsx from 'clsx';
 import { createClient } from '@/lib/supabase/client';
-import { getSessionId, recordSeenPair } from '@/lib/session';
+import { getGuidedVisitPlan, getSessionId, recordSeenPair } from '@/lib/session';
 import { track } from '@/lib/analytics';
-import { nextRequiredCategory, notifyTokensChanged, type UnlockProgress } from '@/lib/tokens';
+import { nextRequiredCategory, notifyTokensChanged, UNLOCK_TOTAL, type UnlockProgress } from '@/lib/tokens';
 import { PlayerCard } from '@/components/PlayerCard';
 import { CategoryTabs } from '@/components/CategoryTabs';
 import { TokenBadge } from '@/components/TokenBadge';
@@ -29,6 +30,7 @@ interface Consensus {
 // noise rather than signal — show an encouraging "you're early" message
 // instead of a misleading "100% agree" from a single vote.
 const MIN_VOTES_FOR_CONSENSUS = 3;
+const CONFETTI_COLORS = ['#2f7df4', '#73a4ff', '#3ecf8e', '#ffffff', '#d4af37'];
 
 export function VoteArena({ category, redirectOnLoad = true }: { category: Category; redirectOnLoad?: boolean }) {
   const router = useRouter();
@@ -40,6 +42,9 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
   const [voteCount, setVoteCount] = useState(0);
   const [sessionId, setSessionId] = useState('');
   const [consensus, setConsensus] = useState<Consensus | null>(null);
+  const [showCompletion, setShowCompletion] = useState(false);
+  const [unlockProgress, setUnlockProgress] = useState<UnlockProgress | null>(null);
+  const [guidedRequired, setGuidedRequired] = useState(false);
   const matchupRef = useRef<HTMLDivElement>(null);
 
   const loadMatchup = useCallback(async () => {
@@ -105,8 +110,10 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
     async function startGuidedVote() {
       const sid = getSessionId();
       setSessionId(sid);
+      const visitPlan = getGuidedVisitPlan();
+      setGuidedRequired(visitPlan.requiresGuidedVoting);
 
-      if (!redirectOnLoad) {
+      if (!redirectOnLoad || !visitPlan.requiresGuidedVoting) {
         loadMatchup();
         return;
       }
@@ -114,7 +121,9 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
       const { data } = await supabase.rpc('get_unlock_progress', { p_session_id: sid }).single();
       if (cancelled) return;
 
-      const nextCategory = data ? nextRequiredCategory(data as UnlockProgress) : null;
+      const currentProgress = data as UnlockProgress | null;
+      if (currentProgress) setUnlockProgress(currentProgress);
+      const nextCategory = currentProgress ? nextRequiredCategory(currentProgress) : null;
       if (nextCategory && nextCategory !== category) {
         router.replace(`/vote/${nextCategory}` as any);
         return;
@@ -198,11 +207,19 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
     const { data: progressData } = await supabase
       .rpc('get_unlock_progress', { p_session_id: sid })
       .single();
-    const nextCategory = progressData ? nextRequiredCategory(progressData as UnlockProgress) : null;
+    const progress = progressData as UnlockProgress | null;
+    const nextCategory = progress ? nextRequiredCategory(progress) : null;
+    const completedGuidedRun = guidedRequired && unlockProgress?.unlocked !== true && progress?.unlocked === true && progress.qualified_votes >= UNLOCK_TOTAL;
+    if (progress) setUnlockProgress(progress);
 
     setVoteCount((n) => n + 1);
     setTimeout(() => {
       setExiting(null);
+      if (completedGuidedRun) {
+        setMatchup(null);
+        setShowCompletion(true);
+        return;
+      }
       if (nextCategory && nextCategory !== category) {
         router.push(`/vote/${nextCategory}` as any);
       } else {
@@ -219,7 +236,7 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
       <div className="text-center">
         <h1 className="section-title">Who would you rather have?</h1>
         <p className="mt-1 text-xs text-white/55 sm:text-sm">
-          {voteCount > 0 ? `${voteCount} votes this visit — keep going.` : 'Vote three times at QB, RB, WR and TE. The 12-vote run resets next visit.'}
+          {voteCount > 0 ? `${voteCount} votes this visit — keep going.` : guidedRequired ? 'Complete 3 QB, 7 RB, 7 WR and 3 TE votes.' : 'Voting is optional this visit — choose any position or Overall.'}
         </p>
         <TokenBadge className="mt-3" />
       </div>
@@ -279,6 +296,47 @@ export function VoteArena({ category, redirectOnLoad = true }: { category: Categ
       >
         Skip this matchup →
       </button>
+
+      {showCompletion && <CompletionCelebration onKeepVoting={() => router.push('/vote')} />}
+    </div>
+  );
+}
+
+function CompletionCelebration({ onKeepVoting }: { onKeepVoting: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[70] flex items-center justify-center overflow-hidden bg-ink-950/90 px-4 backdrop-blur-md" role="dialog" aria-modal="true" aria-labelledby="completion-title">
+      <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
+        {Array.from({ length: 24 }, (_, index) => (
+          <span
+            key={index}
+            className="absolute -top-6 h-3 w-2 animate-confetti-fall rounded-sm motion-reduce:hidden"
+            style={{
+              left: `${4 + ((index * 37) % 92)}%`,
+              backgroundColor: CONFETTI_COLORS[index % CONFETTI_COLORS.length],
+              animationDelay: `${(index % 8) * 90}ms`,
+              animationDuration: `${1200 + (index % 5) * 140}ms`,
+              transform: `rotate(${index * 29}deg)`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="relative w-full max-w-md animate-celebration-pop overflow-hidden rounded-3xl border border-accent/40 bg-[radial-gradient(circle_at_top,rgba(47,125,244,0.28),transparent_56%),#0b111c] p-6 text-center shadow-[0_28px_100px_-28px_rgba(47,125,244,0.8)] motion-reduce:animate-none sm:p-9">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-positive/40 bg-positive/15 text-4xl shadow-[0_0_45px_rgba(62,207,142,0.25)]" aria-hidden="true">✓</div>
+        <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.22em] text-positive">Guided voting complete</p>
+        <h2 id="completion-title" className="mt-2 font-display text-4xl font-black leading-none text-white sm:text-5xl">20 votes done!</h2>
+        <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-white/60">
+          You&apos;ve unlocked the community rankings and Trade Vote for your next two visits. Where would you like to go next?
+        </p>
+
+        <div className="mt-6 grid gap-2.5 sm:grid-cols-2">
+          <Link href="/rankings" autoFocus className="btn-primary min-h-12">View Rankings</Link>
+          <Link href="/trades" className="btn-secondary min-h-12">Vote on Trades</Link>
+          <button type="button" onClick={onKeepVoting} className="btn-secondary min-h-12 sm:col-span-2">
+            Keep Voting Overall →
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

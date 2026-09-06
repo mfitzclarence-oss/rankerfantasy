@@ -47,11 +47,22 @@ const config: Config = {
           '0%': { transform: 'translateX(0) rotate(0)', opacity: '1' },
           '100%': { transform: 'translateX(120%) rotate(8deg)', opacity: '0' },
         },
+        'celebration-pop': {
+          '0%': { transform: 'scale(0.82) translateY(18px)', opacity: '0' },
+          '65%': { transform: 'scale(1.035) translateY(0)', opacity: '1' },
+          '100%': { transform: 'scale(1) translateY(0)', opacity: '1' },
+        },
+        'confetti-fall': {
+          '0%': { transform: 'translateY(-4vh) rotate(0deg)', opacity: '1' },
+          '100%': { transform: 'translateY(105vh) rotate(620deg)', opacity: '0.15' },
+        },
       },
       animation: {
         'pop-win': 'pop-win 260ms ease-out',
         'slide-out-left': 'slide-out-left 320ms ease-in forwards',
         'slide-out-right': 'slide-out-right 320ms ease-in forwards',
+        'celebration-pop': 'celebration-pop 480ms cubic-bezier(0.16, 1, 0.3, 1) both',
+        'confetti-fall': 'confetti-fall 1.6s ease-in both',
       },
     },
   },

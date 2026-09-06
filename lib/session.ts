@@ -9,6 +9,14 @@
  * server-side rate limiting in the cast_vote/cast_trade_vote RPCs.
  */
 const KEY = 'rf_visit_session_id';
+const VISIT_CYCLE_KEY = 'rf_guided_visit_cycle_v1';
+export const GUIDED_VISIT_INTERVAL = 3;
+
+export interface GuidedVisitPlan {
+  visitNumber: number;
+  requiresGuidedVoting: boolean;
+  visitsUntilNextRun: number;
+}
 
 export function getSessionId(): string {
   if (typeof window === 'undefined') return '';
@@ -30,6 +38,38 @@ let memorySessionId: string | undefined;
 function getMemorySessionId() {
   memorySessionId ??= crypto.randomUUID();
   return memorySessionId;
+}
+
+/**
+ * Counts a fresh browser session as one visit. Reloads keep the same session
+ * ID, so they do not advance the cycle. The guide runs on visits 1, 4, 7…;
+ * storage-restricted browsers safely fall back to requiring the guide.
+ */
+export function getGuidedVisitPlan(): GuidedVisitPlan {
+  const sessionId = getSessionId();
+  if (!sessionId) return { visitNumber: 1, requiresGuidedVoting: true, visitsUntilNextRun: 0 };
+
+  try {
+    const raw = window.localStorage.getItem(VISIT_CYCLE_KEY);
+    const stored = raw ? JSON.parse(raw) as { visitNumber?: unknown; lastSessionId?: unknown } : null;
+    const previousVisit = typeof stored?.visitNumber === 'number' && Number.isInteger(stored.visitNumber) && stored.visitNumber > 0
+      ? stored.visitNumber
+      : 0;
+    const visitNumber = stored?.lastSessionId === sessionId ? Math.max(previousVisit, 1) : previousVisit + 1;
+
+    if (stored?.lastSessionId !== sessionId) {
+      window.localStorage.setItem(VISIT_CYCLE_KEY, JSON.stringify({ visitNumber, lastSessionId: sessionId }));
+    }
+
+    const cycleIndex = (visitNumber - 1) % GUIDED_VISIT_INTERVAL;
+    return {
+      visitNumber,
+      requiresGuidedVoting: cycleIndex === 0,
+      visitsUntilNextRun: cycleIndex === 0 ? 0 : GUIDED_VISIT_INTERVAL - cycleIndex,
+    };
+  } catch {
+    return { visitNumber: 1, requiresGuidedVoting: true, visitsUntilNextRun: 0 };
+  }
 }
 
 const SEEN_KEY_PREFIX = 'rf_seen_';

@@ -70,7 +70,7 @@ Indexes cover every hot path: rankings sort (`category, rating desc`), matchmaki
 
 ## 3b. Vote-to-unlock tokens
 
-Rankings and Trade Vote unlock after a guided 12-vote run: three QB, three RB, three WR, and three TE matchups. The visit UUID lives in `sessionStorage`, so returning after the browser session ends starts a new run while every accepted vote remains in the global ranking history.
+On visits 1, 4, 7 and so on, Rankings and Trade Vote unlock after a guided 20-vote run: three QB, seven RB, seven WR, and three TE matchups. The two visits between guided runs stay open. A visit UUID lives in `sessionStorage`, so reloading the page does not advance the cycle, while every accepted vote remains in the global ranking history.
 
 **SEO-safe by design:** the gate is a soft, client-side overlay (`components/TokenGate.tsx`) — gated pages still render their real content server-side into the HTML (so Google indexing and link-preview scrapers see it), and only a signed-in browser without enough tokens sees it visually blurred behind an unlock prompt. This does mean a shared trade URL (`/trades/[id]`) shows the gate to a first-time visitor too, even though sharing trade links is otherwise a core feature — worth knowing if that friction doesn't feel right for that specific page.
 

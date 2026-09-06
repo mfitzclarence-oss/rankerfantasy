@@ -10,6 +10,7 @@ import type { TradeVoteChoice } from '@/lib/database.types';
 import { teamColor } from '@/lib/teamColors';
 
 type TradePlayer = { full_name: string; position: string; team_abbreviation: string };
+type TradeDensity = 'roomy' | 'compact' | 'dense';
 
 export interface TradeCardData {
   id: string;
@@ -35,6 +36,8 @@ export function TradeCard({ trade, linkToDetail = true }: { trade: TradeCardData
   const [voting, setVoting] = useState(false);
   const [voteError, setVoteError] = useState<string | null>(null);
   const total = votes.team_a + votes.fair + votes.team_b;
+  const largestSide = Math.max(trade.sideA.length, trade.sideB.length);
+  const density: TradeDensity = largestSide >= 3 ? 'dense' : largestSide === 2 ? 'compact' : 'roomy';
   const pct = (n: number) => (total === 0 ? 0 : Math.round((n / total) * 100));
 
   useEffect(() => {
@@ -110,12 +113,15 @@ export function TradeCard({ trade, linkToDetail = true }: { trade: TradeCardData
 
       {trade.title && <h2 className="mt-4 text-center font-display text-xl font-black text-white sm:text-2xl">{trade.title}</h2>}
 
-      <div className="mt-5 grid grid-cols-1 items-stretch gap-3 sm:grid-cols-[1fr_auto_1fr] sm:gap-4">
-        <TradeSide side="A" label="Team A gets" players={trade.sideA} />
-        <div className="relative z-10 -my-5 flex items-center justify-center sm:my-0 sm:-mx-7">
-          <span className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-ink-900 bg-white font-display text-sm font-black italic text-ink-950 shadow-xl">VS</span>
+      <div className={clsx('grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-stretch gap-1.5 sm:gap-4', density === 'roomy' ? 'mt-5' : 'mt-3')}>
+        <TradeSide side="A" label="Team A gets" players={trade.sideA} density={density} />
+        <div className="relative z-10 -mx-3 flex items-center justify-center sm:-mx-7">
+          <span className={clsx(
+            'flex items-center justify-center rounded-full border-4 border-ink-900 bg-white font-display font-black italic text-ink-950 shadow-xl',
+            density === 'roomy' ? 'h-10 w-10 text-xs sm:h-12 sm:w-12 sm:text-sm' : 'h-8 w-8 text-[10px] sm:h-10 sm:w-10 sm:text-xs'
+          )}>VS</span>
         </div>
-        <TradeSide side="B" label="Team B gets" players={trade.sideB} />
+        <TradeSide side="B" label="Team B gets" players={trade.sideB} density={density} />
       </div>
 
       <div className="mt-6 rounded-xl border border-white/[0.06] bg-black/20 p-3">
@@ -156,28 +162,33 @@ export function TradeCard({ trade, linkToDetail = true }: { trade: TradeCardData
   );
 }
 
-function TradeSide({ side, label, players }: { side: 'A' | 'B'; label: string; players: TradePlayer[] }) {
+function TradeSide({ side, label, players, density }: { side: 'A' | 'B'; label: string; players: TradePlayer[]; density: TradeDensity }) {
   return (
-    <section className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 sm:p-4">
-      <div className="mb-3 flex items-center gap-2">
-        <span className={clsx('flex h-7 w-7 items-center justify-center rounded-lg text-xs font-black text-white', side === 'A' ? 'bg-accent' : 'bg-positive')}>{side}</span>
-        <h3 className="text-xs font-extrabold uppercase tracking-[0.12em] text-white/70">{label}</h3>
+    <section className={clsx('min-w-0 rounded-xl border border-white/10 bg-white/[0.025] sm:rounded-2xl', density === 'roomy' ? 'p-2.5 sm:p-4' : 'p-2 sm:p-3')}>
+      <div className={clsx('flex items-center gap-1.5 sm:gap-2', density === 'roomy' ? 'mb-3' : 'mb-2')}>
+        <span className={clsx('flex shrink-0 items-center justify-center rounded-lg font-black text-white', density === 'roomy' ? 'h-7 w-7 text-xs' : 'h-6 w-6 text-[10px]', side === 'A' ? 'bg-accent' : 'bg-positive')}>{side}</span>
+        <h3 className="truncate text-[10px] font-extrabold uppercase tracking-[0.08em] text-white/70 sm:text-xs sm:tracking-[0.12em]">{label}</h3>
       </div>
-      <div className="space-y-2">
+      <div className={clsx(density === 'roomy' ? 'space-y-2' : 'space-y-1.5')}>
         {players.map((p, i) => (
-          <TradePlayerCard key={`${p.full_name}-${i}`} player={p} />
+          <TradePlayerCard key={`${p.full_name}-${i}`} player={p} density={density} />
         ))}
       </div>
     </section>
   );
 }
 
-function TradePlayerCard({ player }: { player: TradePlayer }) {
+function TradePlayerCard({ player, density }: { player: TradePlayer; density: TradeDensity }) {
   const { primary, secondary } = teamColor(player.team_abbreviation);
 
   return (
     <div
-      className="relative min-h-24 overflow-hidden rounded-xl border p-3 shadow-lg sm:min-h-28 sm:p-4"
+      className={clsx(
+        'relative overflow-hidden rounded-lg border shadow-lg sm:rounded-xl',
+        density === 'roomy' && 'min-h-24 p-2.5 sm:min-h-28 sm:p-4',
+        density === 'compact' && 'min-h-16 p-2 sm:min-h-20 sm:p-3',
+        density === 'dense' && 'min-h-12 p-2 sm:min-h-16 sm:p-2.5'
+      )}
       style={{
         borderColor: secondary,
         backgroundColor: primary,
@@ -185,11 +196,16 @@ function TradePlayerCard({ player }: { player: TradePlayer }) {
         boxShadow: `inset 0 1px 0 rgba(255,255,255,0.14), 0 12px 30px ${primary}28`,
       }}
     >
-      <span aria-hidden="true" className="absolute -right-1 -top-4 font-display text-7xl font-black leading-none text-white/[0.08]">{player.position}</span>
-      <p className="relative text-balance font-display text-xl font-black uppercase leading-[0.95] text-white sm:text-2xl">{player.full_name}</p>
-      <div className="relative mt-3 flex items-center gap-2">
-        <span className="rounded-md bg-black/30 px-2 py-1 text-sm font-black text-white">{player.position}</span>
-        <span className="text-sm font-extrabold uppercase tracking-wide text-white/80">{player.team_abbreviation || 'FA'}</span>
+      <span aria-hidden="true" className={clsx('absolute -right-1 font-display font-black leading-none text-white/[0.08]', density === 'roomy' ? '-top-4 text-7xl' : '-top-2 text-5xl')}>{player.position}</span>
+      <p className={clsx(
+        'relative text-balance font-display font-black uppercase leading-[0.95] text-white',
+        density === 'roomy' && 'text-lg sm:text-2xl',
+        density === 'compact' && 'text-base sm:text-xl',
+        density === 'dense' && 'text-sm sm:text-base'
+      )}>{player.full_name}</p>
+      <div className={clsx('relative flex flex-wrap items-center gap-1.5', density === 'roomy' ? 'mt-3' : 'mt-1.5')}>
+        <span className={clsx('rounded bg-black/30 font-black text-white', density === 'roomy' ? 'px-2 py-1 text-xs sm:text-sm' : 'px-1.5 py-0.5 text-[10px] sm:text-xs')}>{player.position}</span>
+        <span className={clsx('font-extrabold uppercase tracking-wide text-white/80', density === 'roomy' ? 'text-xs sm:text-sm' : 'text-[10px] sm:text-xs')}>{player.team_abbreviation || 'FA'}</span>
       </div>
     </div>
   );
