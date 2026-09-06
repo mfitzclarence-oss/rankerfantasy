@@ -21,11 +21,7 @@ export function BrandWordmark({
 
   return (
     <span
-      className={clsx(
-        'inline-flex select-none flex-col items-stretch leading-none',
-        prefix === 'Rank' && 'rounded-lg bg-black px-2.5 py-1.5',
-        className
-      )}
+      className={clsx('inline-flex select-none flex-col items-stretch leading-none', className)}
       aria-label={label}
     >
       <span
