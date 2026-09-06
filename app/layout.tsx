@@ -100,7 +100,8 @@ function Footer() {
         <div>
           <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.12em] text-white/70">Support &amp; social</p>
           <div className="flex flex-col gap-2.5">
-            <a href="https://github.com/mfitzclarence-oss/rankerfantasy/issues/new?template=bug_report.yml" target="_blank" rel="noopener noreferrer" className="hover:text-white">Report a bug ↗</a>
+            <a href="mailto:styleupfantasy@gmail.com?subject=RankUp%20Fantasy%20bug%20report&amp;body=What%20went%20wrong%3F%0A%0APage%20or%20screen%3A%0ADevice%3A%0A" className="hover:text-white">Report a bug</a>
+            <a href="mailto:styleupfantasy@gmail.com" className="hover:text-white">styleupfantasy@gmail.com</a>
             <a href="https://github.com/mfitzclarence-oss/rankerfantasy/issues/new?template=feature_request.yml" target="_blank" rel="noopener noreferrer" className="hover:text-white">Suggest a feature ↗</a>
             <a href="https://www.instagram.com/orderupfantasy/" target="_blank" rel="noopener noreferrer" className="hover:text-white">Order Up Instagram ↗</a>
           </div>

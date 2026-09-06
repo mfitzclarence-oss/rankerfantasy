@@ -5,34 +5,16 @@ labels: ["bug"]
 body:
   - type: markdown
     attributes:
-      value: Thanks for helping us improve RankUp Fantasy.
+      value: Tell us what went wrong. That is all we need to get started.
   - type: textarea
     id: problem
     attributes:
-      label: What happened?
-      description: Tell us what you expected and what happened instead.
-      placeholder: I was trying to vote when...
-    validations:
-      required: true
-  - type: dropdown
-    id: device
-    attributes:
-      label: Device
-      options:
-        - iPhone
-        - Android phone
-        - iPad or tablet
-        - Desktop or laptop
-        - Other
+      label: What went wrong?
+      placeholder: I tapped a player, but the next matchup did not load.
     validations:
       required: true
   - type: input
-    id: browser
+    id: page_device
     attributes:
-      label: Browser
-      placeholder: Safari, Chrome, Edge...
-  - type: textarea
-    id: screenshot
-    attributes:
-      label: Screenshot or extra details
-      description: Drag a screenshot here if it helps explain the issue.
+      label: Page or device (optional)
+      placeholder: Rankings page on iPhone
