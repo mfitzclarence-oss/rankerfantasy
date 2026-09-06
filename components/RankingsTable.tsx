@@ -29,14 +29,16 @@ interface Tier {
 
 const TIER_LABELS = ['Elite', 'High-end starters', 'Solid starters', 'Depth', 'Upside'] as const;
 
-function tierForRank(rank: number, category: Category): Tier {
+function tierForPlayer(rank: number, displayRating: number, category: Category): Tier {
+  if (displayRating > 98) return { number: 1, label: TIER_LABELS[0] };
+
   const cutoffs = category === 'overall'
-    ? [12, 36, 72, 120]
+    ? [36, 72, 120]
     : category === 'rb' || category === 'wr'
-      ? [8, 18, 36, 54]
-      : [4, 8, 12, 18];
+      ? [18, 36, 54]
+      : [8, 12, 18];
   const tierIndex = cutoffs.findIndex((cutoff) => rank <= cutoff);
-  const number = tierIndex === -1 ? 5 : tierIndex + 1;
+  const number = tierIndex === -1 ? 5 : tierIndex + 2;
 
   return { number, label: TIER_LABELS[number - 1] };
 }
@@ -58,8 +60,15 @@ export function RankingsTable({ rows, category }: { rows: RankingRow[]; category
         {rows.map((row, index) => {
           const displayRating = ratingOutOf100(row.rating, leaderRating, row.rank);
           const { primary, secondary } = teamColor(row.team_abbreviation);
-          const tier = tierForRank(row.rank, category);
-          const previousTier = index > 0 ? tierForRank(rows[index - 1].rank, category) : null;
+          const tier = tierForPlayer(row.rank, displayRating, category);
+          const previousRow = rows[index - 1];
+          const previousTier = previousRow
+            ? tierForPlayer(
+                previousRow.rank,
+                ratingOutOf100(previousRow.rating, leaderRating, previousRow.rank),
+                category
+              )
+            : null;
           const startsTier = previousTier?.number !== tier.number;
 
           return (
