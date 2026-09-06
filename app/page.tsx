@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { VoteArena } from '@/components/VoteArena';
 import { OrderUpPromo } from '@/components/OrderUpPromo';
-import { ratingOutOf100 } from '@/lib/ratingScore';
+import { gradeFromRating, ratingOutOf100 } from '@/lib/ratingScore';
 import { fetchRankings } from '@/lib/rankings';
 import { teamColor } from '@/lib/teamColors';
 
@@ -77,8 +77,8 @@ export default async function HomePage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-display text-lg font-bold text-accent-bright">{ratingOutOf100(row.rating, leaderRating, i + 1)}</p>
-                  <p className="text-[11px] text-white/60">Rating · {row.comparisons} votes</p>
+                  <p className="font-display text-lg font-black text-accent-bright">{gradeFromRating(ratingOutOf100(row.rating, leaderRating, i + 1))}</p>
+                  <p className="text-[11px] text-white/60">Grade · {row.comparisons} votes</p>
                 </div>
               </div>
             );

@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import { ratingOutOf100 } from '@/lib/ratingScore';
+import { gradeFromRating, ratingOutOf100 } from '@/lib/ratingScore';
 import { teamColor } from '@/lib/teamColors';
-import type { Category } from '@/lib/database.types';
 
 export interface RankingRow {
   rank: number;
@@ -27,30 +26,22 @@ interface Tier {
   label: string;
 }
 
-const TIER_LABELS = ['Elite', 'High-end starters', 'Solid starters', 'Depth', 'Upside'] as const;
+const TIER_LABELS = ['Elite', 'Premium', 'Strong starters', 'Solid options', 'Depth'] as const;
 
-function tierForPlayer(rank: number, displayRating: number, category: Category): Tier {
-  if (displayRating > 98) return { number: 1, label: TIER_LABELS[0] };
-
-  const cutoffs = category === 'overall'
-    ? [36, 72, 120]
-    : category === 'rb' || category === 'wr'
-      ? [18, 36, 54]
-      : [8, 12, 18];
-  const tierIndex = cutoffs.findIndex((cutoff) => rank <= cutoff);
-  const number = tierIndex === -1 ? 5 : tierIndex + 2;
+function tierForRating(displayRating: number): Tier {
+  const number = displayRating >= 99 ? 1 : displayRating >= 93 ? 2 : displayRating >= 83 ? 3 : displayRating >= 73 ? 4 : 5;
 
   return { number, label: TIER_LABELS[number - 1] };
 }
 
-export function RankingsTable({ rows, category }: { rows: RankingRow[]; category: Category }) {
+export function RankingsTable({ rows }: { rows: RankingRow[] }) {
   const leaderRating = rows[0]?.rating ?? 1500;
 
   return (
     <div className="card overflow-hidden">
       <div className="hidden grid-cols-[1fr_4rem_5rem_4rem_6rem_6rem] gap-2 border-b border-ink-700 px-3 py-2 text-[10px] font-semibold uppercase tracking-wide text-white/40 sm:grid">
         <span>Player</span>
-        <span className="text-right">Rating</span>
+        <span className="text-right">Grade</span>
         <span className="text-right">Record</span>
         <span className="text-right">Votes</span>
         <span className="text-right">Position Ranking</span>
@@ -59,15 +50,12 @@ export function RankingsTable({ rows, category }: { rows: RankingRow[]; category
       <div>
         {rows.map((row, index) => {
           const displayRating = ratingOutOf100(row.rating, leaderRating, row.rank);
+          const grade = gradeFromRating(displayRating);
           const { primary, secondary } = teamColor(row.team_abbreviation);
-          const tier = tierForPlayer(row.rank, displayRating, category);
+          const tier = tierForRating(displayRating);
           const previousRow = rows[index - 1];
           const previousTier = previousRow
-            ? tierForPlayer(
-                previousRow.rank,
-                ratingOutOf100(previousRow.rating, leaderRating, previousRow.rank),
-                category
-              )
+            ? tierForRating(ratingOutOf100(previousRow.rating, leaderRating, previousRow.rank))
             : null;
           const startsTier = previousTier?.number !== tier.number;
 
@@ -105,8 +93,8 @@ export function RankingsTable({ rows, category }: { rows: RankingRow[]; category
                 </div>
 
                 <span className="text-right">
-                  <span className="block font-display text-base font-bold leading-none text-accent-bright sm:text-sm">{displayRating}</span>
-                  <span className="mt-0.5 block text-[8px] uppercase tracking-wide text-white/35 sm:hidden">Rating</span>
+                  <span className="block font-display text-base font-black leading-none text-accent-bright sm:text-sm">{grade}</span>
+                  <span className="mt-0.5 block text-[8px] uppercase tracking-wide text-white/35 sm:hidden">Grade</span>
                 </span>
                 <span className="hidden text-right text-xs text-white/55 sm:block">
                   {row.wins}-{row.losses}

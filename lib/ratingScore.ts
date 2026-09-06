@@ -16,3 +16,20 @@ export function ratingOutOf100(rating: number, leaderRating: number, rank: numbe
 
   return Math.max(1, Math.min(99, score));
 }
+
+/** Convert the display score into a familiar fantasy grade. */
+export function gradeFromRating(score: number): string {
+  if (score >= 99) return 'A+';
+  if (score >= 97) return 'A';
+  if (score >= 93) return 'A−';
+  if (score >= 90) return 'B+';
+  if (score >= 87) return 'B';
+  if (score >= 83) return 'B−';
+  if (score >= 80) return 'C+';
+  if (score >= 77) return 'C';
+  if (score >= 73) return 'C−';
+  if (score >= 70) return 'D+';
+  if (score >= 67) return 'D';
+  if (score >= 63) return 'D−';
+  return 'F';
+}

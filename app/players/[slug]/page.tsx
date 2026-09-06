@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { byeLabel, winPercentageLabel, POSITION_LABEL } from '@/lib/format';
-import { ratingOutOf100 } from '@/lib/ratingScore';
+import { gradeFromRating, ratingOutOf100 } from '@/lib/ratingScore';
 import { fetchRankings } from '@/lib/rankings';
 import { PlayerProfileTracker } from '@/components/PlayerProfileTracker';
 
@@ -130,7 +130,7 @@ export default async function PlayerPage({ params }: { params: { slug: string } 
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat label="Rating" value={`${displayRating}/100`} />
+        <Stat label="Community Grade" value={gradeFromRating(displayRating)} />
         <Stat label="Record" value={`${posRating?.wins ?? 0}-${posRating?.losses ?? 0}`} />
         <Stat label="Win %" value={winPercentageLabel(posRating?.wins ?? 0, posRating?.losses ?? 0)} />
         <Stat label="Total Votes" value={(posRating?.comparisons ?? 0).toLocaleString()} />

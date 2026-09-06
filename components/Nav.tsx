@@ -12,9 +12,19 @@ export function Nav() {
   return (
     <header className="sticky top-0 z-40 px-2 pt-2 sm:px-5 sm:pt-3">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center rounded-[1.35rem] border border-ink-700/90 bg-ink-950/90 px-3 py-2.5 shadow-card backdrop-blur-xl sm:px-6 sm:py-3 md:grid-cols-[1fr_auto_1fr]">
-        <Link href="/" className="mx-auto flex items-center py-1 md:mx-0 md:justify-self-start" aria-label="RankUp Fantasy home">
-          <BrandWordmark />
-        </Link>
+        <div className="mx-auto flex flex-col items-center md:mx-0 md:items-start md:justify-self-start">
+          <Link href="/" className="flex items-center py-1" aria-label="RankUp Fantasy home">
+            <BrandWordmark />
+          </Link>
+          <a
+            href="https://www.instagram.com/styleupfantasy/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] font-bold tracking-wide text-white/45 transition-colors hover:text-accent-bright"
+          >
+            @StyleUpFantasy
+          </a>
+        </div>
 
         <nav className="hidden items-center justify-center gap-1 md:flex" aria-label="Main navigation">
           {LINKS.map((l) => (
