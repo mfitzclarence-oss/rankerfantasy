@@ -17,7 +17,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 overflow-hidden rounded-2xl border border-white/10 bg-ink-950/90 shadow-[0_20px_55px_-18px_rgba(0,0,0,0.95),0_0_35px_-20px_rgba(47,125,244,0.9)] backdrop-blur-xl md:hidden"
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 overflow-hidden rounded-2xl border border-white/15 bg-ink-950/65 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_20px_55px_-18px_rgba(0,0,0,0.95),0_0_35px_-20px_rgba(47,125,244,0.9)] backdrop-blur-2xl backdrop-saturate-150 md:hidden"
       aria-label="Primary navigation"
     >
       <div className="mx-auto flex max-w-md items-stretch justify-around px-1">
