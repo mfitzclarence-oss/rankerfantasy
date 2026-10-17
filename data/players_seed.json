@@ -108,8 +108,8 @@
     "fantasy_relevant": true,
     "slug": "christian-mccaffrey",
     "external_ref": "adp-2026-ppr-7",
-    "seed_rank_overall": 7,
-    "seed_rank_position": 3
+    "seed_rank_overall": 5,
+    "seed_rank_position": 4
   },
   {
     "full_name": "Jonathan Taylor",
@@ -124,8 +124,8 @@
     "fantasy_relevant": true,
     "slug": "jonathan-taylor",
     "external_ref": "adp-2026-ppr-8",
-    "seed_rank_overall": 8,
-    "seed_rank_position": 4
+    "seed_rank_overall": 4,
+    "seed_rank_position": 6
   },
   {
     "full_name": "De'Von Achane",
@@ -205,7 +205,7 @@
     "slug": "james-cook-iii",
     "external_ref": "adp-2026-ppr-13",
     "seed_rank_overall": 13,
-    "seed_rank_position": 6
+    "seed_rank_position": 5
   },
   {
     "full_name": "Chase Brown",
@@ -253,7 +253,7 @@
     "slug": "derrick-henry",
     "external_ref": "adp-2026-ppr-16",
     "seed_rank_overall": 16,
-    "seed_rank_position": 8
+    "seed_rank_position": 7
   },
   {
     "full_name": "A.J. Brown",
@@ -285,7 +285,7 @@
     "slug": "ashton-jeanty",
     "external_ref": "adp-2026-ppr-18",
     "seed_rank_overall": 18,
-    "seed_rank_position": 9
+    "seed_rank_position": 12
   },
   {
     "full_name": "Saquon Barkley",
@@ -364,8 +364,8 @@
     "fantasy_relevant": true,
     "slug": "kenneth-walker",
     "external_ref": "adp-2026-ppr-23",
-    "seed_rank_overall": 23,
-    "seed_rank_position": 11
+    "seed_rank_overall": 3,
+    "seed_rank_position": 3
   },
   {
     "full_name": "Omarion Hampton",
@@ -525,7 +525,7 @@
     "slug": "kyren-williams",
     "external_ref": "adp-2026-ppr-33",
     "seed_rank_overall": 33,
-    "seed_rank_position": 15
+    "seed_rank_position": 8
   },
   {
     "full_name": "Josh Allen",
@@ -621,7 +621,7 @@
     "slug": "javonte-williams",
     "external_ref": "adp-2026-ppr-39",
     "seed_rank_overall": 39,
-    "seed_rank_position": 17
+    "seed_rank_position": 9
   },
   {
     "full_name": "Ladd McConkey",
@@ -973,7 +973,7 @@
     "slug": "jaylen-warren",
     "external_ref": "adp-2026-ppr-61",
     "seed_rank_overall": 61,
-    "seed_rank_position": 25
+    "seed_rank_position": 10
   },
   {
     "full_name": "Courtland Sutton",
@@ -1357,7 +1357,7 @@
     "slug": "chuba-hubbard",
     "external_ref": "adp-2026-ppr-85",
     "seed_rank_overall": 84,
-    "seed_rank_position": 31
+    "seed_rank_position": 11
   },
   {
     "full_name": "Jakobi Meyers",
